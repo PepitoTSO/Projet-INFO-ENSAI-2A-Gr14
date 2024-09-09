@@ -1,7 +1,7 @@
 from InquirerPy import inquirer
 
 
-class AccueilVue(VueAbstraite):
+class VueAccueil(VueAbstraite):
     """Vue d'accueil de l'application"""
 
     def choisir_menu(self):
@@ -40,4 +40,9 @@ class AccueilVue(VueAbstraite):
                 return InscriptionVue("Création de compte joueur")
 
             case "Infos sur l'appli":
-                return AccueilVue(Session().afficher())
+                VueAccueil.messageInfo()
+    
+    def messageInfo(self):
+        print("message info a ecrire")
+        #ou mettre une variable texte dans autre fichier et faire un formater pour unifier tous les textes
+
