@@ -1,6 +1,6 @@
 import os
 import requests
-
+import dotenv
 
 class apifreesound():
     '''Gestion API'''
@@ -12,15 +12,18 @@ class apifreesound():
         Params:
             recherche : str
             Ce que l'on recherche sur freesound
+
             params : bool
             Si besoin de filtres
+
             OAuth2 : bool
             Si authentification en OAuth2
+
         Returns:
             reponse : json
             ce que renvoie l'api en json
         '''
-
+        dotenv.load_dotenv()
         # Verifie puis recupere la cle API dans le .env
         try:
             os.environ['CLEAPI']
