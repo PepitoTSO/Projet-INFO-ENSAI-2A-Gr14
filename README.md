@@ -29,4 +29,10 @@ L'application repose sur l'API [Freesound](https://freesound.org/apiv2/), offran
 - **Lecture en boucle** : Les utilisateurs peuvent configurer certains sons pour qu'ils se répètent en boucle (ex : bruit de fond, pluie).
 - **Lecture simultanée** : Il est également possible de jouer plusieurs sons en même temps pour une expérience sonore plus riche et plus complexe.
 
+## Paquets requis
+Installez les paquets requis avec les commandes bash suivantes :
+
+```bash
+pip install -r requirements.txt     # installe tous les paquets listés dans le fichier
+pip list                            # pour lister tous les paquets installés
 
