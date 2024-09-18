@@ -4,9 +4,9 @@ import dotenv
 import json
 
 class apifreesound():
-    '''Gestion API'''
+    '''Gestion des requetes à l'API'''
 
-    def requestget(recherche: str, params=False, OAuth2=False):
+    def recherche_son(recherche: str, params=False) -> json:
         '''
         Get http avec la clef API selon recherche
 
@@ -15,14 +15,13 @@ class apifreesound():
             Ce que l'on recherche sur freesound
             params : bool
             Si besoin de filtres
-            OAuth2 : bool
-            Si authentification en OAuth2
+
         Returns:
             reponse : json
             ce que renvoie l'api en json
         '''
 
-        # Verifie puis recupere la cle API dans le .env
+        # Verifie et recupere la cle API dans le .env       mettre dans un config.py
         dotenv.load_dotenv()
         try:
             cleAPI = os.getenv('CLEAPI')
@@ -34,9 +33,6 @@ class apifreesound():
         if params:
             payload = apifreesound.filtre(payload)
 
-        if OAuth2:
-            apifreesound.apiOAuth2()
-
         # faire de la gestion d'erreur si code erreur http avec try et except
         reponse = requests.get(
             'https://freesound.org/apiv2/search/text/',
@@ -44,15 +40,13 @@ class apifreesound():
             timeout=1
             )
 
-        reponse.raise_for_status()
+        reponse.raise_for_status() # il faut en faire qqc de cette ligne d'exception
 
-        repjson = reponse.json()
-
-        return repjson
+        return reponse.json()
 
     def parserjson(repjson) -> list:
         '''
-        adapte le json retourné par requestget à la base de données
+        adapte le json retourné par recherche_son à la base de données
 
         Parameters :
 
@@ -109,38 +103,8 @@ class apifreesound():
         return repjson
 
 
-    def apiOAuth2(self, recherche):
-        '''
-        gère l'authentification spécifique OAuth2 pour avoir plus de fonctionnalité
-        
-        Step 1: Your application redirects users to a Freesound page where they log in and are asked to give permissions to your application.
-        Step 2: If users grant access to your application, Freesound redirects users to a url you provide and includes an authorization grant as a GET parameter*.
-        Step 3: Your application uses that authorization grant to request an access token that ‘links’ the end user with your application and that you will then need to add to all your API requests.
-
-        '''
-        #Step1
-        client_id =
-        r_type = 
-
-        getpayload = {'client_id' = client_id, 'response_type' = r_type}
-
-        requests.get('https://freesound.org/apiv2/oauth2/authorize/', getpayload)
-
-        #step2
-        #il faut autoriser l'appli et rentrer le code.
-        code_auth = input("Le code donné")
-
-        postpayload = {"client_id" = client_id, "client_secret" = client_secret, 'grant_type' = authorization_code, "code" = code_auth}
-        
-        rep = requests.post("https://freesound.org/apiv2/oauth2/access_token/", postpayload)
-        
-        rep.raise_for_status()
-
-        rep["access_token"]
-        #le token est valable 24h après il faut le refresh a partir du refresh_token dans la réponse
-        return
     def filtre(self, params):
         '''
-        Permet de construire le payload http pour filtrer la requete de requestget
+        Permet de construire le payload http pour filtrer la requete de recherche_son
         '''
         pass
