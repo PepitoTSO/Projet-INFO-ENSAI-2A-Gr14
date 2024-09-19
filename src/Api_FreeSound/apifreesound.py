@@ -58,7 +58,7 @@ class apifreesound():
 
         repjson : json
         {
-        "count": 2887, "previous": null, "next": "https://freesound.org/apiv2/search/text/?&query=test&weights=&page=2", "results": 
+        "count": 2887, "previous": null, "next": "https://freesound.org/apiv2/search/text/?&query=test&weights=&page=2", "results":
         [
         {"id": 326361, "name": "ebs test3.wav", "tags": ["test", "home", "bass"], "license": "http://creativecommons.org/licenses/by-nc/3.0/", "username": "wazdabaz"},
         {"id": 326360, "name": "ebs test4.wav", "tags": ["test", "home", "bass"], "license": "http://creativecommons.org/licenses/by-nc/3.0/", "username": "wazdabaz"},
