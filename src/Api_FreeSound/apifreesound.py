@@ -4,9 +4,9 @@ import dotenv
 import json
 
 class apifreesound():
-    '''Gestion API'''
+    '''Gestion des requetes à l'API'''
 
-    def requestget(recherche: str, params=False, OAuth2=False):
+    def recherche_son(recherche: str, params=False) -> json:
         '''
         Get http avec la clef API selon recherche
 
@@ -15,14 +15,13 @@ class apifreesound():
             Ce que l'on recherche sur freesound
             params : bool
             Si besoin de filtres
-            OAuth2 : bool
-            Si authentification en OAuth2
+
         Returns:
             reponse : json
             ce que renvoie l'api en json
         '''
 
-        # Verifie puis recupere la cle API dans le .env
+        # Verifie et recupere la cle API dans le .env       mettre dans un config.py
         dotenv.load_dotenv()
         try:
             cleAPI = os.getenv('CLEAPI')
@@ -34,9 +33,6 @@ class apifreesound():
         if params:
             payload = apifreesound.filtre(payload)
 
-        if OAuth2:
-            apifreesound.apiOAuth2()
-
         # faire de la gestion d'erreur si code erreur http avec try et except
         reponse = requests.get(
             'https://freesound.org/apiv2/search/text/',
@@ -44,15 +40,13 @@ class apifreesound():
             timeout=1
             )
 
-        reponse.raise_for_status()
+        reponse.raise_for_status() # il faut en faire qqc de cette ligne d'exception
 
-        repjson = reponse.json()
-
-        return repjson
+        return reponse.json()
 
     def parserjson(repjson) -> list:
         '''
-        adapte le json retourné par requestget à la base de données
+        adapte le json retourné par recherche_son à la base de données
 
         Parameters :
 
@@ -141,6 +135,6 @@ class apifreesound():
         return
     def filtre(self, params):
         '''
-        Permet de construire le payload http pour filtrer la requete de requestget
+        Permet de construire le payload http pour filtrer la requete de recherche_son
         '''
         pass

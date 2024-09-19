@@ -4,16 +4,10 @@ from InquirerPy import inquirer
 class VueAccueil(VueAbstraite):
     """Vue d'accueil de l'application"""
 
-    def choisir_menu(self):
-        """Choix du menu suivant
-
-        Return
-        ------
-        view
-            Retourne la vue choisie par l'utilisateur dans le terminal
+    def premier_menu(self):
         """
-
-        print("\n" + "*" * 50 + "\nMenu de connexion\n" + "*" * 50 + "\n")
+        Interface du premier menu
+        """
 
         choix = inquirer.select(
             message="Faites votre choix : ",
@@ -30,9 +24,9 @@ class VueAccueil(VueAbstraite):
                 pass
 
             case "Se connecter":
-                from interface.accueil.connexion import ConnexionVue
+                from accueil.identification import connexion
 
-                return ConnexionVue("Connexion à l'application")
+                return connexion("Connexion à l'application")
 
             case "Créer un compte":
                 from interface.accueil.inscription import InscriptionVue
