@@ -112,7 +112,7 @@ class apifreesound():
     def apiOAuth2(self, recherche):
         '''
         gère l'authentification spécifique OAuth2 pour avoir plus de fonctionnalité
-        
+
         Step 1: Your application redirects users to a Freesound page where they log in and are asked to give permissions to your application.
         Step 2: If users grant access to your application, Freesound redirects users to a url you provide and includes an authorization grant as a GET parameter*.
         Step 3: Your application uses that authorization grant to request an access token that ‘links’ the end user with your application and that you will then need to add to all your API requests.
@@ -120,7 +120,7 @@ class apifreesound():
         '''
         #Step1
         client_id =
-        r_type = 
+        r_type =
 
         getpayload = {'client_id' = client_id, 'response_type' = r_type}
 
@@ -131,9 +131,9 @@ class apifreesound():
         code_auth = input("Le code donné")
 
         postpayload = {"client_id" = client_id, "client_secret" = client_secret, 'grant_type' = authorization_code, "code" = code_auth}
-        
+
         rep = requests.post("https://freesound.org/apiv2/oauth2/access_token/", postpayload)
-        
+
         rep.raise_for_status()
 
         rep["access_token"]
