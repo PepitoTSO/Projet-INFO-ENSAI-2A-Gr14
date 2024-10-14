@@ -2,11 +2,23 @@ import os
 import requests
 import dotenv
 import json
+import wget
 
 class apifreesound():
     '''Gestion des requetes à l'API'''
+    def __init__(self):
 
-    def recherche_son(recherche: str, params=False) -> json:
+        self.url = 'https://freesound.org'
+
+        # Verifie et recupere la cle API dans le .env       mettre dans un config.py
+        dotenv.load_dotenv()
+        try:
+            self.cleAPI = os.getenv('CLEAPI')
+        except KeyError:
+            print("Manque la variable d'environnement CLEAPI")
+
+
+    def recherche_son(self, recherche: str, params=False) -> json:
         '''
         Get http avec la clef API selon recherche
 
@@ -21,28 +33,44 @@ class apifreesound():
             ce que renvoie l'api en json
         '''
 
-        # Verifie et recupere la cle API dans le .env       mettre dans un config.py
-        dotenv.load_dotenv()
-        try:
-            cleAPI = os.getenv('CLEAPI')
-        except KeyError:
-            print("Manque la variable d'environnement CLEAPI")
-
-        payload = {'query': recherche, 'token': cleAPI}
+        payload = {'query': recherche, 'token': self.cleAPI, 'fields':['id','name','tags']}
 
         if params:
-            payload = apifreesound.filtre(payload)
+            payload['filter']=[''] # construire de quoi faire le payload
 
         # faire de la gestion d'erreur si code erreur http avec try et except
         reponse = requests.get(
-            'https://freesound.org/apiv2/search/text/',
+            self.url + '/apiv2/search/text/',
             params=payload,
             timeout=1
             )
 
         reponse.raise_for_status() # il faut en faire qqc de cette ligne d'exception
-
+        
         return reponse.json()
+
+
+    def dl_son(self, id, HQ = False):
+
+        utils.dl.fonction_init_wget() # une fonction qui va init le repertoire et verif que ras
+
+        payload = {'token': self.cleAPI, 'fields':['id','name','download']}
+        reponse = requests.get(
+            f'{self.url}/apiv2/sounds/{id}/',
+            params=payload,
+            timeout=1
+            )
+        
+        if HQ:
+            url_dl=reponse['download']['hq'] #ou qqc du genre
+        else :
+            url_dl=reponse['download']['lq'] #l'autre
+
+        wget.download(url_dl)
+
+
+
+
 
     def parserjson(repjson) -> list:
         '''
@@ -101,40 +129,3 @@ class apifreesound():
         repjson = json.dumps(repjson, indent=2)
 
         return repjson
-
-
-    def apiOAuth2(self, recherche):
-        '''
-        gère l'authentification spécifique OAuth2 pour avoir plus de fonctionnalité
-
-        Step 1: Your application redirects users to a Freesound page where they log in and are asked to give permissions to your application.
-        Step 2: If users grant access to your application, Freesound redirects users to a url you provide and includes an authorization grant as a GET parameter*.
-        Step 3: Your application uses that authorization grant to request an access token that ‘links’ the end user with your application and that you will then need to add to all your API requests.
-
-        '''
-        #Step1
-        client_id =
-        r_type =
-
-        getpayload = {'client_id' = client_id, 'response_type' = r_type}
-
-        requests.get('https://freesound.org/apiv2/oauth2/authorize/', getpayload)
-
-        #step2
-        #il faut autoriser l'appli et rentrer le code.
-        code_auth = input("Le code donné")
-
-        postpayload = {"client_id" = client_id, "client_secret" = client_secret, 'grant_type' = authorization_code, "code" = code_auth}
-
-        rep = requests.post("https://freesound.org/apiv2/oauth2/access_token/", postpayload)
-
-        rep.raise_for_status()
-
-        rep["access_token"]
-        #le token est valable 24h après il faut le refresh a partir du refresh_token dans la réponse
-        return
-    def filtre(self, params):
-        '''
-        Permet de construire le payload http pour filtrer la requete de recherche_son
-        '''
-        pass
