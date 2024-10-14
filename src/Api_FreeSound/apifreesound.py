@@ -3,6 +3,7 @@ import requests
 import dotenv
 import json
 import wget
+import utils.dl.py
 
 class apifreesound():
     '''Gestion des requetes à l'API'''
@@ -16,6 +17,7 @@ class apifreesound():
             self.cleAPI = os.getenv('CLEAPI')
         except KeyError:
             print("Manque la variable d'environnement CLEAPI")
+
 
 
     def recherche_son(self, recherche: str, params=False) -> json:
@@ -46,13 +48,11 @@ class apifreesound():
             )
 
         reponse.raise_for_status() # il faut en faire qqc de cette ligne d'exception
-        
+
         return reponse.json()
 
 
     def dl_son(self, id, HQ = False):
-
-        utils.dl.fonction_init_wget() # une fonction qui va init le repertoire et verif que ras
 
         payload = {'token': self.cleAPI, 'fields':['id','name','download']}
         reponse = requests.get(
@@ -66,7 +66,23 @@ class apifreesound():
         else :
             url_dl=reponse['download']['lq'] #l'autre
 
-        wget.download(url_dl)
+        ##ALTERNATIVE1
+
+        wget.download(url_dl) # bof wget est hyper vieux et dépendance
+
+        ##ALTERNATIVE2
+
+        # Téléchargement du fichier
+        dl_path = dl.dossier
+        
+        reponse = requests.get(url_dl, stream=True)
+
+        # Écriture du fichier dans le répertoire de destination
+        with open(self.dl_path, 'wb') as f:
+            for chunk in reponse.iter_content(chunk_size=8192):
+                f.write(chunk)
+
+        print(f"Fichier téléchargé avec succès dans {self.dl_path}")
 
 
 
