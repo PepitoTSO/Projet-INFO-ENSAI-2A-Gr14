@@ -1,5 +1,5 @@
 # Memo
-Juste un memo pour pas oublier 2 ou 3 trucs
+Juste un memo pour ne pas oublier 2 ou 3 trucs
 
 ## Code
 
@@ -9,7 +9,6 @@ Juste un memo pour pas oublier 2 ou 3 trucs
 
 ### apifreesound
 
-- déplacer le parser json dans un util si ça a vraiment un sens
 - ne pas oublier la fonction pour les filtres
 - faire un init_dl dans util
 
