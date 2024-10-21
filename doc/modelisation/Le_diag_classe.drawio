@@ -272,7 +272,7 @@
         <mxCell id="k4YyRH8g6qEMDZz-mZ2C-18" value="supprimer_son(son : Son) : bool" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k4YyRH8g6qEMDZz-mZ2C-11" vertex="1">
           <mxGeometry y="164" width="240" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="k4YyRH8g6qEMDZz-mZ2C-19" value="changer_ordre(son: Son, ordre : int, ajout : bool) : bool " style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k4YyRH8g6qEMDZz-mZ2C-11" vertex="1">
+        <mxCell id="k4YyRH8g6qEMDZz-mZ2C-19" value="changer_ordre(son: Son, ordre : int) : bool " style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k4YyRH8g6qEMDZz-mZ2C-11" vertex="1">
           <mxGeometry y="190" width="240" height="26" as="geometry" />
         </mxCell>
         <mxCell id="k4YyRH8g6qEMDZz-mZ2C-20" value="changer_nom (nv_nom) : bool" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="k4YyRH8g6qEMDZz-mZ2C-11" vertex="1">
