@@ -1,8 +1,14 @@
 from src.Object.utilisateur import Utilisateur
+from src.Object.son import Son
+from src.Service.playlist_service import PlaylistService
+
 
 class Playlist:
+    """Voici la classe qui gère les playlist"""
 
-    def __init__(self, utilisateur : Utilisateur, id_playlist : int, nom_playlist, dict_son):
+    def __init__(
+        self, utilisateur: Utilisateur, id_playlist: int, nom_playlist, dict_son
+    ):
 
         if not isinstance(utilisateur, Utilisateur):
             raise TypeError("L'utilisateur n'est pas de la classe utilisateur.")
@@ -18,7 +24,7 @@ class Playlist:
         self.nom_playlist = nom_playlist
         self.dict_son = dict_son
 
-    def ajouter_son(self, son : Son, ordre : int):
+    def ajouter_son(self, son: Son, ordre: int):
         if not isinstance(ordre, int):
             raise TypeError("L'ordre doit être un int.")
         if not isinstance(son, Son):
@@ -32,7 +38,7 @@ class Playlist:
 
         PlaylistService(self).ajouter_son_a_playlist(son)
 
-    def supprimer_son(self, son : Son):
+    def supprimer_son(self, son: Son):
         for i in range(len(self.dict_son)):
             if self.dict_son[i][0] == son:
                 ordre = self.dict_son[i][1]
@@ -43,9 +49,10 @@ class Playlist:
 
         PlaylistService(self).retirer_son_de_playlist(son)
 
-        service = PlaylistService(self).retirer_son_de_playlist(son : Son)
+    def changer_ordre(self, son, ordre: int):
 
-    def changer_ordre(self, son, ordre : int):
+        if ordre > len[self.dict_son] + 1 or ordre < 0:
+            raise ValueError("La position ne peut etre inférieure à 0 ou supérieure à n + 1")
 
         for i in range(len[self.dict_son]):
             if self.dict_son[i][0] == son:
@@ -71,7 +78,3 @@ class Playlist:
         self.nom_playlist = nouveau_nom
 
         PlaylistService(self).changer_nom_playlist(nouveau_nom)
-
-
-
-
