@@ -7,8 +7,59 @@ class Playlist:
             raise TypeError("L'utilisateur n'est pas de la classe utilisateur.")
         if not isinstance(id_playlist, int):
             raise TypeError("L'id de la playlist doit être de type int.")
-        
-        self.__utilisateur = utilisateur
-        self.__id_playlist = id_playlist
-        self.__nom_playlist = nom_playlist
-        self.__dict_son = dict_son
+        if not isinstance(nom_playlist, str):
+            raise TypeError("Le nom de la playlist doit être un str")
+        if not isinstance(dict_son, list):
+            raise TypeError("La liste de son doit être une liste.")
+        self.utilisateur = utilisateur
+        self.id_playlist = id_playlist
+        self.nom_playlist = nom_playlist
+        self.dict_son = dict_son
+
+    def ajouter_son(self, son : Son, ordre : int):
+        if not isinstance(ordre, int):
+            raise TypeError("L'ordre doit être un int.")
+        if not isinstance(son, Son):
+            raise TypeError("son doit être un objet de classe Son.")
+
+        for i in range(len(self.dict_son)):
+            if self.dict_son[i][1] > ordre:
+                self.dict_son[i][1] += 1
+
+        self.dict_son.append([son, ordre])
+
+        PlaylistService(self).ajouter_son_a_playlist(son)
+
+    def supprimer_son(self, son : Son):
+        for i in range(len(self.dict_son)):
+            if self.dict_son[i][0] == son:
+                ordre = self.dict_son[i][1]
+                self.dict_son.pop(i)
+        for i in range(len(self.dict_son)):
+            if self.dict_son[i][1] > ordre:
+                self.dict_son[i][1] += -1
+
+        PlaylistService(self).retirer_son_de_playlist(son)
+
+        service = PlaylistService(self).retirer_son_de_playlist(son : Son)
+
+    def changer_ordre(self, son, ajout : bool = True):
+        if bool:
+            for i in range(len(self.dict_son)):
+                if self.dict_son[i][1] > ordre:
+                    self.dict_son[i][1] += 1
+        else:
+            for i in range(len(self.dict_son)):
+                if self.dict_son[i][1] > son:
+                    self.dict_son[i][1] += -1
+
+        for i in range(len[self.dict_son]):
+            if self.dict_son[i][0] == son:
+                self.dict_son.pop(i)
+        self.dict_son.append([son, ordre])
+
+        ## à revoir
+
+
+    def
+
