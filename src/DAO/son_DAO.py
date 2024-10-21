@@ -1,7 +1,7 @@
 from typing import List
-from utils.singleton import Singleton  # Importing the Singleton metaclass
-from db_connection import DBConnection  # Importing your DBConnection class
-from son import Son  # Importing the Son class
+from utils.singleton import Singleton
+from db_connection import DBConnection
+from son import Son
 
 
 class Son_DAO(metaclass=Singleton):
