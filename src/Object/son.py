@@ -23,9 +23,6 @@ class Son():
         desc = f"{self.id_son=},{self.nom=},{self.caracteristiques=}"
         print(desc)
 
-    def
-
-
     ## a relier à l'interface graphique
     def play(self):
         self.musique.play()
@@ -40,5 +37,4 @@ class Son():
         self.musique.stop()
 
     def jouer_en_boucle(self, temps):
-        for:
-            self.jouer()
+        pass
