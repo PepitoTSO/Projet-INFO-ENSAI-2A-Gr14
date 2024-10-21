@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import pygame
 import sys
 
@@ -42,3 +43,13 @@ class Son():
     def jouer_en_boucle(self, temps):
         for:
             self.jouer()
+=======
+from typing import List
+
+
+class Son:
+    def __init__(self, id_son: int = None, name: str = "", tags: List[str] = None):
+        self.id_son = id_son
+        self.name = name
+        self.tags = tags or []
+>>>>>>> 12f0b2bf614d321262f3a6b0df082d5e0b67d63d
