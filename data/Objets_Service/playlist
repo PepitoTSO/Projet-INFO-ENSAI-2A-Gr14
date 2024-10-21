@@ -1,0 +1,24 @@
+class Playlist
+    def (self, id_user, id_playlist, nom_playlist, dict_son):
+        self.id_user = id_user
+        self.id_playlist = id_playlist
+        self.nom_playlist = nom_playlist
+        self.dict_son = {}
+
+
+    def ajouter_son(self, son):
+        if son in self.dict_son:
+            print(f"Erreur : Le son '{son}' est déjà dans la playlist.")
+        return False
+        else:
+        self.dict_son.append(son)
+            print(f"Son '{son}' ajouté à la playlist '{self.nom_playlist}'.")
+        return(True)
+
+    def supprimer_son(self, son):
+        if son in self.playlist:
+            self.dict_son.remove(son)
+            print(f"Son '{son}' supprimé de la playlist '{self.nom_playlist}'.")
+        return(True)
+        else:
+            print(f"Erreur : Le son '{son}' n'existe pas dans la playlist '{self.nom_playlist}'.")
