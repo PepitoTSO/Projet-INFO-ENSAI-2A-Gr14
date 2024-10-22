@@ -51,7 +51,9 @@ class apifreesound():
         return reponse.json()['results']
 
     def dl_son(self, id, HQ=False):
-        
+        if not isinstance(id, int):
+            raise TypeError("id n'est pas int")
+
         fichier = Path(f"../data/son/{id}.mp3")
 
         if not fichier.exists():       

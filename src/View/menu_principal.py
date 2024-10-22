@@ -47,6 +47,7 @@ class MenuView(AbstractView):
                 "name": "choix",
                 "message": f"Hello {Session().user_name}",
                 "choices": [
+                    "Rechercher son",
                     "Sons",
                     "Playlists",
                     "Infos",
@@ -64,6 +65,11 @@ class MenuView(AbstractView):
         if reponse["choix"] == "Quitter":
             pass
 
+        elif reponse["choix"] == "Rechercher son":
+            from view.recherche_son_view import RechSonView
+
+            return RechSonView()
+
         elif reponse["choix"] == "Sons":
             from view.son_view import SonView
 
@@ -75,8 +81,8 @@ class MenuView(AbstractView):
             return PlaylistView()
 
         elif reponse["choix"] == "Infos":
-            
-            info ='texte a faire'   ## C'est ici pour le texte des pourquoi et comment
+
+            info = 'texte a faire'   # C'est ici pour le texte des pourquoi et comment
             print(info)
 
             return MenuView()

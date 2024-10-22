@@ -3,12 +3,9 @@ A faire
 Pour l'instant c'est juste pour etre coherent avec les diagrammes etc
 '''
 
-
-
 from InquirerPy import prompt
 
 from view.abstract_view import AbstractView
-from view.session import Session
 
 
 class InscriptionView(AbstractView):
