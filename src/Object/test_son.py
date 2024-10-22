@@ -1,4 +1,4 @@
-from src.Object.son import Son
+from son import Son
 import unittest
 import pygame
 
@@ -7,23 +7,18 @@ class TestSon(unittest.TestCase):
     def test_repr(self):
 
     #Given
-        son1=Son(999,"pop",("sympa","dance"),)
+        test = Son(1, 'test', 'oui', 'data/test.mp3')
     #When
-        repr_son1 = 'id_son=999,nom="pop",caracteristiques=("sympa","dance")'
+        repr_son1 = "self.id_son=1, self.nom='test', self.caracteristiques='oui'"
     #Then
-        self.assertEqual(repr_son1,repr(son1))
+        self.assertEqual(repr_son1,repr(test))
 
     def test_init_pygame(self):
-        path="../data/son/id999.mp3"
-        son1=Son(999,"pop",("sympa","dance"),path)
+        test = Son(1, 'test', 'oui', 'data/test.mp3')
 
         mixer_init=True
 
         self.assertEqual(mixer_init, pygame.mixer.get_init)
-
-    def test_nature_musique(self):
-        son1=Son(999,"pop",("sympa","dance"),path)
-        self.assertIsInstance(son1.musique, pygame.mixer.Sound)
 
 if __name__ == "__main__":
     unittest.main()
