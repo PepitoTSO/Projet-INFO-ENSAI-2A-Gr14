@@ -102,7 +102,24 @@ class Playlist_DAO(metaclass=Singleton):
                 )
             connection.commit()
 
-    # manque changer_ordre
+    def changer_ordre(self, id_playlist: int, ordre: int, ajout: bool):
+        with DBConnection().connection as connection:
+            with connection.cursor() as cursor:
+                if ajout:
+                    # Increment order of songs with order >= ordre
+                    cursor.execute(
+                        "UPDATE son SET ordre_son_in_plist = ordre_son_in_plist + 1 "
+                        "WHERE id_playlist = %(id_playlist)s AND ordre_son_in_plist >= %(ordre)s",
+                        {"id_playlist": id_playlist, "ordre": ordre}
+                    )
+                else:
+                    # Decrement order of songs with order > ordre
+                    cursor.execute(
+                        "UPDATE son SET ordre_son_in_plist = ordre_son_in_plist - 1 "
+                        "WHERE id_playlist = %(id_playlist)s AND ordre_son_in_plist > %(ordre)s",
+                        {"id_playlist": id_playlist, "ordre": ordre}
+                    )
+            connection.commit()
 
     def supprimer_son(self, id_playlist, son: Son):
         id_son = son.id
