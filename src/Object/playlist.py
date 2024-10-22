@@ -22,6 +22,11 @@ class Playlist:
             raise TypeError("Le nom de la playlist doit être un str")
         if not isinstance(list_son, list):
             raise TypeError("La liste de son doit être une liste.")
+        for i in range(len(list_son)):
+            if not isinstance(list_son[i][0], Son):
+                raise TypeError(f"L'élement {str(i)} n'est pas de type Son.")
+            if not isinstance(list_son[i][1], int):
+                raise TypeError(f"L'élement {str(i)} n'est pas de type int.")
 
         self.utilisateur = utilisateur
         self.id_playlist = id_playlist
