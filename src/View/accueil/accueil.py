@@ -24,7 +24,7 @@ class VueAccueil(VueAbstraite):
                 pass
 
             case "Se connecter":
-                from accueil.identification import connexion
+                from View.accueil.connexion import connexion
 
                 return connexion("Connexion à l'application")
 
@@ -37,6 +37,6 @@ class VueAccueil(VueAbstraite):
                 VueAccueil.messageInfo()
     
     def messageInfo(self):
-        print("message info a ecrire")
+        print("")
         #ou mettre une variable texte dans autre fichier et faire un formater pour unifier tous les textes
 
