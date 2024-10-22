@@ -1,26 +1,33 @@
+'''
+A faire
+Pour l'instant c'est juste pour etre coherent avec les diagrammes etc
+'''
+
 from InquirerPy import prompt
 
 from view.abstract_view import AbstractView
-from view.session import Session
 
 
 class ConnectionView(AbstractView):
     def __init__(self):
         self.__questions = [
             {
-                "type": "input",
-                "name": "pseudo",
-                "message": "What's your pseudo",
+                "type": "list",
+                "name": "choix",
+                "message": "pas encore fait",
+                "choices": [
+                    "pas le choix"
+                ]
             }
         ]
 
     def display_info(self):
-        print(f"Hello, please choose your pseudo")
+        pass
 
     def make_choice(self):
-        answers = prompt(self.__questions)
-        Session().user_name = answers["pseudo"]
+        reponse = prompt(self.__questions)
+        if reponse["choix"] == "pas le choix":
 
-        from view.menu_principal import MenuView
+            from view.menu_principal import MenuView
 
-        return MenuView()
+            return MenuView()

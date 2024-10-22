@@ -1,7 +1,11 @@
+'''
+Y'a eu du nettoyage surtout pour la session  et les noms des utilisateurs qui pop dans les messages d'inquirer
+
+'''
+
 from InquirerPy import prompt
 
 from view.abstract_view import AbstractView
-from view.session import Session
 
 
 class StartView(AbstractView):
@@ -10,17 +14,17 @@ class StartView(AbstractView):
             {
                 "type": "list",
                 "name": "choix",
-                "message": f"Hello {Session().user_name}",
+                "message": "Bienvenue",
                 "choices": [
                     "Connection",
-                    "Inscription"
+                    "Inscription",
                     "Quitter",
                 ],
             }
         ]
 
     def display_info(self):
-        with open("src/graphical_assets/banner.txt", "r", encoding="utf-8") as asset:
+        with open("src/dessin/banner.txt", "r", encoding="utf-8") as asset:
             print(asset.read())
 
     def make_choice(self):
@@ -45,7 +49,7 @@ class MenuView(AbstractView):
             {
                 "type": "list",
                 "name": "choix",
-                "message": f"Hello {Session().user_name}",
+                "message": "Menu principal",
                 "choices": [
                     "Rechercher son",
                     "Sons",
@@ -57,7 +61,7 @@ class MenuView(AbstractView):
         ]
 
     def display_info(self):
-        with open("src/graphical_assets/banner.txt", "r", encoding="utf-8") as asset:
+        with open("src/dessin/banner.txt", "r", encoding="utf-8") as asset:
             print(asset.read())
 
     def make_choice(self):
