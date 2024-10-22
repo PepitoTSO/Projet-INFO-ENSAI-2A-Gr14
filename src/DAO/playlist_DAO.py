@@ -10,9 +10,6 @@ class Playlist_DAO(metaclass=Singleton):
     Uses the Singleton pattern to ensure a single instance.
     """
 
-    def __init__(self):
-        self.db_connection = DBConnection().connection
-
     def ajouter_playlist(self, playlist) -> bool:
         try:
             cursor = self.db_connection.cursor()

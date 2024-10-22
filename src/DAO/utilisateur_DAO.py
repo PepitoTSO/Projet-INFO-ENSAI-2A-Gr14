@@ -22,48 +22,49 @@ class Utilisateur_DAO(metaclass=Singleton):
             print(f"Utilisateur avec id {utilisateur.id} exist déjà.")
             return created
 
-        with DBConnection().connection as connection:
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    """
-                        INSERT INTO utilisateur (id, mdp, dd, ddc)
-                        VALUES (%(id)s, %(mdp)s, %(dd)s, %(ddc)s)
-                        """,
-                    {
-                        "id": utilisateur.id,
-                        "mdp": utilisateur.mdp,
-                        "dd": utilisateur.dd,
-                        "ddc": utilisateur.ddc,
-                    },
-                )
-        created = True
+        try:
+            with DBConnection().connection as connection:
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        """
+                            INSERT INTO utilisateur (id, mdp, dd, ddc)
+                            VALUES (%(id)s, %(mdp)s, %(dd)s, %(ddc)s)
+                            """,
+                        {
+                            "id": utilisateur.id,
+                            "mdp": utilisateur.mdp,
+                            "dd": utilisateur.dd,
+                            "ddc": utilisateur.ddc,
+                        },
+                    )
+            created = True
 
-        return created
+            return created
+
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return False
 
     def get_utilisateur(self, id: int) -> Utilisateur:
         """
         Retrieves a utilisateur by their id.
         """
         try:
-            cursor = self.db_connection.cursor()
-            select_user_query = """
-                SELECT id, mdp, dd, ddc FROM utilisateurs WHERE id = %s
-            """
-            # On pourrait écrire select_user_query = f"SELECT id, mdp, dd, ddc FROM utilisateurs WHERE id = {id}"
-            # mais on se prémunit des injections SQL
-            cursor.execute(select_user_query, (id,))
-            row = cursor.fetchone()
-            if row:
-                utilisateur = Utilisateur(
-                    id=row["id"], mdp=row["mdp"], dd=row["dd"], ddc=row["ddc"]
-                )
-                cursor.close()
-                return utilisateur
-            else:
-                cursor.close()
-                return None
+            with DBConnection().connection as connection:
+                with connection.cursor() as cursor:
+                    select_user_query = """
+                        SELECT id, mdp, dd, ddc FROM utilisateur WHERE id = %s
+                    """
+                    cursor.execute(select_user_query, (id,))
+                    result = cursor.fetchone()
+                    if result:
+                        return Utilisateur(
+                            id=result[0], mdp=result[1], dd=result[2], ddc=result[3]
+                        )
+                    else:
+                        return None
         except Exception as e:
-            print(f"Error retrieving utilisateur: {e}")
+            print(f"An error occurred: {e}")
             return None
 
     def get_all_utilisateurs(self) -> List[Utilisateur]:
@@ -71,18 +72,28 @@ class Utilisateur_DAO(metaclass=Singleton):
         Retrieves all utilisateurs from the database.
         """
         try:
-            cursor = self.db_connection.cursor()
-            select_all_users_query = """
-                SELECT id, mdp, dd, ddc FROM utilisateurs
-            """
-            cursor.execute(select_all_users_query)
-            utilisateurs = []
-            for row in cursor.fetchall():
-                utilisateur = Utilisateur(
-                    id=row["id"], mdp=row["mdp"], dd=row["dd"], ddc=row["ddc"]
-                )
-                utilisateurs.append(utilisateur)
-            cursor.close()
+            with DBConnection().connection as connection:
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        "SELECT *                                  "
+                        "  FROM utilisateurs                     "
+                    )
+
+                    # to store raw results
+                    res = cursor.fetchall()
+
+            # Create an empty list to store formatted results
+            utilisateurs: List[Utilisateur] = []
+
+            # if the SQL query returned results (ie. res not None)
+            if res:
+                for row in res:
+                    # Assuming your Utilisateur class has a constructor that takes these fields
+                    utilisateur = Utilisateur(
+                        id=row["id"], mdp=row["mdp"], dd=row["dd"], ddc=row["ddc"]
+                    )
+                    utilisateurs.append(utilisateur)
+
             return utilisateurs
         except Exception as e:
             print(f"Error retrieving all utilisateurs: {e}")

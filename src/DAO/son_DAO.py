@@ -12,7 +12,7 @@ class Son_DAO(metaclass=Singleton):
 
     def ajouter_son(self, son: Son) -> bool:
         try:
-            cursor = self.db_connection.cursor()
+            cursor = self.DBConnection.cursor()
             # Insert into the sons table
             insert_son_query = """
                 INSERT INTO sons (name)
