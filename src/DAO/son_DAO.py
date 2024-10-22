@@ -10,9 +10,6 @@ class Son_DAO(metaclass=Singleton):
     Uses the Singleton pattern to ensure a single instance.
     """
 
-    def __init__(self):
-        self.db_connection = DBConnection().connection
-
     def ajouter_son(self, son: Son) -> bool:
         try:
             cursor = self.db_connection.cursor()
@@ -115,3 +112,11 @@ class Son_DAO(metaclass=Singleton):
             self.db_connection.rollback()
             print(f"Error deleting son: {e}")
             return False
+
+
+# Le bloc try s'assure que le processus de suppression est tenté de manière sécurisée.
+# Si une erreur se produit à n'importe quel moment, le bloc except la gère de manière
+# élégante en annulant la transaction (pour éviter des modifications de données incomplètes
+# ou incorrectes) et en enregistrant l'erreur, avant de retourner False pour signaler l'échec.
+# Sans cela, une exception non interceptée pourrait entraîner le plantage du programme ou un
+# comportement imprévisible.
