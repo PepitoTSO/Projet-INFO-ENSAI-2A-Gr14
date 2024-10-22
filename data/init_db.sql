@@ -7,7 +7,7 @@ CREATE SCHEMA bdd;
 
 DROP TABLE IF EXISTS bdd.compte CASCADE ;
 CREATE TABLE bdd.compte (
-    id_utilisateur integer PRIMARY KEY,
+    id_utilisateur INT AUTO_INCREMENT PRIMARY KEY,
     pseudo varchar UNIQUE NOT NULL,
     mdp_hash varchar NOT NULL,
     date_creation date NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE bdd.compte (
 DROP TABLE IF EXISTS bdd.playlist;
 
 CREATE TABLE bdd.playlist (
-    id_playlist integer PRIMARY KEY,
+    id_playlist INT AUTO_INCREMENT PRIMARY KEY,
     id_utilisateur integer FOREIGN KEY,
     nom varchar NOT NULL
 );

@@ -5,11 +5,11 @@ class identification_utilisateur():
     def connexion(message):
         print(message)
         return "Utilisateur connecté"
-    
+
 
 class connexion_Vue:
      def display(self):
-        utilisateur = inquirer.text(message="Nom d'utilisateur : ").execute()
+        utilisateur = inqugirer.text(message="Nom d'utilisateur : ").execute()
         password = inquirer.secret(message="Mot de passe : ").execute()
         return username, password
 
