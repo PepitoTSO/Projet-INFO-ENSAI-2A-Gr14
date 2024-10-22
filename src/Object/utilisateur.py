@@ -1,4 +1,4 @@
-from src.Object.playlist import Playlist
+from Object.playlist import Playlist
 
 
 class Utilisateur:

@@ -21,6 +21,6 @@ class ConnectionView(AbstractView):
         answers = prompt(self.__questions)
         Session().user_name = answers["pseudo"]
 
-        from view.start_view import StartView
+        from view.menu_principal import MenuView
 
-        return StartView()
+        return MenuView()
