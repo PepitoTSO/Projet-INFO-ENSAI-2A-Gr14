@@ -45,14 +45,23 @@ class apifreesound():
             )
 
         reponse.raise_for_status()  # il faut en faire qqc de cette ligne d'exception
-
-        return reponse.json()['results']
+        liste_son = json.dumps(reponse.json()['results'], indent=2)
+        return liste_son
 
     def dl_son(self, id, HQ=False):
         if not isinstance(id, int):
             raise TypeError("id n'est pas int")
 
-        fichier = Path(f"../data/son/{id}.mp3")
+        fichier = Path(f"../data/son/{id}.mp3")  # le repertoire se trouve en dehors du git pour pas push des sons etc
+        repertoire = fichier.parent
+
+        if not repertoire.exists():
+            try:
+                repertoire.mkdir(parents=True, exist_ok=True)
+                print(f"Répertoire {repertoire} créé.")
+            except Exception as e:
+                print(f"Erreur lors de la création du répertoire : {e}")
+                return None
 
         if not fichier.exists():
             try:     
@@ -75,11 +84,8 @@ class apifreesound():
                     for chunk in reponse.iter_content(chunk_size=8192):
                         f.write(chunk)
 
-                print(f"Fichier téléchargé avec succès dans {dl_path}")
+                print(f"Fichier téléchargé avec succès {fichier}")
             except Exception as e:
-                print(f"Erreur lors du téléchargement du son avec ID {sound_id}: {e}")
+                print(f"Erreur lors du téléchargement du son avec ID {id}: {e}")
         else:
             print("Le fichier existe dans data/son")
-
-###la classe a deplacé
-
