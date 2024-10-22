@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from src.Object.utilisateur import Utilisateur
 from utils.singleton import Singleton
 
 
@@ -10,9 +10,9 @@ class Session(metaclass=Singleton):
     Sans cela, il faudrait transmettre ce joueur entre les différentes vues.
     """
 
-    def __init__(self):
+    def __init__(self, utilisateur: Utilisateur):
         """Création de la session"""
-        self.joueur = None
+        self.utilisateur = utilisateur
         self.debut_connexion = None
 
     def connexion(self, joueur):
