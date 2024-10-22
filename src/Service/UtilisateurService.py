@@ -1,5 +1,6 @@
 from src.Object.utilisateur import Utilisateur
 from src.DAO.utilisateur_DAO import Utilisateur_DAO
+from src.DAO.playlist_DAO import Playlist_DAO
 
 
 class UtilisateurService:
@@ -10,11 +11,11 @@ class UtilisateurService:
 
         self.utilisateur = utilisateur
 
-    def creer_compte(self, id, mdp):
+    def creer_compte(self, id_utilisateur, mdp):
         mdp_hache = Utilisateur.hacher_mot_de_passe(mdp)
 
         print(f"Compte créé pour l'utilisateur {id}.")
-        return Utilisateur(id=id, mdp_hache=mdp_hache)
+        return Utilisateur(id=id_utilisateur, mdp_hache=mdp_hache)
 
     def creer_playlist(self, nom_playlist, son):
         if nom_playlist in self.playlists:
@@ -50,38 +51,87 @@ class UtilisateurService:
             print(f"La playlist source '{nom_playlist_source}' n'existe pas.")
             return False
 
-    def creer_utilisateur(self, id: str, mdp: str):
+    def creer_utilisateur(self, id_utilisateur: str, mdp: str):
 
-        if not isinstance(id, str):
+        if not isinstance(id_utilisateur, str):
             raise TypeError("L'identifiant doit être un str")
         if not isinstance(mdp, str):
             raise TypeError("Le mot de passe doit être un str")
 
-        nouvel_utilisateur = Utilisateur(id, mdp)
+        nouvel_utilisateur = Utilisateur(id_utilisateur, mdp)
         Utilisateur.utilisateurs.append(nouvel_utilisateur)
         return nouvel_utilisateur
 
-    def supprimer_utilisateur(self, id: str):
+    def supprimer_utilisateur(self, id_utilisateur: str):
 
-        if not isinstance(id, str):
+        if not isinstance(id_utilisateur, str):
             raise TypeError("L'identifiant doit être un str")
 
-        Utilisateur_DAO.supprimer_utilisateur(self.utilisateur.id)
+        Utilisateur_DAO.supprimer_utilisateur(self.utilisateur.id_utilisateur)
 
-    def modifier_utilisateur(self, utilisateur: Utilisateur, id: str):
+    def modifier_utilisateur(self, utilisateur: Utilisateur, id_utilisateur: str):
 
         if not isinstance(utilisateur, Utilisateur):
             raise TypeError("L'utilisateur n'est pas de la classe utilisateur.")
-        if not isinstance(id, str):
-            raise TypeError("L'identifiant' doit être un str")
+        if not isinstance(id_utilisateur, str):
+            raise TypeError("L'identifiant doit être un str")
 
         Utilisateur_DAO.modifier_utilisateur(self.utilisateur)
 
-    def obtenir_utilisateur(self, utlisateur: Utilisateur, id: str):
+    def obtenir_utilisateur(self, utlisateur: Utilisateur, id_utilisateur: str):
 
         if not isinstance(utilisateur, Utilisateur):
             raise TypeError("L'utilisateur n'est pas de la classe utilisateur.")
-        if not isinstance(id, str):
-            raise TypeError("L'identifiant' doit être un str")
+        if not isinstance(id_utilisateur, str):
+            raise TypeError("L'identifiant doit être un str")
 
         Utilisateur_DAO.get_utilisateur(self.utilisateur)
+
+    def lister_playlists(self, utilisateur: Utilisateur):
+
+        if not isinstance(utilisateur, Utilisateur):
+            raise TypeError("L'utilisateur n'est pas de la classe utilisateur.")
+
+        Playlist_DAO.get_playlist(self.utilisateur)
+
+    def connecter_utilisateur(id_utilisateur, mot_de_passe):
+        """Méthode pour connecter un utilisateur avec un id et un mot de passe.
+        Retourne l'utilisateur si réussi, sinon None.
+        """
+        for utilisateur in Utilisateur.utilisateurs:
+            if (
+                utilisateur.id_utilisateur == id_utilisateur
+                and utilisateur.mot_de_passe == mot_de_passe
+            ):
+                utilisateur.est_connecte = True
+                print(f"Connexion réussie pour l'utilisateur : {id_utilisateur}")
+                return utilisateur
+        print("Échec de la connexion : identifiant ou mot de passe incorrect.")
+        return None
+
+    @staticmethod
+    def deconnecter_utilisateur(id_utilisateur, mot_de_passe):
+        """Méthode pour déconnecter un utilisateur avec un id et un mot de passe.
+        Retourne True si la déconnexion est réussie, sinon False.
+        """
+        for utilisateur in Utilisateur.utilisateurs:
+            if (
+                utilisateur.id_utilisateur == id_utilisateur
+                and utilisateur.mot_de_passe == mot_de_passe
+            ):
+                if utilisateur.est_connecte:
+                    utilisateur.est_connecte = False
+                    print(f"Déconnexion réussie pour l'utilisateur : {id_utilisateur}")
+                    return True
+                else:
+                    print(f"L'utilisateur {id_utilisateur} n'est pas connecté.")
+                    return False
+        print("Échec de la déconnexion : ID ou mot de passe incorrect.")
+        return False
+
+    def afficher_details(self):
+        """Affiche les détails de l'utilisateur."""
+        etat_connexion = "connecté" if self.est_connecte else "déconnecté"
+        print(f"ID utilisateur : {self.id_utilisateur}")
+        print(f"Nombre de playlists : {len(self.playlists)}")
+        print(f"État : {etat_connexion}")
