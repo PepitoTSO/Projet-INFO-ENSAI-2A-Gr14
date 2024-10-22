@@ -1,10 +1,14 @@
 from src.Object.utilisateur import Utilisateur
+from src.DAO.utilisateur_DAO import Utilisateur_DAO
 
 
 class UtilisateurService:
-    def __init__(self, Utilisateur: Utilisateur):
+    def __init__(self, utilisateur: Utilisateur):
+
         if not isinstance(utilisateur, Utilisateur):
             raise TypeError("L'utilisateur n'est pas de la classe utilisateur.")
+
+        self.utilisateur = utilisateur
 
     def creer_compte(self, id, mdp):
         mdp_hache = Utilisateur.hacher_mot_de_passe(mdp)
@@ -45,3 +49,39 @@ class UtilisateurService:
         else:
             print(f"La playlist source '{nom_playlist_source}' n'existe pas.")
             return False
+
+    def creer_utilisateur(self, id: str, mdp: str):
+
+        if not isinstance(id, str):
+            raise TypeError("L'identifiant doit être un str")
+        if not isinstance(mdp, str):
+            raise TypeError("Le mot de passe doit être un str")
+
+        nouvel_utilisateur = Utilisateur(id, mdp)
+        Utilisateur.utilisateurs.append(nouvel_utilisateur)
+        return nouvel_utilisateur
+
+    def supprimer_utilisateur(self, id: str):
+
+        if not isinstance(id, str):
+            raise TypeError("L'identifiant doit être un str")
+
+        Utilisateur_DAO.supprimer_utilisateur(self.utilisateur.id)
+
+    def modifier_utilisateur(self, utilisateur: Utilisateur, id: str):
+
+        if not isinstance(utilisateur, Utilisateur):
+            raise TypeError("L'utilisateur n'est pas de la classe utilisateur.")
+        if not isinstance(id, str):
+            raise TypeError("L'identifiant' doit être un str")
+
+        Utilisateur_DAO.modifier_utilisateur(self.utilisateur)
+
+    def obtenir_utilisateur(self, utlisateur: Utilisateur, id: str):
+
+        if not isinstance(utilisateur, Utilisateur):
+            raise TypeError("L'utilisateur n'est pas de la classe utilisateur.")
+        if not isinstance(id, str):
+            raise TypeError("L'identifiant' doit être un str")
+
+        Utilisateur_DAO.get_utilisateur(self.utilisateur)
