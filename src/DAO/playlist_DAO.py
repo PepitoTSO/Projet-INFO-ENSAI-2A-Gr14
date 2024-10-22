@@ -3,6 +3,9 @@ from utils.singleton import Singleton  # Importing the Singleton metaclass
 from DAO.db_connection import DBConnection
 from Object.playlist import Playlist
 from src.View.session import Session
+from src.DAO.utilisateur_DAO import Utilisateur_DAO
+from src.DAO.son_DAO import Son_DAO
+
 
 class Playlist_DAO(metaclass=Singleton):
     """
@@ -30,44 +33,25 @@ class Playlist_DAO(metaclass=Singleton):
         return False
 
 
-    def get_playlist(self, id_playlist: int):
+    def get_playlist_by_id(self, id_playlist: int):
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
-                select_playlist_query = """
-                    SELECT id_user, nom_playlist FROM playlists WHERE id_playlist = %s
-                """
-                cursor.execute(select_playlist_query, (id_playlist,))
-                row = cursor.fetchone()
-                if row:
-                    id_user = row["id_user"]
-                    nom_playlist = row["nom_playlist"]
+                cursor.execute(
+                    "SELECT * FROM playlists WHERE id_playlist = %(id)s",
+                    {"id": id_playlist})
 
-                    # Now get the songs
-                    select_songs_query = """
-                        SELECT song_name, song_order FROM playlist_songs
-                        WHERE id_playlist = %s ORDER BY song_order
-                    """
-                    cursor.execute(select_songs_query, (id_playlist,))
-                    songs = [
-                        {"name": song["song_name"], "order": song["song_order"]}
-                        for song in cursor.fetchall()
-                    ]
+                res = cursor.fetchone()
+        if res:
+            user = Utilisateur_DAO.get_utilisateur(self, res["id_user"])
+            liste_son = Son_DAO().get_son_ordre_by_playlist(id_playlist)
 
-                    # Assuming you have the Playlist class imported
-                    playlist = Playlist(
-                        id_user=id_user,
-                        id_playlist=id_playlist,
-                        nom_playlist=nom_playlist,
-                        dict_son=songs,
-                    )
-                    cursor.close()
-                    return playlist
-                else:
-                    cursor.close()
-                    return None
-            except Exception as e:
-                print(f"Error retrieving playlist: {e}")
-                return None
+            playlist = Playlist(
+                utilisateur =  user,
+                id_playlist= id_playlist,
+                nom_playlist= res["nom_playlist"],
+                list_son= liste_son,
+                )
+        return playlist
 
     def get_all_playlists(self) -> List:
         try:
