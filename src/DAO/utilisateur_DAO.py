@@ -101,25 +101,37 @@ class Utilisateur_DAO(metaclass=Singleton):
 
     def modifier_utilisateur(self, data: Dict[str, Any]) -> bool:
         """
-        Modifies a utilisateur's information.
+        Modifie les informations d'un utilisateur.
         """
         id = data.get("id")
+        # Vérifier si l'ID de l'utilisateur est présent
         if not id:
-            print("Utilisateur ID (id) is required for modification.")
+            print("L'ID de l'utilisateur (id) est requis pour la modification.")
             return False
 
+        # Créer une copie du dictionnaire de données et supprimer l'ID de l'utilisateur de cette copie
         fields_to_update = data.copy()
         fields_to_update.pop("id", None)
+        # Vérifier s'il y a des champs à mettre à jour
         if not fields_to_update:
-            print("No fields to update.")
+            print("Aucun champ à mettre à jour.")
             return False
 
-        # Create a string like 'mdp = %s, dd = %s, ddc = %s'
-        update_fields = ", ".join([f"{key} = %s" for key in fields_to_update.keys()])
-        update_values = list(fields_to_update.values())
-        update_values.append(id)
-        update_query = f"UPDATE utilisateur SET {update_fields} WHERE id = %s"
+        # Créer une liste vide pour stocker les noms de champs et une autre pour stocker les valeurs
+        update_fields = []
+        update_values = []
 
+        for key, value in fields_to_update.items():
+            update_fields.append(f"{key} = %s")
+            update_values.append(value)
+
+        # Ajouter l'ID de l'utilisateur à la liste des valeurs
+        update_values.append(id)
+
+        # Construire la requête SQL en utilisant les listes créées précédemment
+        update_query = (
+            f"UPDATE utilisateur SET {', '.join(update_fields)} WHERE id = %s"
+        )
         try:
             with DBConnection().connection as connection:
                 with connection.cursor() as cursor:
