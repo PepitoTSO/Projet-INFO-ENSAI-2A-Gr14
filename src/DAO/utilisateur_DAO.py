@@ -2,7 +2,6 @@ from typing import List, Dict, Any
 from utils.singleton import Singleton
 from db_connection import DBConnection
 from utilisateur import Utilisateur
-from datetime import date
 
 
 class Utilisateur_DAO(metaclass=Singleton):
@@ -11,27 +10,35 @@ class Utilisateur_DAO(metaclass=Singleton):
     Uses the Singleton pattern to ensure a single instance.
     """
 
-    def __init__(self):
-        self.db_connection = DBConnection().connection
-
-    def ajouter_utilisateur(self, id: int, mdp: str, dd: date, ddc: date) -> bool:
+    def ajouter_utilisateur(self, utilisateur: Utilisateur) -> bool:
         """
         Adds a new utilisateur to the database.
         """
-        try:
-            cursor = self.db_connection.cursor()
-            insert_user_query = """
-                INSERT INTO utilisateurs (id, mdp, dd, ddc)
-                VALUES (%s, %s, %s, %s)
-            """
-            cursor.execute(insert_user_query, (id, mdp, dd, ddc))
-            self.db_connection.commit()
-            cursor.close()
-            return True
-        except Exception as e:
-            self.db_connection.rollback()
-            print(f"Error adding utilisateur: {e}")
-            return False
+        created = False
+
+        # Check if the utilisateur already exists
+        existing_utilisateur = self.get_utilisateur(utilisateur.id)
+        if existing_utilisateur is not None:
+            print(f"Utilisateur avec id {utilisateur.id} exist déjà.")
+            return created
+
+        with DBConnection().connection as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """
+                        INSERT INTO utilisateur (id, mdp, dd, ddc)
+                        VALUES (%(id)s, %(mdp)s, %(dd)s, %(ddc)s)
+                        """,
+                    {
+                        "id": utilisateur.id,
+                        "mdp": utilisateur.mdp,
+                        "dd": utilisateur.dd,
+                        "ddc": utilisateur.ddc,
+                    },
+                )
+        created = True
+
+        return created
 
     def get_utilisateur(self, id: int) -> Utilisateur:
         """
@@ -42,6 +49,8 @@ class Utilisateur_DAO(metaclass=Singleton):
             select_user_query = """
                 SELECT id, mdp, dd, ddc FROM utilisateurs WHERE id = %s
             """
+            # On pourrait écrire select_user_query = f"SELECT id, mdp, dd, ddc FROM utilisateurs WHERE id = {id}"
+            # mais on se prémunit des injections SQL
             cursor.execute(select_user_query, (id,))
             row = cursor.fetchone()
             if row:
@@ -96,6 +105,8 @@ class Utilisateur_DAO(metaclass=Singleton):
                 print("No fields to update.")
                 return False
 
+            # Cela crée une chaîne de caractères comme 'mdp = %s, dd = %s, ddc = %s',
+            # en fonction des champs qui sont mis à jour.
             update_fields = ", ".join(
                 [f"{key} = %s" for key in fields_to_update.keys()]
             )
