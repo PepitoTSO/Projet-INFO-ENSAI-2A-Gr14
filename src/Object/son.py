@@ -19,9 +19,8 @@ class Son():
         self.path_stockage = methodelocatedansutils() # à voir comment faire méthode ou variable?
         self.musique = pygame.mixer.Sound(self.path_stockage)
 
-    def afficher_son(self):
-        desc = f"{self.id_son=},{self.nom=},{self.caracteristiques=}"
-        print(desc)
+    def __repr__(self):
+        return f"{self.id_son=},{self.nom=},{self.caracteristiques=}"
 
     ## a relier à l'interface graphique
     def play(self):
