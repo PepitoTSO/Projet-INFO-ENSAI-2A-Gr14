@@ -1,6 +1,6 @@
 from src.Object.utilisateur import Utilisateur
 from src.Object.son import Son
-from src.Service.playlist_service import PlaylistService
+from src.Service.PlaylistService import PlaylistService
 
 
 class Playlist:
@@ -11,7 +11,7 @@ class Playlist:
         utilisateur: Utilisateur,
         id_playlist: int,
         nom_playlist: str,
-        list_son: list,
+        list_son: list = [],
     ):
 
         if not isinstance(utilisateur, Utilisateur):
@@ -78,6 +78,7 @@ class Playlist:
         PlaylistService(self).changer_ordre_son(son, ordre)
 
     def changer_nom_playlist(self, nouveau_nom):
+
         if not isinstance(nouveau_nom, str):
             raise TypeError("Le nouveau nom doit être un str.")
 
