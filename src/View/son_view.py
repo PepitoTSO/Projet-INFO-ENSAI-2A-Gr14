@@ -1,5 +1,5 @@
 '''
-A relier aux fonctions de sonservice
+A relier aux fonctions de son service parce que ça marche mieux
 '''
 
 
