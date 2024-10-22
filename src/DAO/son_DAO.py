@@ -13,23 +13,23 @@ class Son_DAO(metaclass=Singleton):
     def ajouter_son(self, son: Son) -> bool:
         try:
             with DBConnection().connection as connection:
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "INSERT INTO son (id_attack_type, attack_name,        "
-                    " power, accuracy, element, attack_description)             "
-                    "VALUES                                                     "
-                    "(%(id_attack_type)s, %(name)s, %(power)s, %(accuracy)s,    "
-                    " %(element)s, %(description)s)                             "
-                    "RETURNING id_attack;",
-                    {
-                        "id_attack_type": id_attack_type,
-                        "name": attack.name,
-                        "power": attack.power,
-                        "accuracy": attack.accuracy,
-                        "element": attack.element,
-                        "description": attack.description,
-                    },
-                )
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        "INSERT INTO son (id_attack_type, attack_name,        "
+                        " power, accuracy, element, attack_description)             "
+                        "VALUES                                                     "
+                        "(%(id_attack_type)s, %(name)s, %(power)s, %(accuracy)s,    "
+                        " %(element)s, %(description)s)                             "
+                        "RETURNING id_attack;",
+                        {
+                            "id_attack_type": id_attack_type,
+                            "name": attack.name,
+                            "power": attack.power,
+                            "accuracy": attack.accuracy,
+                            "element": attack.element,
+                            "description": attack.description,
+                        },
+                    )
                 res = cursor.fetchone()
         if res:
             attack.id = res["id_attack"]

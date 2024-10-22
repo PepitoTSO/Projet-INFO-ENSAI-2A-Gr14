@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS bdd.compte CASCADE ;
 CREATE TABLE bdd.compte (
     id_utilisateur INT AUTO_INCREMENT PRIMARY KEY,
     pseudo varchar UNIQUE NOT NULL,
-    mdp_hash varchar NOT NULL,
+    mdp varchar NOT NULL,
     date_creation date NOT NULL,
     date_derniere_co date NOT NULL
 );
@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS bdd.playlist;
 CREATE TABLE bdd.playlist (
     id_playlist INT AUTO_INCREMENT PRIMARY KEY,
     id_utilisateur integer FOREIGN KEY,
-    nom varchar NOT NULL
+    nom_playlist varchar NOT NULL
 );
 
 --------------------------------------------------------------
@@ -33,7 +33,10 @@ CREATE TABLE bdd.playlist (
 DROP TABLE IF EXISTS bdd.son CASCADE;
 
 CREATE TABLE bdd.son (
-    id_playlist integer PRIMARY KEY,
+    id_son integer PRIMARY KEY,
+    nom_son varchar,
+    id_playlist integer FOREIGN KEY
+    ordre_son_playlist integer,
     tags varchar,
     path_stockage varchar NOT NULL
 );
