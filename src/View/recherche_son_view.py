@@ -1,6 +1,6 @@
 
 from InquirerPy import prompt
-from InquirerPy import Text
+from InquirerPy import inquirer
 
 from view.abstract_view import AbstractView
 from view.session import Session
@@ -14,7 +14,7 @@ class RechSonView(AbstractView):
             {
                 "type": "list",
                 "name": "choix",
-                "message": f"Hello {Session().user_name}",
+                "message": f"Menu Recherche Son",
                 "choices": [
                     "Recherche classique",
                     "Recherche avancée",
@@ -36,11 +36,16 @@ class RechSonView(AbstractView):
             return MenuView()
 
         elif reponse["choix"] == "Recherche classique":
+            inquirer_recherche = {
+                "type": "input",
+                "message": "Quel est l'objet de votre recherche ?",
+                "name": "Recherche"
+            }
 
-            inquirer_recherche = [Text('Recherche', message="Quel est l'objet de votre recherche")]
-            recherche = prompt(inquirer_recherche)
+            recherche = prompt([inquirer_recherche])
 
-            resultat = apifreesound.recherche_son(recherche)
+            api=apifreesound()
+            resultat = api.recherche_son(recherche['Recherche'])
             print(resultat)
 
             return RechSonView()
@@ -49,8 +54,14 @@ class RechSonView(AbstractView):
             return RechSonView()
 
         elif reponse["choix"] == "Télécharger":
-            inquirer_dl = [Text('Recherche', message="Quel est l'id du son à télécharger")]
-            id_dl = prompt(inquirer_dl)
-            apifreesound.dl_son(int(id_dl))
+            inquirer_id = {
+                "type": "input",
+                "message": "Quel est l'id du son?",
+                "name": "id"
+            }
+
+            inq_id = prompt([inquirer_id])
+            api=apifreesound()
+            api.dl_son(int(inq_id['id']))
 
             return RechSonView()

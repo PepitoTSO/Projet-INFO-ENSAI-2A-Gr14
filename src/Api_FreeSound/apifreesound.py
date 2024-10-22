@@ -2,7 +2,7 @@ import os
 import requests
 import dotenv
 import json
-import utils.dl.py
+from pathlib import Path
 
 class apifreesound():
     '''Gestion des requetes à l'API'''
@@ -16,8 +16,6 @@ class apifreesound():
             self.cleAPI = os.getenv('CLEAPI')
         except KeyError:
             print("Manque la variable d'environnement CLEAPI")
-
-
 
     def recherche_son(self, recherche: str, params=False) -> json:
         '''
@@ -70,36 +68,18 @@ class apifreesound():
                 else:
                     url_dl = reponse.json()['previews']['preview-lq-mp3']
 
-                # Téléchargement du fichier
-                dl_path = gestion_dl.dossier
-                
                 reponse = requests.get(url_dl, stream=True)
 
                 # Écriture du fichier dans le répertoire de destination
-                with open(f'{dl_path}/{id}.mp3', 'wb') as f:
+                with open(f'../data/son/{id}.mp3', 'wb') as f:
                     for chunk in reponse.iter_content(chunk_size=8192):
                         f.write(chunk)
 
                 print(f"Fichier téléchargé avec succès dans {dl_path}")
             except Exception as e:
                 print(f"Erreur lors du téléchargement du son avec ID {sound_id}: {e}")
-        else :
+        else:
             print("Le fichier existe dans data/son")
 
 ###la classe a deplacé
-
-from pathlib import Path
-
-
-class gestion_dl():
-
-    dossier = Path("data/son")
-
-    def creation_dossier_dl():
-
-        gestion_dl.dossier.mkdir(parents=True, exist_ok=True)
-
-        print(f"Le répertoire '{gestion_dl.dossier}' a été créé avec succès.")
-
-    def verifier_dl(self, nom):
 
