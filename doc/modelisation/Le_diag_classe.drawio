@@ -120,7 +120,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-70" value="Pla" style="swimlane;whiteSpace=wrap;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="-290" y="100" width="440" height="820" as="geometry" />
+          <mxGeometry x="-290" y="100" width="440" height="827.5" as="geometry" />
         </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-71" value="&lt;&lt;singleton&gt;&gt;connexion_bdd" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="UJgr32r0x14f-edrb7Fj-70" vertex="1">
           <mxGeometry x="20" y="650" width="180" height="115" as="geometry">
@@ -163,14 +163,14 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-95" value="son_DAO" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="UJgr32r0x14f-edrb7Fj-70" vertex="1">
-          <mxGeometry x="244" y="617.5" width="160" height="180" as="geometry">
+          <mxGeometry x="244" y="617.5" width="160" height="210" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-96" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-95" vertex="1">
           <mxGeometry y="26" width="160" height="16" as="geometry" />
         </mxCell>
-        <mxCell id="UJgr32r0x14f-edrb7Fj-97" value="ajouter_son(Son) :bool" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;" parent="UJgr32r0x14f-edrb7Fj-95" vertex="1">
+        <mxCell id="UJgr32r0x14f-edrb7Fj-97" value="ajouter_son(id_playlist, id_son, ordre) :bool" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;" parent="UJgr32r0x14f-edrb7Fj-95" vertex="1">
           <mxGeometry y="42" width="160" height="26" as="geometry" />
         </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-98" value="get_son(id_son) : bool" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-95" vertex="1">
@@ -179,22 +179,22 @@
         <mxCell id="UJgr32r0x14f-edrb7Fj-99" value="get_all_son(): list(Son)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-95" vertex="1">
           <mxGeometry y="100" width="160" height="32" as="geometry" />
         </mxCell>
-        <mxCell id="UJgr32r0x14f-edrb7Fj-100" value="supprimer_son(id_son): bool&#xa;get_son_ordre_by_playlist" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-95" vertex="1">
-          <mxGeometry y="132" width="160" height="32" as="geometry" />
+        <mxCell id="UJgr32r0x14f-edrb7Fj-100" value="supprimer_son_by_id(id_son): bool&#xa;get_son_ordre_by_playlist&#xa;supprimer_son_by_playlist(id_son, id_playlist)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-95" vertex="1">
+          <mxGeometry y="132" width="160" height="78" as="geometry" />
         </mxCell>
         <mxCell id="IGScCA83LNYlwrID_RRP-0" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="UJgr32r0x14f-edrb7Fj-70" source="UJgr32r0x14f-edrb7Fj-25" target="UJgr32r0x14f-edrb7Fj-98" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-25" value="Playlist_DAO" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="UJgr32r0x14f-edrb7Fj-70" vertex="1">
-          <mxGeometry x="150" y="370" width="270" height="210" as="geometry">
+          <mxGeometry x="150" y="370" width="270" height="180" as="geometry">
             <mxRectangle x="130" y="380" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-27" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-25" vertex="1">
           <mxGeometry y="26" width="270" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="UJgr32r0x14f-edrb7Fj-134" value="ajouter_playlist(Playlist)&#xa;get_playlist_by_id(id_playlist) : Playlist&#xa;get_all_playlist_by_user(id_utilisateur): list(Playlist)&#xa;supprimer_playlist(id_plalist : bool)&#xa;modifier_nom_playlist(id_playlist, nouveau_nom)&#xa;changer_ordre(id_playlist, ordre, ajout : bool)&#xa;supprimer_son(id_playlist, son : Son)&#xa;ajouter_son(id_playlist, son, ordre)&#xa;copier_playlist(id_playlist)&#xa;ajouter_playlist(Playlist) : bool" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-25" vertex="1">
-          <mxGeometry y="34" width="270" height="176" as="geometry" />
+        <mxCell id="UJgr32r0x14f-edrb7Fj-134" value="ajouter_playlist(Playlist)&#xa;get_playlist_by_id(id_playlist) : Playlist&#xa;get_all_playlist_by_user(id_utilisateur): list(Playlist)&#xa;supprimer_playlist(id_plalist : bool)&#xa;modifier_nom_playlist(id_playlist, nouveau_nom)&#xa;changer_ordre(id_playlist, ordre, ajout : bool)&#xa;supprimer_son(id_playlist, son : Son)&#xa;ajouter_son(id_playlist, son, ordre)&#xa;copier_playlist(id_playlist)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-25" vertex="1">
+          <mxGeometry y="34" width="270" height="146" as="geometry" />
         </mxCell>
         <mxCell id="Eq6MTy8cBDpBbfUrAy4F-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="UJgr32r0x14f-edrb7Fj-70" target="UJgr32r0x14f-edrb7Fj-71" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -204,7 +204,7 @@
         <mxCell id="Eq6MTy8cBDpBbfUrAy4F-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.054;entryY=0.006;entryDx=0;entryDy=0;entryPerimeter=0;" parent="UJgr32r0x14f-edrb7Fj-70" source="UJgr32r0x14f-edrb7Fj-87" target="UJgr32r0x14f-edrb7Fj-71" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="UJgr32r0x14f-edrb7Fj-88" value="service/object" style="swimlane;whiteSpace=wrap;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="UJgr32r0x14f-edrb7Fj-88" value="#" style="swimlane;whiteSpace=wrap;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="150" y="80" width="1020" height="1180" as="geometry" />
         </mxCell>
         <mxCell id="k4YyRH8g6qEMDZz-mZ2C-4" value="Son" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="UJgr32r0x14f-edrb7Fj-88" vertex="1">
