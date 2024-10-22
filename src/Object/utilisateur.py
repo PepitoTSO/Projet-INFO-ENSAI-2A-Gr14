@@ -1,10 +1,9 @@
 
 
-
 class Utilisateur:
     def __init__(self, id: int, date_debut, date_derniere_co, playlist):
-        if not isinstance(utilisateur, int):
-            raise TypeError("L'utilisateur n'est pas de la classe int.")
+        if not isinstance(id, int):
+            raise TypeError("L'id de l'utilisateur n'est pas de la classe int.")
 
         self.id = id
         self.date_debut = date_debut
