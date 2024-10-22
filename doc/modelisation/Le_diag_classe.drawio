@@ -182,28 +182,31 @@
         <mxCell id="UJgr32r0x14f-edrb7Fj-100" value="supprimer_son(id_son): bool" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-95" vertex="1">
           <mxGeometry y="132" width="160" height="32" as="geometry" />
         </mxCell>
+        <mxCell id="IGScCA83LNYlwrID_RRP-0" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="UJgr32r0x14f-edrb7Fj-70" source="UJgr32r0x14f-edrb7Fj-25" target="UJgr32r0x14f-edrb7Fj-98">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-25" value="Playlist_DAO" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="UJgr32r0x14f-edrb7Fj-70" vertex="1">
-          <mxGeometry x="150" y="410" width="200" height="190" as="geometry">
+          <mxGeometry x="150" y="370" width="270" height="210" as="geometry">
             <mxRectangle x="130" y="380" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-27" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-25" vertex="1">
-          <mxGeometry y="26" width="200" height="8" as="geometry" />
+          <mxGeometry y="26" width="270" height="8" as="geometry" />
         </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-30" value="ajouter_playlist(Playlist) : bool" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-25" vertex="1">
-          <mxGeometry y="34" width="200" height="26" as="geometry" />
+          <mxGeometry y="34" width="270" height="26" as="geometry" />
         </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-133" value="get_playlist(id_playlist) : Playlist" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-25" vertex="1">
-          <mxGeometry y="60" width="200" height="26" as="geometry" />
+          <mxGeometry y="60" width="270" height="26" as="geometry" />
         </mxCell>
         <mxCell id="k4YyRH8g6qEMDZz-mZ2C-0" value="get_all_playlist(): list(Playlist)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-25" vertex="1">
-          <mxGeometry y="86" width="200" height="26" as="geometry" />
+          <mxGeometry y="86" width="270" height="26" as="geometry" />
         </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-135" value="modifier_playlist(dict_modif) : bool" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-25" vertex="1">
-          <mxGeometry y="112" width="200" height="26" as="geometry" />
+          <mxGeometry y="112" width="270" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="UJgr32r0x14f-edrb7Fj-134" value="supprimer_playlist(id_plalist : bool&#xa;modifier_nom_playlist(id_playlist : int, nouveau_nom : str" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-25" vertex="1">
-          <mxGeometry y="138" width="200" height="52" as="geometry" />
+        <mxCell id="UJgr32r0x14f-edrb7Fj-134" value="supprimer_playlist(id_plalist : bool)&#xa;modifier_nom_playlist(id_playlist, nouveau_nom)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-25" vertex="1">
+          <mxGeometry y="138" width="270" height="72" as="geometry" />
         </mxCell>
         <mxCell id="Eq6MTy8cBDpBbfUrAy4F-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="UJgr32r0x14f-edrb7Fj-70" source="k4YyRH8g6qEMDZz-mZ2C-0" target="UJgr32r0x14f-edrb7Fj-71" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -400,9 +403,8 @@
         <mxCell id="VLZR5v5O_BQbN2B3aegR-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.769;entryDx=0;entryDy=0;entryPerimeter=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="UJgr32r0x14f-edrb7Fj-25" target="k4YyRH8g6qEMDZz-mZ2C-19" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="60" y="610" />
-              <mxPoint x="510" y="610" />
-              <mxPoint x="510" y="560" />
+              <mxPoint x="250" y="575" />
+              <mxPoint x="250" y="560" />
             </Array>
             <mxPoint x="790" y="560" as="targetPoint" />
           </mxGeometry>
