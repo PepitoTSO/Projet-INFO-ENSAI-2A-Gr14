@@ -14,22 +14,22 @@ class Playlist_DAO(metaclass=Singleton):
     Uses the Singleton pattern to ensure a single instance.
     """
 
-    def ajouter_playlist(self, nom_playlist) -> bool:
+    def ajouter_playlist(self, nom_playlist) -> int:
         id_utilisateur = Session().utilisateur.id
 
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    " INSERT INTO Playlist (id_utilisateur, nom)"
-                    "VALUES (%(id_utilisateur)s, %(nom_playlist)s);",
+                    "INSERT INTO Playlist (id_utilisateur, nom_playlist) "
+                    "VALUES (%(id_utilisateur)s, %(nom_playlist)s) RETURNING id_playlist;",
                     {"id_utilisateur": id_utilisateur, "nom_playlist": nom_playlist},
                 )
-            res = cursor.fetchone()
+                res = cursor.fetchone()
 
         if res:
-            return True
+            return res['id_playlist']  # Retourner l'ID de la nouvelle playlist
 
-        return False
+        return None  # Retourner None si l'insertion a échoué
 
     def get_playlist_by_id(self, id_playlist: int):
         with DBConnection().connection as connection:
@@ -124,6 +124,65 @@ class Playlist_DAO(metaclass=Singleton):
     def supprimer_son(self, id_playlist, son: Son):
         id_son = son.id
         Son_DAO().supprimer_son_by_playlist(id_playlist, id_son)
+
+    def ajouter_son(id_playlist, son, ordre):
+        id_son = son.id
+        Son_DAO().ajouter_son(id_playlist, id_son, ordre)
+
+    def copier_playlist(self, id_playlist: int):
+        with DBConnection().connection as connection:
+            with connection.cursor() as cursor:
+                # Récupérer les détails de la playlist originale
+                cursor.execute(
+                    "SELECT nom_playlist FROM Playlist WHERE id_playlist = %(id_playlist)s;",
+                    {"id_playlist": id_playlist}
+                )
+                original_playlist = cursor.fetchone()
+
+                if not original_playlist:
+                    return False  # Si la playlist originale n'existe pas
+
+                # Créer une nouvelle playlist avec le même nom pour l'utilisateur de session
+                new_id_playlist = self.ajouter_playlist(original_playlist['nom_playlist'])
+
+                if not new_id_playlist:
+                    return False  # Si la création de la nouvelle playlist a échoué
+
+                # Copier les chansons de la playlist originale dans la nouvelle playlist
+                cursor.execute(
+                    "SELECT nom, ordre_son_in_plist, tags, path_stockage FROM Son WHERE id_playlist = %(id_playlist)s;",
+                    {"id_playlist": id_playlist}
+                )
+                chansons = cursor.fetchall()
+
+                for chanson in chansons:
+                    cursor.execute(
+                        "INSERT INTO Son (id_playlist, nom, ordre_son_in_plist, tags, path_stockage) "
+                        "VALUES (%(id_playlist)s, %(nom)s, %(ordre)s, %(tags)s, %(path)s);",
+                        {
+                            "id_playlist": new_id_playlist,
+                            "nom": chanson['nom'],
+                            "ordre": chanson['ordre_son_in_plist'],
+                            "tags": chanson['tags'],
+                            "path": chanson['path_stockage']
+                        }
+                    )
+
+            connection.commit()
+            return True  # Retourner True si la copie a réussi
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     def modifier_playlist(self, id_modif: Dict[str, Any]) -> bool:
         try:
