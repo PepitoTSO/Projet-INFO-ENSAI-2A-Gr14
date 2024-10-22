@@ -6,13 +6,16 @@ class identification_utilisateur():
         print(message)
         return "Utilisateur connecté"
     
-class InscriptionVue:
-    
-    def __init__(self, message):
-        self.message = message
-        self.show_message()
 
-    def show_message(self):
-        print(self.message)
-        return "Vue inscription utilisateur"
-    
+class connexion_Vue:
+     def display(self):
+        utilisateur = inquirer.text(message="Nom d'utilisateur : ").execute()
+        password = inquirer.secret(message="Mot de passe : ").execute()
+        return username, password
+
+
+class inscription_Vue:
+    def display(self):
+        utilisateur = inquirer.text(message="Nom d'utilisateur : ").execute()
+        password = inquirer.secret(message="Mot de passe : ").execute()
+        return username, password
