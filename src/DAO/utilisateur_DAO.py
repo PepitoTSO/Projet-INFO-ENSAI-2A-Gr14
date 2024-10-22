@@ -103,34 +103,30 @@ class Utilisateur_DAO(metaclass=Singleton):
         """
         Modifies a utilisateur's information.
         """
+        id = data.get("id")
+        if not id:
+            print("Utilisateur ID (id) is required for modification.")
+            return False
+
+        fields_to_update = data.copy()
+        fields_to_update.pop("id", None)
+        if not fields_to_update:
+            print("No fields to update.")
+            return False
+
+        # Create a string like 'mdp = %s, dd = %s, ddc = %s'
+        update_fields = ", ".join([f"{key} = %s" for key in fields_to_update.keys()])
+        update_values = list(fields_to_update.values())
+        update_values.append(id)
+        update_query = f"UPDATE utilisateur SET {update_fields} WHERE id = %s"
+
         try:
-            cursor = self.db_connection.cursor()
-            id = data.get("id")
-            if not id:
-                print("Utilisateur ID (id) is required for modification.")
-                return False
-
-            fields_to_update = data.copy()
-            fields_to_update.pop("id", None)
-            if not fields_to_update:
-                print("No fields to update.")
-                return False
-
-            # Cela crée une chaîne de caractères comme 'mdp = %s, dd = %s, ddc = %s',
-            # en fonction des champs qui sont mis à jour.
-            update_fields = ", ".join(
-                [f"{key} = %s" for key in fields_to_update.keys()]
-            )
-            update_values = list(fields_to_update.values())
-            update_values.append(id)
-            update_query = f"UPDATE utilisateurs SET {update_fields} WHERE id = %s"
-
-            cursor.execute(update_query, update_values)
-            self.db_connection.commit()
-            cursor.close()
+            with DBConnection().connection as connection:
+                with connection.cursor() as cursor:
+                    cursor.execute(update_query, update_values)
+                    connection.commit()
             return True
         except Exception as e:
-            self.db_connection.rollback()
             print(f"Error modifying utilisateur: {e}")
             return False
 
@@ -139,13 +135,27 @@ class Utilisateur_DAO(metaclass=Singleton):
         Deletes a utilisateur by their id.
         """
         try:
-            cursor = self.db_connection.cursor()
-            delete_user_query = "DELETE FROM utilisateurs WHERE id = %s"
-            cursor.execute(delete_user_query, (id,))
-            self.db_connection.commit()
-            cursor.close()
+            with DBConnection().connection as connection:
+                with connection.cursor() as cursor:
+                    # Si on s'en fout des injections SQL
+                    # delete_user_query = f"DELETE FROM utilisateur WHERE id = {id}"
+                    # cursor.execute(delete_user_query)
+                    delete_user_query = "DELETE FROM utilisateur WHERE id = %s"
+                    cursor.execute(delete_user_query, (id,))
+                    connection.commit()
             return True
         except Exception as e:
-            self.db_connection.rollback()
+            if connection:
+                connection.rollback()
             print(f"Error deleting utilisateur: {e}")
             return False
+
+
+if __name__ == "__main__":
+    # Pour charger les variables d'environnement contenues dans le fichier .env
+    import dotenv
+
+    dotenv.load_dotenv(override=True)
+
+    utilisateurs = Utilisateur_DAO().get_all_utilisateurs()
+    print(utilisateurs)
