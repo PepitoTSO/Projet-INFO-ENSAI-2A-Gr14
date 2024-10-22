@@ -41,13 +41,23 @@ class Son():
     def jouer_en_boucle(self, temps):
         pygame.mixer.music.load(str(self.path_stockage))
         pygame.mixer.music.play(-1)  # -1 pour jouer en boucle
-        time.sleep(temps)  # Attendre le temps spécifié
+        time.sleep(temps)
         self.stop()
 
+    def play_multiple_sounds(sound_files):  # Chatgpt
+        sounds = [Son(i, f'sound_{i}', 'test', file) for i, file in enumerate(sound_files)]
+        for sound in sounds:
+            sound.play()
+            time.sleep(0.1)  # Un léger délai pour éviter de jouer tous les sons en même temps
+
+    def jouer_aleatoire(self):
+        pass
 
 
 if __name__ == "__main__":
     test = Son(1, 'test', 'oui', 'data/test.mp3')
     print(test.id_son)
     print(repr(test))
+    test.play()
+
 
