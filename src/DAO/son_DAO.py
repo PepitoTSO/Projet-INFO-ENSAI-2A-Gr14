@@ -11,33 +11,35 @@ class Son_DAO(metaclass=Singleton):
     """
 
     def ajouter_son(self, son: Son) -> bool:
+        """
+        Adds a new 'son' to the database.
+        """
+        created = False
         try:
             with DBConnection().connection as connection:
                 with connection.cursor() as cursor:
+                    insert_query = """
+                        INSERT INTO son (nom, id_playlist, ordre_son_in_plist, tags, path_stockage)
+                        VALUES (%s, %s, %s, %s, %s)
+                        RETURNING id_son;
+                    """
                     cursor.execute(
-                        "INSERT INTO son (id_attack_type, attack_name,        "
-                        " power, accuracy, element, attack_description)             "
-                        "VALUES                                                     "
-                        "(%(id_attack_type)s, %(name)s, %(power)s, %(accuracy)s,    "
-                        " %(element)s, %(description)s)                             "
-                        "RETURNING id_attack;",
-                        {
-                            "id_attack_type": id_attack_type,
-                            "name": attack.name,
-                            "power": attack.power,
-                            "accuracy": attack.accuracy,
-                            "element": attack.element,
-                            "description": attack.description,
-                        },
+                        insert_query,
+                        (
+                            son.nom_son,
+                            son.id_playlist,
+                            son.ordre_son_playlist,
+                            son.tags,
+                            son.path_stockage,
+                        ),
                     )
-                res = cursor.fetchone()
-        if res:
-            attack.id = res["id_attack"]
-            created = True
-
-        return created
+                    # Fetch the generated id_son
+                    res = cursor.fetchone()
+                    if res:
+                        son.id_son = result[0]
+                        created = True
+            return created
         except Exception as e:
-            self.db_connection.rollback()
             print(f"Error adding son: {e}")
             return False
 

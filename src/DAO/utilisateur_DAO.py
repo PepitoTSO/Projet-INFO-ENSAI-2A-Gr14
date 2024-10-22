@@ -99,45 +99,38 @@ class Utilisateur_DAO(metaclass=Singleton):
             print(f"Error retrieving all utilisateurs: {e}")
             return []
 
-    def modifier_utilisateur(self, data: Dict[str, Any]) -> bool:
+    def modifier_utilisateur(self, utilisateur: Utilisateur) -> bool:
         """
         Modifie les informations d'un utilisateur.
         """
-        id = data.get("id")
+        updated = False
+
         # Vérifier si l'ID de l'utilisateur est présent
-        if not id:
+        if not utilisateur.id:
             print("L'ID de l'utilisateur (id) est requis pour la modification.")
-            return False
+            return updated
 
-        # Créer une copie du dictionnaire de données et supprimer l'ID de l'utilisateur de cette copie
-        fields_to_update = data.copy()
-        fields_to_update.pop("id", None)
-        # Vérifier s'il y a des champs à mettre à jour
-        if not fields_to_update:
-            print("Aucun champ à mettre à jour.")
-            return False
-
-        # Créer une liste vide pour stocker les noms de champs et une autre pour stocker les valeurs
-        update_fields = []
-        update_values = []
-
-        for key, value in fields_to_update.items():
-            update_fields.append(f"{key} = %s")
-            update_values.append(value)
-
-        # Ajouter l'ID de l'utilisateur à la liste des valeurs
-        update_values.append(id)
-
-        # Construire la requête SQL en utilisant les listes créées précédemment
-        update_query = (
-            f"UPDATE utilisateur SET {', '.join(update_fields)} WHERE id = %s"
-        )
         try:
             with DBConnection().connection as connection:
                 with connection.cursor() as cursor:
-                    cursor.execute(update_query, update_values)
-                    connection.commit()
-            return True
+                    cursor.execute(
+                        "UPDATE bdd.compte                               "
+                        "   SET pseudo = %(pseudo)s,                     "
+                        "       mdp_hash = %(mdp_hash)s,                 "
+                        "       date_creation = %(date_creation)s,       "
+                        "       date_derniere_co = %(date_derniere_co)s  "
+                        " WHERE id_utilisateur = %(id_utilisateur)s      ",
+                        {
+                            "pseudo": utilisateur.pseudo,
+                            "mdp_hash": utilisateur.mdp,
+                            "date_creation": utilisateur.date_creation,
+                            "date_derniere_co": utilisateur.date_derniere_co,
+                            "id_utilisateur": utilisateur.id,
+                        },
+                    )
+                    if cursor.rowcount:
+                        updated = True
+            return updated
         except Exception as e:
             print(f"Error modifying utilisateur: {e}")
             return False
