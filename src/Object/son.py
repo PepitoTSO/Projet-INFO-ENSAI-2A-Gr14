@@ -1,23 +1,16 @@
-import pygame
-import sys
-
-# Initialiser Pygame
-pygame.init()
-pygame.mixer.init()
-
-
+from pathlib import Path
+import nava
 
 class Son():
     '''
-    Classe qui contient definition d'un son : ses caractéristiques
-
+    Classe qui contient la définition d'un son : ses caractéristiques
     '''
-    def __init__(self,id_son, nom, caracteristiques, path_stcoakge = None) -> None:
+    def __init__(self, id_son, nom, caracteristiques, path=None) -> None:
         self.id_son = id_son
         self.nom = nom
         self.caracteristiques = caracteristiques
-        self.path_stockage = methodelocatedansutils() # à voir comment faire méthode ou variable?
-        self.musique = pygame.mixer.Sound(self.path_stockage)
+        self.path_stockage = Path(path)
+        self.musique = nava.Audio(self.path_stockage)
 
     def __repr__(self):
         return f"{self.id_son=},{self.nom=},{self.caracteristiques=}"
@@ -27,13 +20,18 @@ class Son():
         self.musique.play()
 
     def pause(self):
-        pygame.mixer.pause()
+        self.musique.pause()
 
     def unpause(self):
-        pygame.mixer.unpause()
+        self.musique.resume()
 
     def stop(self):
         self.musique.stop()
 
     def jouer_en_boucle(self, temps):
-        pass
+        self.musique.loop(temps)
+
+if __name__ == "__main__":
+    test=Son(1,'test','oui','data/test.mp3')
+    repr(test)
+    test.play()
