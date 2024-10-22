@@ -12,28 +12,30 @@ class Son_DAO(metaclass=Singleton):
 
     def ajouter_son(self, son: Son) -> bool:
         try:
-            cursor = self.DBConnection.cursor()
-            # Insert into the sons table
-            insert_son_query = """
-                INSERT INTO sons (name)
-                VALUES (%s)
-                RETURNING id_son
-            """
-            cursor.execute(insert_son_query, (son.name,))
-            id_son = cursor.fetchone()["id_son"]
-            son.id_son = id_son  # Update the son object with the new id
+            with DBConnection().connection as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "INSERT INTO son (id_attack_type, attack_name,        "
+                    " power, accuracy, element, attack_description)             "
+                    "VALUES                                                     "
+                    "(%(id_attack_type)s, %(name)s, %(power)s, %(accuracy)s,    "
+                    " %(element)s, %(description)s)                             "
+                    "RETURNING id_attack;",
+                    {
+                        "id_attack_type": id_attack_type,
+                        "name": attack.name,
+                        "power": attack.power,
+                        "accuracy": attack.accuracy,
+                        "element": attack.element,
+                        "description": attack.description,
+                    },
+                )
+                res = cursor.fetchone()
+        if res:
+            attack.id = res["id_attack"]
+            created = True
 
-            # Insert tags into the son_tags table
-            for tag in son.tags:
-                insert_tag_query = """
-                    INSERT INTO son_tags (id_son, tag)
-                    VALUES (%s, %s)
-                """
-                cursor.execute(insert_tag_query, (id_son, tag))
-
-            self.db_connection.commit()
-            cursor.close()
-            return True
+        return created
         except Exception as e:
             self.db_connection.rollback()
             print(f"Error adding son: {e}")

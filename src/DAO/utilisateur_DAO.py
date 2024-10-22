@@ -27,7 +27,7 @@ class Utilisateur_DAO(metaclass=Singleton):
                 with connection.cursor() as cursor:
                     cursor.execute(
                         """
-                            INSERT INTO utilisateur (id, mdp, dd, ddc)
+                            INSERT INTO bdd.utilisateur (id, mdp, dd, ddc)
                             VALUES (%(id)s, %(mdp)s, %(dd)s, %(ddc)s)
                             """,
                         {

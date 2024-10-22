@@ -49,6 +49,7 @@ DROP TABLE IF EXISTS bdd.son CASCADE;
 
 CREATE TABLE bdd.son (
     id_playlist integer PRIMARY KEY,
+    tags
     path_stockage varchar NOT NULL
 );
 
