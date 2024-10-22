@@ -1,6 +1,7 @@
 import dotenv
 
-from view.menu_principal import StartView
+from View.accueil.accueil import VueAccueil
+
 # This script is the entry point of your application
 
 if __name__ == "__main__":
