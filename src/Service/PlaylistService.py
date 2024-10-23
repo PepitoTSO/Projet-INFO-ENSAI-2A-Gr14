@@ -1,7 +1,7 @@
-from src.Object.playlist import Playlist
-from src.DAO.playlist_DAO import Playlist_DAO
-from src.Object.son import Son
-from src.Service.SonService import SonService
+from Object.playlist import Playlist
+from DAO.playlist_DAO import Playlist_DAO
+from Object.son import Son
+from Service.SonService import SonService
 
 
 class PlaylistService:

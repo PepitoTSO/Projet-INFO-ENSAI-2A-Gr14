@@ -24,7 +24,7 @@ class Son():
         # Charger et jouer la musique
         pygame.mixer.music.load(str(self.path_stockage))
         pygame.mixer.music.play()
-        
+
         # Attendre que la musique soit terminée
         while pygame.mixer.music.get_busy():
             time.sleep(1)

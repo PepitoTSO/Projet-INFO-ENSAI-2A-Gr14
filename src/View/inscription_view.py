@@ -8,7 +8,7 @@ from InquirerPy import prompt
 from view.abstract_view import AbstractView
 
 
-class ConnectionView(AbstractView):
+class InscriptionView(AbstractView):
     def __init__(self):
         self.__questions = [
             {
