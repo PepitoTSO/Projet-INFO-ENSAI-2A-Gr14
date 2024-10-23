@@ -1,12 +1,12 @@
 import pytest
-from src.Object.utilisateur import Utilisateur
-from src.Object.son import Son
-from src.Object.playlist import Playlist
+from Object.utilisateur import Utilisateur
+from Object.son import Son
+from Object.playlist import Playlist
 
 
 @pytest.fixture
 def utilisateur():
-    return Utilisateur(1, "2022-01-01", "2022-01-02", [])
+    return Utilisateur(1)
 
 
 @pytest.fixture
@@ -74,3 +74,7 @@ def test_changer_nom_playlist(playlist):
 
     # THEN
     assert playlist.nom_playlist == nouveau_nom
+
+
+if __name__ == "__main__":
+    pytest.main()
