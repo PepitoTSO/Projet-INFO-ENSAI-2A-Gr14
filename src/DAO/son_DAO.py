@@ -9,7 +9,7 @@ class Son_DAO(metaclass=Singleton):
     Uses the Singleton pattern to ensure a single instance.
     """
 
-    def ajouter_son(self, son: Son, id_playlist: int, ordre: int) -> bool:
+    def ajouter_son(self, son: Son) -> bool:
         """
         Adds a new 'son' to the database.
         """
@@ -18,8 +18,8 @@ class Son_DAO(metaclass=Singleton):
             with DBConnection().connection as connection:
                 with connection.cursor() as cursor:
                     insert_query = """
-                        INSERT INTO son (id_son, nom, id_playlist, ordre_son_in_plist, caracteristiques, path_stockage)
-                        VALUES (%s, %s, %s, %s, %s, %s)
+                        INSERT INTO son (id_son, nom_son, tags, path_stockage)
+                        VALUES (%s, %s, %s, %s)
                         RETURNING id_son;
                     """ ##########
                     #########
@@ -31,8 +31,6 @@ class Son_DAO(metaclass=Singleton):
                         (
                             son.id_son,
                             son.nom,
-                            id_playlist,
-                            ordre,
                             son.caracteristiques,
                             str(son.path_stockage) if son.path_stockage else None,
                         ),
