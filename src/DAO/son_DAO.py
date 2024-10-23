@@ -19,8 +19,8 @@ class Son_DAO(metaclass=Singleton):
             with DBConnection().connection as connection:
                 with connection.cursor() as cursor:
                     insert_query = """
-                        INSERT INTO son (nom, id_playlist, ordre_son_in_plist, caracteristiques, path_stockage)
-                        VALUES (%s, %s, %s, %s, %s)
+                        INSERT INTO son (id_son, nom, id_playlist, ordre_son_in_plist, caracteristiques, path_stockage)
+                        VALUES (%s, %s, %s, %s, %s, %s)
                         RETURNING id_son;
                     """ ##########
                     #########
@@ -30,6 +30,7 @@ class Son_DAO(metaclass=Singleton):
                     cursor.execute(
                         insert_query,
                         (
+                            son.id_son,
                             son.nom,
                             id_playlist,
                             ordre,
@@ -120,7 +121,7 @@ class Son_DAO(metaclass=Singleton):
                 son = Son(
                     id_son=son_data["id_son"],
                     nom=son_data["nom"],
-                    caracteristiques=son_data["caracteristiques"],
+                    caracteristiques=son_data["tags"],
                     path=son_data["path_stockage"]
                 )
                 sons_with_order.append([son, son_data["ordre_son_in_plist"]])
