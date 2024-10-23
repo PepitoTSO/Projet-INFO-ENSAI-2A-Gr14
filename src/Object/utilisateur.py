@@ -2,20 +2,32 @@ from src.Object.playlist import Playlist
 
 
 class Utilisateur:
-    def __init__(self, id: int, date_debut, date_derniere_co, playlist):
-        if not isinstance(utilisateur, int):
-            raise TypeError("L'utilisateur n'est pas de la classe int.")
+    def __init__(self, id_utilisateur: int, pseudo: str, dd, ddc, playlist: list, utilisateurs:list, est_connecte: False):
+        if not isinstance(id_utilisateur, int):
+            raise TypeError("L'identifiant n'est pas de la classe int.")
+        if not isinstance(pseudo, str):
+            raise TypeError("Le pseudo n'est pas de la classe str.")
+        if not isinstance(playlist, list):
+            raise TypeError("playlist n'est pas une liste.")
+            if not isinstance(utilisateurs, list):
+            raise TypeError("utilisateurs n'est pas une liste.")
+        if not isinstance(est_connecte, bool):
+            raise TypeError("est_connecte n'est pas un booleen.")
 
-        self.id = id
-        self.date_debut = date_debut
-        self.date_derniere_co = date_derniere_co
+        self.id_utilisateur = id_utilisateur
+        self.pseudo = pseudo
+        self.dd = dd
+        self.ddc = ddc
         self.playlist = []
+        self.utilisateurs = []
+        self.est_connecte = False  # Indique si l'utilisateur est connecté ou non
 
-    def creer_compte(self, id, mdp):
+
+    def creer_compte(self, id_utilisateur, pseudo, mdp):
         mdp_hache = Utilisateur.hacher_mot_de_passe(mdp)
 
-        print(f"Compte créé pour l'utilisateur {id}.")
-        return Utilisateur(id=id, mdp_hache=mdp_hache)
+        print(f"Compte créé pour l'utilisateur {id_utilisateur}.")
+        return Utilisateur(pseudo=pseudo, mdp=mdp_hache)
 
     def creer_playlist(self, nom_playlist, son):
         if nom_playlist in self.playlists:

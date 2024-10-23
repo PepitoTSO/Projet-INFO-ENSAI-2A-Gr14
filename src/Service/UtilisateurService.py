@@ -11,11 +11,11 @@ class UtilisateurService:
 
         self.utilisateur = utilisateur
 
-    def creer_compte(self, id_utilisateur, mdp):
+    def creer_compte(self, id_utilisateur, pseudo, mdp):
         mdp_hache = Utilisateur.hacher_mot_de_passe(mdp)
 
         print(f"Compte créé pour l'utilisateur {id}.")
-        return Utilisateur(id=id_utilisateur, mdp_hache=mdp_hache)
+        return Utilisateur(pseudo=pseudo, mdp_hache=mdp_hache)
 
     def creer_playlist(self, nom_playlist, son):
         if nom_playlist in self.playlists:
@@ -51,14 +51,15 @@ class UtilisateurService:
             print(f"La playlist source '{nom_playlist_source}' n'existe pas.")
             return False
 
-    def creer_utilisateur(self, id_utilisateur: str, mdp: str):
+    def creer_utilisateur(self, utilisateur: Utilisateur, pseudo: pseudo, mdp: str):
 
-        if not isinstance(id_utilisateur, str):
-            raise TypeError("L'identifiant doit être un str")
+        if not isinstance(pseudo, int):
+            raise TypeError("Le pseudo doit être un str")
         if not isinstance(mdp, str):
             raise TypeError("Le mot de passe doit être un str")
 
-        nouvel_utilisateur = Utilisateur(id_utilisateur, mdp)
+        Utilisateur_DAO.ajouter_utilisateur(utilisateur)
+        nouvel_utilisateur = Utilisateur(pseudo, mdp)
         Utilisateur.utilisateurs.append(nouvel_utilisateur)
         return nouvel_utilisateur
 
@@ -126,12 +127,6 @@ class UtilisateurService:
                 else:
                     print(f"L'utilisateur {id_utilisateur} n'est pas connecté.")
                     return False
-        print("Échec de la déconnexion : ID ou mot de passe incorrect.")
-        return False
-
-    def afficher_details(self):
-        """Affiche les détails de l'utilisateur."""
-        etat_connexion = "connecté" if self.est_connecte else "déconnecté"
-        print(f"ID utilisateur : {self.id_utilisateur}")
-        print(f"Nombre de playlists : {len(self.playlists)}")
-        print(f"État : {etat_connexion}")
+            else:
+                print("Échec de la déconnexion : ID ou mot de passe incorrect.")
+                return False
