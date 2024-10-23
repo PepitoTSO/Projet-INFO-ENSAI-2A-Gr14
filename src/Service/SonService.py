@@ -2,7 +2,7 @@
 Oui
 '''
 from Object.son import Son
-from DAO.son_DAO import SonDAO
+#from DAO.son_DAO import SonDAO
 
 class SonService():
     def __init__(self, son: Son):
@@ -13,7 +13,7 @@ class SonService():
 
     def ajouter_son(self, son, id_playlist=None, ordre=None):
         try:
-            SonDAO().ajouter_son(son, id_playlist, ordre)
+            #SonDAO().ajouter_son(son, id_playlist, ordre)
             return True
         except Exception as e:
             print(f"Prblm ajout son :{e}")
@@ -21,7 +21,8 @@ class SonService():
 
 
     def supprimer_son(self):
-        son_DAO().supprimer_son(self.son.id_son)
+        #son_DAO().supprimer_son(self.son.id_son)
+        pass
 
     def obtenir_son(self):
         pass

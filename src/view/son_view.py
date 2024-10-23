@@ -46,7 +46,21 @@ class SonView(AbstractView):
             return SonView()
 
         elif reponse["choix"] == "Jouer son":
+            inquirer_id = {
+                "type": "input",
+                "message": "Quel est l'id du son?",
+                "name": "id"
+            }
+            inq_id = prompt([inquirer_id])
+            #DAO recherche par id  avec l'id du son
+            #renvoie les infos pour créer un objet son
 
+            from Object.son import Son
+            son_a_jouer=Son(id_son=int(inq_id['id']))
+            from Service.SonService import SonService
+            SonService_a_jouer = SonService(son_a_jouer)
+
+            SonService_a_jouer.jouer_son()
             return SonView()
         elif reponse["choix"] == "Ajouter son":
 
