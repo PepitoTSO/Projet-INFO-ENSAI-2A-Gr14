@@ -8,9 +8,10 @@ class API_OAUTH2():
         '''
         gère l'authentification spécifique OAuth2 pour avoir plus de fonctionnalités
                 
-        Step 1: Your application redirects users to a Freesound page where they log in and are asked to give permissions to your application.
-        Step 2: If users grant access to your application, Freesound redirects users to a url you provide and includes an authorization grant as a GET parameter*.
-        Step 3: Your application uses that authorization grant to request an access token that ‘links’ the end user with your application and that you will then need to add to all your API requests.
+        Step 1: L'apllication renvoie les utilisateurs vers une page Freesound où ils se connectent et sont invités à donner des autorisations à votre application.
+        Step 2: Si les utilisateurs accordent l'accès à votre application, Freesound les redirige vers une URL que vous fournissez et inclut un code d'autorisation en tant que paramètre GET*.
+        Step 3: Votre application utilise ce code d'autorisation pour demander un jeton d'accès qui "lie" l'utilisateur final à votre application et que vous devrez ensuite ajouter à toutes vos requêtes API.
+         
 
         Returns
         tokenOauth2 : str
@@ -36,10 +37,10 @@ class API_OAUTH2():
 
         def _step12OAuth2(self):
                 '''
-                
-                Step 1: Your application redirects users to a Freesound page where they log in and are asked to give permissions to your application.
-                Step 2: If users grant access to your application, Freesound redirects users to a url you provide and includes an authorization grant as a GET parameter*.
 
+                Step 1: L'application renvoie les utilisateurs vers une page Freesound où ils se connectent et sont invités à donner des autorisations à votre application.
+                Step 2: Si les utilisateurs accordent l'accès à votre application, Freesound les redirige vers une URL que vous fournissez et inclut un code d'autorisation en tant que paramètre GET*.
+                
                 Ouvre un navigateur, attend le login, demande le token de connection et le retourne
 
                 Params
@@ -85,8 +86,9 @@ class API_OAUTH2():
 
         def a2ioauth(self):
                 '''
-                Step 2: If users grant access to your application, Freesound redirects users to a url you provide and includes an authorization grant as a GET parameter*.
-                Step 3: Your application uses that authorization grant to request an access token that ‘links’ the end user with your application and that you will then need to add to all your API requests.
+                Step 2: Si les utilisateurs accordent l'accès à votre application, Freesound les redirige vers une URL que vous fournissez et inclut un code d'autorisation en tant que paramètre GET*.
+                Step 3: Votre application utilise ce code d'autorisation pour demander un jeton d'accès qui "lie" l'utilisateur final à votre application et que vous devrez ensuite ajouter à toutes vos requêtes API.
+
 
                 Params
 
