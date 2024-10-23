@@ -6,14 +6,18 @@ from pathlib import Path
 pygame.init()
 pygame.mixer.init()
 
-class Son():
-    '''
+
+class Son:
+    """
     Classe qui contient la définition d'un son : ses caractéristiques
-    '''
-    def __init__(self, id_son, nom, caracteristiques) -> None:
+    """
+
+    def __init__(self, id_son, nom="pas_def", caracteristiques="pas_def") -> None:
         self.id_son = id_son
-        self.nom = nom #à voir si on fait pas DAO.trouver_son_par_id
-        self.caracteristiques = caracteristiques #à voir si on fait pas DAO.trouver_son_par_id
+        self.nom = nom  # à voir si on fait pas DAO.trouver_son_par_id
+        self.caracteristiques = (
+            caracteristiques  # à voir si on fait pas DAO.trouver_son_par_id
+        )
         self.path_stockage = Path(f"./data/son/{id_son}.mp3")
 
     def __repr__(self):
@@ -45,19 +49,21 @@ class Son():
         self.stop()
 
     def play_multiple_sounds(sound_files):  # Chatgpt
-        sounds = [Son(i, f'sound_{i}', 'test', file) for i, file in enumerate(sound_files)]
+        sounds = [
+            Son(i, f"sound_{i}", "test", file) for i, file in enumerate(sound_files)
+        ]
         for sound in sounds:
             sound.play()
-            time.sleep(0.1)  # Un léger délai pour éviter de jouer tous les sons en même temps
+            time.sleep(
+                0.1
+            )  # Un léger délai pour éviter de jouer tous les sons en même temps
 
     def jouer_aleatoire(self):
         pass
 
 
 if __name__ == "__main__":
-    test = Son(1, 'test', 'oui', 'data/test.mp3')
+    test = Son(1, "test", "oui", "data/test.mp3")
     print(test.id_son)
     print(repr(test))
     test.play()
-
-
