@@ -19,7 +19,7 @@ class Utilisateur_DAO(metaclass=Singleton):
         # Check if the utilisateur already exists
         existing_utilisateur = self.get_utilisateur(utilisateur.id)
         if existing_utilisateur is not None:
-            print(f"Utilisateur avec id {utilisateur.id} exist déjà.")
+            print(f"Utilisateur avec id {utilisateur.id} exist déjà.")  #manque un e à existe
             return created
 
         try:

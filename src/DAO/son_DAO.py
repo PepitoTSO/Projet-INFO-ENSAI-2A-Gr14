@@ -22,7 +22,11 @@ class Son_DAO(metaclass=Singleton):
                         INSERT INTO son (nom, id_playlist, ordre_son_in_plist, caracteristiques, path_stockage)
                         VALUES (%s, %s, %s, %s, %s)
                         RETURNING id_son;
-                    """
+                    """ ##########
+                    #########
+                    # Va changer l'id du son, ce qu'on ne veut pas
+                    #########
+                    ########
                     cursor.execute(
                         insert_query,
                         (
