@@ -11,68 +11,31 @@ class UtilisateurService:
 
         self.utilisateur = utilisateur
 
-    def creer_compte(self, id_utilisateur, pseudo, mdp):
-        mdp_hache = Utilisateur.hacher_mot_de_passe(mdp)
-    def creer_compte(self, id_utilisateur, mdp):
-        mdp_hache = Utilisateur.hacher_mot_de_passe(mdp) #il manque la fonction et ca devrait plutôt être self.utilisateur.hacher_mot_de_passe(mdp)
 
-        print(f"Compte créé pour l'utilisateur {id}.")
-        return Utilisateur(pseudo=pseudo, mdp_hache=mdp_hache)
+    def generer_sel() -> str:
+        """Génère un sel aléatoire pour sécuriser le mot de passe."""
+        return os.urandom(16).hex()
 
-        return Utilisateur(id=id_utilisateur, mdp_hache=mdp_hache) #on return rien par contre il faut daire appel à la DAO pour créer l'utilisateur dans la base de données
-################Tout ce qui est entre là
-    def creer_playlist(self, nom_playlist, son):
-        if nom_playlist in self.playlists:
-            print(f"La playlist '{nom_playlist}' existe déjà.")
-        else:
-            self.playlists[nom_playlist] = [son]
-            print(f"Playlist '{nom_playlist}' créée avec succès")
-        return self.playlists[nom_playlist]
+    def hash_mdp(mdp: str, sel: str) -> str:
+        """Hache un mot de passe avec un sel en utilisant SHA-256."""
+        mdp_sel = (mdp + sel).encode('utf-8')  # Combine le mot de passe et le sel, puis encode en bytes
+        hachage = hashlib.sha256(mdp_sel).hexdigest()  # Hache le mot de passe + sel avec SHA-256
+        return hachage
 
-    def supprimer_playlist(self, nom_playlist):
-        if nom_playlist in self.playlists:
-            del self.playlists[nom_playlist]
-            print(f"Playlist '{nom_playlist}' supprimée.")
-            return True
-        else:
-            print(f"La playlist '{nom_playlist}' n'existe pas.")
-            return False
 
-    def copier_playlist(self, nom_playlist_source, nom_playlist_copie):
-        if nom_playlist_source in self.playlists:
-            if nom_playlist_copie in self.playlists:
-                print(f"La playlist '{nom_playlist_copie}' existe déjà.")
-                return False
-            else:
-                self.playlists[nom_playlist_copie] = list(
-                    self.playlists[nom_playlist_source]
-                )
-                print(
-                    f"Playlist '{nom_playlist_copie}' créée à partir de '{nom_playlist_source}'."
-                )
-                return True
-        else:
-            print(f"La playlist source '{nom_playlist_source}' n'existe pas.")
-            return False
+    def creer_utilisateur(self, pseudo: str, mdp: str):
 
-    def creer_utilisateur(self, utilisateur: Utilisateur, pseudo: pseudo, mdp: str):
-########### et là est à supprimer
-    
-        def creer_utilisateur(self, id_utilisateur: str, mdp: str):
-        # Placeholder for the function body
-            pass
-
-        if not isinstance(pseudo, int):
+        if not isinstance(pseudo, str):
             raise TypeError("Le pseudo doit être un str")
         if not isinstance(mdp, str):
             raise TypeError("Le mot de passe doit être un str")
 
-        Utilisateur_DAO.ajouter_utilisateur(utilisateur)
-        nouvel_utilisateur = Utilisateur(pseudo, mdp)
-        Utilisateur.utilisateurs.append(nouvel_utilisateur)
-        return nouvel_utilisateur
-#### Il faut faire appel à la DAO, créer des objets ne sert à rien
-
+        pseudo_input = input("Entrez votre pseudo: ")
+        mdp_input = input("Entrez votre mot de passe: ")
+        sel = generer_sel()  # Générer un sel aléatoire
+        mdp_hash = hash_mdp(mdp, sel)
+        utilisateur = Utilisateur(pseudo, mdp_hash)
+        Utilisateur_DAO().ajouter_utilisateur(utilisateur)
 
 
     def supprimer_utilisateur(self, id_utilisateur: int):
@@ -110,8 +73,7 @@ class UtilisateurService:
 
     def connecter_utilisateur(pseudo: str, mot_de_passe: str):
 
-        """
-        Méthode pour connecter un utilisateur avec un pseudo et un mot de passe.
+        """Méthode pour connecter un utilisateur avec un pseudo et un mot de passe.
         Retourne l'utilisateur si réussi, sinon None.
         """
 
@@ -127,7 +89,6 @@ class UtilisateurService:
         print("Échec de la connexion : identifiant ou mot de passe incorrect.")
         return None ##Non, il faut appeler la DAO puis vérifier que les mdp hachés sont égaux
 
-    @staticmethod
     def deconnecter_utilisateur(pseudo: str, mot_de_passe: str):
         """Méthode pour déconnecter un utilisateur avec un id et un mot de passe.
         Retourne True si la déconnexion est réussie, sinon False.
@@ -146,14 +107,8 @@ class UtilisateurService:
                     Utilisateur.est_connecte = True
                     print(f"Déconnexion réussie pour l'utilisateur : {id_utilisateur}")
                     return True
-                print(f"L'utilisateur {id_utilisateur} n'est pas connecté.")
-                return False
+                else:
+                    print(f"L'utilisateur {id_utilisateur} n'est pas connecté.")
+                    return False
         print("Échec de la déconnexion : ID ou mot de passe incorrect.")
         return False #ça sera utile mais j'ai aucune idée de comment faire le code, je suis pas sûr que ça soit bon ici
-
-    def afficher_details(self):
-        """Affiche les détails de l'utilisateur."""
-        etat_connexion = "connecté" if self.est_connecte else "déconnecté"
-        print(f"ID utilisateur : {self.id_utilisateur}")
-        print(f"Nombre de playlists : {len(self.playlists)}")
-        print(f"État : {etat_connexion}") #inutile c'est la session qui dit qui est connecté et qui l'est pas
