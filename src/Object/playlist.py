@@ -1,10 +1,11 @@
 from Object.utilisateur import Utilisateur
 from Object.son import Son
-from Service.PlaylistService import PlaylistService
 
 
 class Playlist:
-    """Voici la classe qui gère les playlist"""
+    """
+    Voici la classe qui gère les playlist
+    """
 
     def __init__(
         self,
@@ -45,8 +46,6 @@ class Playlist:
 
         self.list_son.append([son, ordre])
 
-        PlaylistService(self).ajouter_son_a_playlist(son)
-
     def supprimer_son(self, son: Son):
         for i in range(len(self.list_son)):
             if self.list_son[i][0] == son:
@@ -55,8 +54,6 @@ class Playlist:
         for i in range(len(self.list_son)):
             if self.list_son[i][1] > ordre:
                 self.list_son[i][1] += -1
-
-        PlaylistService(self).retirer_son_de_playlist(son)
 
     def changer_ordre(self, son, ordre: int):
 
@@ -80,13 +77,9 @@ class Playlist:
 
         self.list_son.append([son, ordre])
 
-        PlaylistService(self).changer_ordre_son(son, ordre)
-
     def changer_nom_playlist(self, nouveau_nom):
 
         if not isinstance(nouveau_nom, str):
             raise TypeError("Le nouveau nom doit être un str.")
 
         self.nom_playlist = nouveau_nom
-
-        PlaylistService(self).changer_nom_playlist(nouveau_nom)
