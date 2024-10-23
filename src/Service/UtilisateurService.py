@@ -98,7 +98,7 @@ class UtilisateurService:
             raise TypeError("Le pseudo doit être un str")
         if not isinstance(mdp, str):
             raise TypeError("Le mot de passe doit être un str")
-        
+
             if utilisateur.pseudo == pseudo and utilisateur.mot_de_passe == mot_de_passe:
                 if utilisateur.est_connecte == False:
                     print(f"L'utilisateur {id_utilisateur} n'est pas connecté.")

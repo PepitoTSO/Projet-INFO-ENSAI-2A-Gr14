@@ -39,7 +39,7 @@ class Playlist:
             raise TypeError("L'ordre doit être un int.")
         if not isinstance(son, Son):
             raise TypeError("son doit être un objet de classe Son.")
-
+    
         for i in range(len(self.list_son)):
             if self.list_son[i][1] > ordre:
                 self.list_son[i][1] += 1
