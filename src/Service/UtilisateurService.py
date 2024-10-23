@@ -57,7 +57,10 @@ class UtilisateurService:
 
     def creer_utilisateur(self, utilisateur: Utilisateur, pseudo: pseudo, mdp: str):
 ########### et là est à supprimer
-    def creer_utilisateur(self, id_utilisateur: str, mdp: str):
+    
+        def creer_utilisateur(self, id_utilisateur: str, mdp: str):
+        # Placeholder for the function body
+            pass
 
         if not isinstance(pseudo, int):
             raise TypeError("Le pseudo doit être un str")
@@ -107,7 +110,8 @@ class UtilisateurService:
 
     def connecter_utilisateur(pseudo: str, mot_de_passe: str):
 
-        """Méthode pour connecter un utilisateur avec un pseudo et un mot de passe.
+        """
+        Méthode pour connecter un utilisateur avec un pseudo et un mot de passe.
         Retourne l'utilisateur si réussi, sinon None.
         """
 
@@ -142,9 +146,8 @@ class UtilisateurService:
                     Utilisateur.est_connecte = True
                     print(f"Déconnexion réussie pour l'utilisateur : {id_utilisateur}")
                     return True
-                else:
-                    print(f"L'utilisateur {id_utilisateur} n'est pas connecté.")
-                    return False
+                print(f"L'utilisateur {id_utilisateur} n'est pas connecté.")
+                return False
         print("Échec de la déconnexion : ID ou mot de passe incorrect.")
         return False #ça sera utile mais j'ai aucune idée de comment faire le code, je suis pas sûr que ça soit bon ici
 
