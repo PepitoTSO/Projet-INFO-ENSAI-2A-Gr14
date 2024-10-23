@@ -19,7 +19,6 @@ class SonView(AbstractView):
                 "message": "Menu son",  # lister les son dispo pour l'utilisateur à l'apparition du menu?
                 "choices": [
                     "Ajouter son",
-                    "Modifier son",
                     "Supprimer son",
                     "Jouer son",
                     "Revenir au menu",
@@ -37,9 +36,6 @@ class SonView(AbstractView):
             from view.menu_principal import MenuView
 
             return MenuView()
-
-        elif reponse["choix"] == "Modifier son":  # A implementer
-            return SonView()
 
         elif reponse["choix"] == "Supprimer son":
 

@@ -64,4 +64,6 @@ class RechSonView(AbstractView):
             api=apifreesound()
             api.dl_son(int(inq_id['id']))
 
+            #et ajouter à la bdd
+
             return RechSonView()
