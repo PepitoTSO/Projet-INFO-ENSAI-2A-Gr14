@@ -19,7 +19,7 @@ class Utilisateur_DAO(metaclass=Singleton):
         # Check if the utilisateur already exists
         existing_utilisateur = self.get_utilisateur(utilisateur.id)
         if existing_utilisateur is not None:
-            print(f"Utilisateur avec id {utilisateur.id} exist déjà.")  #manque un e à existe
+            print(f"Utilisateur avec id {utilisateur.id} exist déjà.")  #manque un e à existe, est-ce qu'on veut vraiment print des trucs?
             return created
 
         try:
@@ -36,7 +36,8 @@ class Utilisateur_DAO(metaclass=Singleton):
                             "dd": utilisateur.dd,
                             "ddc": utilisateur.ddc,
                         },
-                    )
+                    )# si on ajoute un utilisateur, c'est à la création de son compte donc
+                    # dd et ddc n'existe pas (encore) il faut que tu prennes la date actuelle pour les deux (lien avec session?)
             created = True
 
             return created
@@ -60,7 +61,7 @@ class Utilisateur_DAO(metaclass=Singleton):
                     if result:
                         return Utilisateur(
                             id=result[0], mdp=result[1], dd=result[2], ddc=result[3]
-                        )
+                        ) # t'es sur que ca marche avec le numero des index, j'ai toujours vu avec le nom des colonnes
                     else:
                         return None
         except Exception as e:
