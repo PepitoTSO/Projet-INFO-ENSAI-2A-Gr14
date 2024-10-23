@@ -1,4 +1,3 @@
-from typing import List
 from utils.singleton import Singleton
 from db_connection import DBConnection
 from son import Son
