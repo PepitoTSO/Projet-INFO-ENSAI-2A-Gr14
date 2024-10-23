@@ -59,28 +59,41 @@ class Son_DAO(metaclass=Singleton):
             return son
         return None
 
-
-    def get_all_id_son_by_id_playlist(self, id_playlist) -> list[Son]:   #a deplacer dans une DAO de jointure
-        sons = []
-        with DBConnection().connection as connection:
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT * FROM Son WHERE id_playlist = %(id_playlist)s;",
-                    {"id_playlist": id_playlist}
-                )
-                res = cursor.fetchall()
-
-        for son_data in res:
-            son = Son(
-                id_son=son_data["id_son"],
-                nom=son_data["nom"],
-                caracteristiques=son_data["tags"],
-                path=son_data["path_stockage"]
-            )
-            sons.append(son)
-        return sons
+def delete_son(self, son:Son) -> bool:
+        try:
+            with DBConnection().connection as connection:
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        "REQUETE SQL %(id_playlist)s",
+                        {"id_playlist": id_playlist, "id_son": id_son}
+                    )
+                connection.commit() # ou fetch_all etc
+            return True
+        except Exception as e:
+            print(f"Error deleting son: {e}")
+            return False
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
     def supprimer_son_by_playlist(self, id_playlist: int, id_son: int) -> bool:
         try:
             with DBConnection().connection as connection:
@@ -121,7 +134,7 @@ class Son_DAO(metaclass=Singleton):
             print(f"Error retrieving sons: {e}")
 
         return sons_with_order
-
+'''
 
 
 
