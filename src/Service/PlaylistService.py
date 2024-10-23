@@ -13,13 +13,13 @@ class PlaylistService:
         self.playlist = playlist
 
     def supprimer_playlist(self):
-        Playlist_DAO.supprimer_playlist(self.playlist.id_playlist)
+        Playlist_DAO().supprimer_playlist(self.playlist.id_playlist)
 
     def modifier_nom_playlist(self, nouveau_nom: str):
         if not isinstance(nouveau_nom, str):
             raise TypeError("Le nom doit être de type str.")
 
-        Playlist_DAO.modifier_nom_playlist(self.playlist.id_playlist, nouveau_nom)
+        Playlist_DAO().modifier_nom_playlist(self.playlist.id_playlist, nouveau_nom)
 
     def changer_ordre_son(self, son: Son, ordre: int):
 
@@ -49,11 +49,6 @@ class PlaylistService:
         id_playlist = self.playlist.id_playlist
         Playlist_DAO().changer_ordre_son(id_playlist, ordre, True)
         Playlist_DAO().ajouter_son(id_playlist, son, ordre)
-
-    def changer_nom_playlist(self, nouveau_nom):
-
-        id_playlist = self.playlist.id_playlist
-        Playlist_DAO().modifier_nom_playlist(id_playlist, nouveau_nom)
 
     def jouer_playlist(self):
 
