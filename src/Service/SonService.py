@@ -2,6 +2,7 @@
 Oui
 '''
 from Object.son import Son
+from DAO.son_DAO import SonDAO
 
 class SonService():
     def __init__(self, son: Son):
@@ -10,8 +11,14 @@ class SonService():
 
         self.son = son
 
-    def ajouter_son(self):
-        pass
+    def ajouter_son(self, son, id_playlist=None, ordre=None):
+        try:
+            SonDAO().ajouter_son(son, id_playlist, ordre)
+            return True
+        except Exception as e:
+            print(f"Prblm ajout son :{e}")
+            return False
+
 
     def supprimer_son(self):
         son_DAO().supprimer_son(self.son.id_son)
@@ -26,6 +33,7 @@ class SonService():
         pass
 
     def jouer_son(self):
+        print("lecture :",repr(self.son))
         self.son.play()
     
     def changer_tags_son(self):

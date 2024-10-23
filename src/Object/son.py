@@ -10,11 +10,11 @@ class Son():
     '''
     Classe qui contient la définition d'un son : ses caractéristiques
     '''
-    def __init__(self, id_son, nom, caracteristiques, path=None) -> None:
+    def __init__(self, id_son, nom, caracteristiques) -> None:
         self.id_son = id_son
-        self.nom = nom
-        self.caracteristiques = caracteristiques
-        self.path_stockage = Path(path)
+        self.nom = nom #à voir si on fait pas DAO.trouver_son_par_id
+        self.caracteristiques = caracteristiques #à voir si on fait pas DAO.trouver_son_par_id
+        self.path_stockage = Path(f"./data/son/{id_son}.mp3")
 
     def __repr__(self):
         return f"{self.id_son=}, {self.nom=}, {self.caracteristiques=}"
