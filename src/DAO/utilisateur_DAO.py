@@ -19,24 +19,26 @@ class Utilisateur_DAO(metaclass=Singleton):
         # Check if the utilisateur already exists
         existing_utilisateur = self.get_utilisateur(utilisateur.id)
         if existing_utilisateur is not None:
-            print(f"Utilisateur avec id {utilisateur.id} existe déjà.")
+            print(f"Utilisateur avec id {utilisateur.id} exist déjà.")  #manque un e à existe, est-ce qu'on veut vraiment print des trucs?
             return created
 
-        with DBConnection().connection as connection:
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    """
-                        INSERT INTO utilisateur (id, mdp, dd, ddc)
-                        VALUES (%(id)s, %(mdp)s, %(dd)s, %(ddc)s)
-                        """,
-                    {
-                        "id": utilisateur.id,
-                        "mdp": utilisateur.mdp,
-                        "dd": utilisateur.dd,
-                        "ddc": utilisateur.ddc,
-                    },
-                )
-        created = True
+        try:
+            with DBConnection().connection as connection:
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        """
+                            INSERT INTO bdd.utilisateur (id, mdp, dd, ddc)
+                            VALUES (%(id)s, %(mdp)s, %(dd)s, %(ddc)s)
+                            """,
+                        {
+                            "id": utilisateur.id,
+                            "mdp": utilisateur.mdp,
+                            "dd": utilisateur.dd,
+                            "ddc": utilisateur.ddc,
+                        },
+                    )# si on ajoute un utilisateur, c'est à la création de son compte donc
+                    # dd et ddc n'existe pas (encore) il faut que tu prennes la date actuelle pour les deux (lien avec session?)
+            created = True
 
         return created
 
@@ -45,23 +47,19 @@ class Utilisateur_DAO(metaclass=Singleton):
         Retrieves a utilisateur by their id.
         """
         try:
-            cursor = self.db_connection.cursor()
-            select_user_query = """
-                SELECT id, mdp, dd, ddc FROM utilisateurs WHERE id = %s
-            """
-            # On pourrait écrire select_user_query = f"SELECT id, mdp, dd, ddc FROM utilisateurs WHERE id = {id}"
-            # mais on se prémunit des injections SQL
-            cursor.execute(select_user_query, (id,))
-            row = cursor.fetchone()
-            if row:
-                utilisateur = Utilisateur(
-                    id=row["id"], mdp=row["mdp"], dd=row["dd"], ddc=row["ddc"]
-                )
-                cursor.close()
-                return utilisateur
-            else:
-                cursor.close()
-                return None
+            with DBConnection().connection as connection:
+                with connection.cursor() as cursor:
+                    select_user_query = """
+                        SELECT id, mdp, dd, ddc FROM utilisateur WHERE id = %s
+                    """
+                    cursor.execute(select_user_query, (id,))
+                    result = cursor.fetchone()
+                    if result:
+                        return Utilisateur(
+                            id=result[0], mdp=result[1], dd=result[2], ddc=result[3]
+                        ) # t'es sur que ca marche avec le numero des index, j'ai toujours vu avec le nom des colonnes
+                    else:
+                        return None
         except Exception as e:
             print(f"Error retrieving utilisateur: {e}")
             return None
