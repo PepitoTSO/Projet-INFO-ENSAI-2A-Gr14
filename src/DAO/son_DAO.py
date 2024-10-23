@@ -21,11 +21,7 @@ class Son_DAO(metaclass=Singleton):
                         INSERT INTO son (id_son, nom_son, tags, path_stockage)
                         VALUES (%s, %s, %s, %s)
                         RETURNING id_son;
-                    """ ##########
-                    #########
-                    # Va changer l'id du son, ce qu'on ne veut pas
-                    #########
-                    ########
+                    """ 
                     cursor.execute(
                         insert_query,
                         (
@@ -37,20 +33,19 @@ class Son_DAO(metaclass=Singleton):
                     )
                     # Fetch the generated id_son
                     res = cursor.fetchone()
-                    if res:
-                        son.id_son = res[0]
-                        created = True
-            return created
+                if res:
+                    son.id_son = res[0]
+                    return True
         except Exception as e:
             print(f"Error adding son: {e}")
             return False
 
-    def get_son_by_id_playlist(self, id_son: int, id_playlist: int) -> Son:
+    def get_son_by_id(self, id_son: int) -> Son:
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT * FROM Son WHERE id_son = %(id_son)s AND id_playlist = %(id_playlist)s;",
-                    {"id_son": id_son, "id_playlist": id_playlist},
+                    "SELECT * FROM Son WHERE id_son = %(id_son)s;",
+                    {"id_son": id_son},
                 )
                 res = cursor.fetchone()
 
@@ -65,7 +60,7 @@ class Son_DAO(metaclass=Singleton):
         return None
 
 
-    def get_all_son_by_id_playlist(self, id_playlist) -> list[Son]:
+    def get_all_id_son_by_id_playlist(self, id_playlist) -> list[Son]:   #a deplacer dans une DAO de jointure
         sons = []
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:

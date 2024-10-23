@@ -13,7 +13,7 @@ class Playlist_DAO(metaclass=Singleton):
     Uses the Singleton pattern to ensure a single instance.
     """
 
-    def ajouter_playlist(self, nom_playlist) -> int:
+    def ajouter_playlist(self, nom_playlist) -> int: # c'est pas plutot retourne Bool si réussite ou échec
         id_utilisateur = Session().utilisateur.id
 
         with DBConnection().connection as connection:

@@ -5,8 +5,8 @@ CREATE SCHEMA bdd;
 -- Les utilisateurs
 --------------------------------------------------------------
 
-DROP TABLE IF EXISTS bdd.compte CASCADE ;
-CREATE TABLE bdd.compte (
+DROP TABLE IF EXISTS bdd.utilisateur CASCADE ;
+CREATE TABLE bdd.utilisateur (
     id_utilisateur INT AUTO_INCREMENT PRIMARY KEY,
     pseudo varchar UNIQUE NOT NULL,
     mdp varchar NOT NULL
