@@ -1,11 +1,8 @@
 class Utilisateur:
-    def __init__(self, id: int, date_debut, date_derniere_co, playlist):
+    def __init__(self, id: int):
         if not isinstance(id, int):
             raise TypeError("L'id de l'utilisateur n'est pas de la classe int.")
-
         self.id = id
-        self.date_debut = date_debut
-        self.date_derniere_co = date_derniere_co
 
     def creer_compte(self, id, mdp):
         mdp_hache = Utilisateur.hacher_mot_de_passe(mdp)  ######
