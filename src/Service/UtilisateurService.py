@@ -12,11 +12,11 @@ class UtilisateurService:
         self.utilisateur = utilisateur
 
     def creer_compte(self, id_utilisateur, mdp):
-        mdp_hache = Utilisateur.hacher_mot_de_passe(mdp)
+        mdp_hache = Utilisateur.hacher_mot_de_passe(mdp) #il manque la fonction et ca devrait plutôt être self.utilisateur.hacher_mot_de_passe(mdp)
 
         print(f"Compte créé pour l'utilisateur {id}.")
-        return Utilisateur(id=id_utilisateur, mdp_hache=mdp_hache)
-
+        return Utilisateur(id=id_utilisateur, mdp_hache=mdp_hache) #on return rien par contre il faut daire appel à la DAO pour créer l'utilisateur dans la base de données
+################Tout ce qui est entre là
     def creer_playlist(self, nom_playlist, son):
         if nom_playlist in self.playlists:
             print(f"La playlist '{nom_playlist}' existe déjà.")
@@ -50,7 +50,7 @@ class UtilisateurService:
         else:
             print(f"La playlist source '{nom_playlist_source}' n'existe pas.")
             return False
-
+########### et là est à supprimer
     def creer_utilisateur(self, id_utilisateur: str, mdp: str):
 
         if not isinstance(id_utilisateur, str):
@@ -61,13 +61,16 @@ class UtilisateurService:
         nouvel_utilisateur = Utilisateur(id_utilisateur, mdp)
         Utilisateur.utilisateurs.append(nouvel_utilisateur)
         return nouvel_utilisateur
+#### Il faut faire appel à la DAO, créer des objets ne sert à rien
+
+
 
     def supprimer_utilisateur(self, id_utilisateur: str):
 
         if not isinstance(id_utilisateur, str):
             raise TypeError("L'identifiant doit être un str")
 
-        Utilisateur_DAO.supprimer_utilisateur(self.utilisateur.id_utilisateur)
+        Utilisateur_DAO().supprimer_utilisateur(self.utilisateur.id_utilisateur) #carré, juste attention à pas oublier les parenthèses de Utilisateur_DAO()
 
     def modifier_utilisateur(self, utilisateur: Utilisateur, id_utilisateur: str):
 
@@ -76,23 +79,24 @@ class UtilisateurService:
         if not isinstance(id_utilisateur, str):
             raise TypeError("L'identifiant doit être un str")
 
-        Utilisateur_DAO.modifier_utilisateur(self.utilisateur)
+        Utilisateur_DAO().modifier_utilisateur(self.utilisateur) #je pense que cette méthode devra communiquer avec la session, parce qu'on va pas
+        # lui faire modifier son mdp, son username par contre il faudra que la date de dernière connexion change au fur et à mesure.
 
-    def obtenir_utilisateur(self, utlisateur: Utilisateur, id_utilisateur: str):
+    def obtenir_utilisateur(self, utilisateur: Utilisateur, id_utilisateur: str):
 
         if not isinstance(utilisateur, Utilisateur):
             raise TypeError("L'utilisateur n'est pas de la classe utilisateur.")
         if not isinstance(id_utilisateur, str):
             raise TypeError("L'identifiant doit être un str")
 
-        Utilisateur_DAO.get_utilisateur(self.utilisateur)
+        Utilisateur_DAO().get_utilisateur(self.utilisateur) # pourquoi pas, après reflexion en fait utilisateur ne fait que gérer les connexions, on en reparle
 
     def lister_playlists(self, utilisateur: Utilisateur):
 
         if not isinstance(utilisateur, Utilisateur):
             raise TypeError("L'utilisateur n'est pas de la classe utilisateur.")
 
-        Playlist_DAO.get_playlist(self.utilisateur)
+        Playlist_DAO().get_all_playlists_by_user(self.utilisateur.id)
 
     def connecter_utilisateur(id_utilisateur, mot_de_passe):
         """Méthode pour connecter un utilisateur avec un id et un mot de passe.
@@ -107,7 +111,7 @@ class UtilisateurService:
                 print(f"Connexion réussie pour l'utilisateur : {id_utilisateur}")
                 return utilisateur
         print("Échec de la connexion : identifiant ou mot de passe incorrect.")
-        return None
+        return None ##Non, il faut appeler la DAO puis vérifier que les mdp hachés sont égaux
 
     @staticmethod
     def deconnecter_utilisateur(id_utilisateur, mot_de_passe):
@@ -127,11 +131,11 @@ class UtilisateurService:
                     print(f"L'utilisateur {id_utilisateur} n'est pas connecté.")
                     return False
         print("Échec de la déconnexion : ID ou mot de passe incorrect.")
-        return False
+        return False #ça sera utile mais j'ai aucune idée de comment faire le code, je suis pas sûr que ça soit bon ici
 
     def afficher_details(self):
         """Affiche les détails de l'utilisateur."""
         etat_connexion = "connecté" if self.est_connecte else "déconnecté"
         print(f"ID utilisateur : {self.id_utilisateur}")
         print(f"Nombre de playlists : {len(self.playlists)}")
-        print(f"État : {etat_connexion}")
+        print(f"État : {etat_connexion}") #inutile c'est la session qui dit qui est connecté et qui l'est pas
