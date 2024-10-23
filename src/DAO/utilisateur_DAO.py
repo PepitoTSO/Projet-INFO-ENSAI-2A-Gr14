@@ -40,11 +40,7 @@ class Utilisateur_DAO(metaclass=Singleton):
                     # dd et ddc n'existe pas (encore) il faut que tu prennes la date actuelle pour les deux (lien avec session?)
             created = True
 
-            return created
-
-        except Exception as e:
-            print(f"An error occurred: {e}")
-            return False
+        return created
 
     def get_utilisateur(self, id: int) -> Utilisateur:
         """
@@ -65,7 +61,7 @@ class Utilisateur_DAO(metaclass=Singleton):
                     else:
                         return None
         except Exception as e:
-            print(f"An error occurred: {e}")
+            print(f"Error retrieving utilisateur: {e}")
             return None
 
     def get_all_utilisateurs(self) -> List[Utilisateur]:
@@ -73,95 +69,70 @@ class Utilisateur_DAO(metaclass=Singleton):
         Retrieves all utilisateurs from the database.
         """
         try:
-            with DBConnection().connection as connection:
-                with connection.cursor() as cursor:
-                    cursor.execute(
-                        "SELECT *                                  "
-                        "  FROM utilisateurs                     "
-                    )
-
-                    # to store raw results
-                    res = cursor.fetchall()
-
-            # Create an empty list to store formatted results
-            utilisateurs: List[Utilisateur] = []
-
-            # if the SQL query returned results (ie. res not None)
-            if res:
-                for row in res:
-                    # Assuming your Utilisateur class has a constructor that takes these fields
-                    utilisateur = Utilisateur(
-                        id=row["id"], mdp=row["mdp"], dd=row["dd"], ddc=row["ddc"]
-                    )
-                    utilisateurs.append(utilisateur)
-
+            cursor = self.db_connection.cursor()
+            select_all_users_query = """
+                SELECT id, mdp, dd, ddc FROM utilisateurs
+            """
+            cursor.execute(select_all_users_query)
+            utilisateurs = []
+            for row in cursor.fetchall():
+                utilisateur = Utilisateur(
+                    id=row["id"], mdp=row["mdp"], dd=row["dd"], ddc=row["ddc"]
+                )
+                utilisateurs.append(utilisateur)
+            cursor.close()
             return utilisateurs
         except Exception as e:
             print(f"Error retrieving all utilisateurs: {e}")
             return []
 
-    def modifier_utilisateur(self, utilisateur: Utilisateur) -> bool:
+    def modifier_utilisateur(self, data: Dict[str, Any]) -> bool:
         """
-        Modifie les informations d'un utilisateur.
+        Modifies a utilisateur's information.
         """
-        updated = False
-
-        # Vérifier si l'ID de l'utilisateur est présent
-        if not utilisateur.id:
-            print("L'ID de l'utilisateur (id) est requis pour la modification.")
-            return updated
-
         try:
-            with DBConnection().connection as connection:
-                with connection.cursor() as cursor:
-                    cursor.execute(
-                        "UPDATE bdd.compte                               "
-                        "   SET pseudo = %(pseudo)s,                     "
-                        "       mdp_hash = %(mdp_hash)s,                 "
-                        "       date_creation = %(date_creation)s,       "
-                        "       date_derniere_co = %(date_derniere_co)s  "
-                        " WHERE id_utilisateur = %(id_utilisateur)s      ",
-                        {
-                            "pseudo": utilisateur.pseudo,
-                            "mdp_hash": utilisateur.mdp,
-                            "date_creation": utilisateur.date_creation,
-                            "date_derniere_co": utilisateur.date_derniere_co,
-                            "id_utilisateur": utilisateur.id,
-                        },
-                    )
-                    if cursor.rowcount:
-                        updated = True
-            return updated
+            cursor = self.db_connection.cursor()
+            id = data.get("id")
+            if not id:
+                print("Utilisateur ID (id) is required for modification.")
+                return False
+
+            fields_to_update = data.copy()
+            fields_to_update.pop("id", None)
+            if not fields_to_update:
+                print("No fields to update.")
+                return False
+
+            # Cela crée une chaîne de caractères comme 'mdp = %s, dd = %s, ddc = %s',
+            # en fonction des champs qui sont mis à jour.
+            update_fields = ", ".join(
+                [f"{key} = %s" for key in fields_to_update.keys()]
+            )
+            update_values = list(fields_to_update.values())
+            update_values.append(id)
+            update_query = f"UPDATE utilisateurs SET {update_fields} WHERE id = %s"
+
+            cursor.execute(update_query, update_values)
+            self.db_connection.commit()
+            cursor.close()
+            return True
         except Exception as e:
+            self.db_connection.rollback()
             print(f"Error modifying utilisateur: {e}")
             return False
 
     def supprimer_utilisateur(self, id: int) -> bool:
         """
-        Deletes a utilisateur by their id.
+        Deletes a user by their id.
         """
         try:
-            with DBConnection().connection as connection:
-                with connection.cursor() as cursor:
-                    # Si on s'en fout des injections SQL
-                    # delete_user_query = f"DELETE FROM utilisateur WHERE id = {id}"
-                    # cursor.execute(delete_user_query)
-                    delete_user_query = "DELETE FROM utilisateur WHERE id = %s"
-                    cursor.execute(delete_user_query, (id,))
-                    connection.commit()
+            cursor = self.db_connection.cursor()
+            delete_user_query = "DELETE FROM utilisateurs WHERE id = %s"
+            cursor.execute(delete_user_query, (id,))
+            self.db_connection.commit()
+            cursor.close()
             return True
         except Exception as e:
-            if connection:
-                connection.rollback()
+            self.db_connection.rollback()
             print(f"Error deleting utilisateur: {e}")
             return False
-
-
-if __name__ == "__main__":
-    # Pour charger les variables d'environnement contenues dans le fichier .env
-    import dotenv
-
-    dotenv.load_dotenv(override=True)
-
-    utilisateurs = Utilisateur_DAO().get_all_utilisateurs()
-    print(utilisateurs)
