@@ -52,7 +52,7 @@ class apifreesound():
         if not isinstance(id, int):
             raise TypeError("id n'est pas int")
 
-        fichier = Path(f"../data/son/{id}.mp3")  # le repertoire se trouve en dehors du git pour pas push des sons etc
+        fichier = Path(f"./data/son/{id}.mp3")  # le repertoire se trouve en dehors du git pour pas push des sons etc
         repertoire = fichier.parent
 
         if not repertoire.exists():
@@ -80,7 +80,7 @@ class apifreesound():
                 reponse = requests.get(url_dl, stream=True)
 
                 # Écriture du fichier dans le répertoire de destination
-                with open(f'../data/son/{id}.mp3', 'wb') as f:
+                with open(f'./data/son/{id}.mp3', 'wb') as f:
                     for chunk in reponse.iter_content(chunk_size=8192):
                         f.write(chunk)
 
