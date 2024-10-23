@@ -17,11 +17,10 @@ class UtilisateurService:
         return os.urandom(16).hex()
 
     def hash_mdp(mdp: str, sel: str) -> str:
-        """Hache un mot de passe avec un sel en utilisant SHA-256."""
+        """Hash un mot de passe avec un sel en utilisant SHA-256."""
         mdp_sel = (mdp + sel).encode('utf-8')  # Combine le mot de passe et le sel, puis encode en bytes
-        hachage = hashlib.sha256(mdp_sel).hexdigest()  # Hache le mot de passe + sel avec SHA-256
-        return hachage
-
+        hash = hashlib.sha256(mdp_sel).hexdigest()  # Hache le mot de passe + sel avec SHA-256
+        return hash
 
     def creer_utilisateur(self, pseudo: str, mdp: str):
 
@@ -43,7 +42,7 @@ class UtilisateurService:
         if not isinstance(id_utilisateur, int):
             raise TypeError("L'identifiant doit être un int")
 
-        Utilisateur_DAO().supprimer_utilisateur(self.utilisateur.id_utilisateur) #carré, juste attention à pas oublier les parenthèses de Utilisateur_DAO()
+        Utilisateur_DAO().supprimer_utilisateur(self.utilisateur.id_utilisateur)
 
     def modifier_utilisateur(self, utilisateur: Utilisateur, id_utilisateur: int):
 
