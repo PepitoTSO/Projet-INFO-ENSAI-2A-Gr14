@@ -17,10 +17,11 @@ class UtilisateurService:
         return os.urandom(16).hex()
 
     def hash_mdp(mdp: str, sel: str) -> str:
-        """Hash un mot de passe avec un sel en utilisant SHA-256."""
+        """Hache un mot de passe avec un sel en utilisant SHA-256."""
         mdp_sel = (mdp + sel).encode('utf-8')  # Combine le mot de passe et le sel, puis encode en bytes
-        hash = hashlib.sha256(mdp_sel).hexdigest()  # Hache le mot de passe + sel avec SHA-256
-        return hash
+        hachage = hashlib.sha256(mdp_sel).hexdigest()  # Hache le mot de passe + sel avec SHA-256
+        return hachage
+
 
     def creer_utilisateur(self, pseudo: str, mdp: str):
 
@@ -42,7 +43,7 @@ class UtilisateurService:
         if not isinstance(id_utilisateur, int):
             raise TypeError("L'identifiant doit être un int")
 
-        Utilisateur_DAO().supprimer_utilisateur(self.utilisateur.id_utilisateur)
+        Utilisateur_DAO().supprimer_utilisateur(self.utilisateur.id_utilisateur) #carré, juste attention à pas oublier les parenthèses de Utilisateur_DAO()
 
     def modifier_utilisateur(self, utilisateur: Utilisateur, id_utilisateur: int):
 
@@ -103,11 +104,12 @@ class UtilisateurService:
                     print(f"L'utilisateur {id_utilisateur} n'est pas connecté.")
                     return False
                 else:
-                    Utilisateur.est_connecte = True
+                    Utilisateur.est_connecte = True #je pense que c'est pas bon, il faudra que tu fasses un truc du genre utilisateur.est_connecte = False pour transformer l'état de connexion de l'utilisateur en déconnecté.
                     print(f"Déconnexion réussie pour l'utilisateur : {id_utilisateur}")
                     return True
-                else:
-                    print(f"L'utilisateur {id_utilisateur} n'est pas connecté.")
-                    return False
+# j'ai mis en commentaire cette partie parce qu'elle n'est jamais éxécutée. si elle sert à qqch faut modifier le code
+#                else:
+#                    print(f"L'utilisateur {id_utilisateur} n'est pas connecté.")
+#                    return False
         print("Échec de la déconnexion : ID ou mot de passe incorrect.")
         return False #ça sera utile mais j'ai aucune idée de comment faire le code, je suis pas sûr que ça soit bon ici
