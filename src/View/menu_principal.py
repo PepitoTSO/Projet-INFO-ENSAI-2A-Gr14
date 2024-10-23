@@ -86,7 +86,13 @@ class MenuView(AbstractView):
 
         elif reponse["choix"] == "Infos":
 
-            info = 'texte a faire'   # C'est ici pour le texte des pourquoi et comment
+            info = """Bonjour et bienvenu sur notre application ! 
+              Vous pouvez vous connecter ou créer un compte pour accéder à nos services. 
+              Cette application a été créée dans le but de vous aider à créer une ambiance pour vos parties de jeux de rôles. 
+              Vous pouvez ajouter des sons à votre playlist et les jouer en boucle ou les arrêter à tout moment afin de permettre une immersion totale des joueurs. 
+              Vous pouvez aussi créer des playlists personnalisées pour chaque partie. 
+              N'hésitez pas à nous contacter pour toute question ou suggestion. 
+              Merci de votre confiance et bonne partie !"""   # C'est ici pour le texte des pourquoi et comment
             print(info)
 
             return MenuView()
