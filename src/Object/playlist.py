@@ -1,6 +1,6 @@
-from Object.utilisateur import Utilisateur
-from Object.son import Son
-from Service.PlaylistService import PlaylistService
+from src.Object.utilisateur import Utilisateur
+from src.Object.son import Son
+from src.Service.PlaylistService import PlaylistService
 
 
 class Playlist:
