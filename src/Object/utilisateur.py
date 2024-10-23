@@ -6,7 +6,6 @@ class Utilisateur:
         self.id = id
         self.date_debut = date_debut
         self.date_derniere_co = date_derniere_co
-        self.playlist = playlist
 
     def creer_compte(self, id, mdp):
         mdp_hache = Utilisateur.hacher_mot_de_passe(mdp)  ######

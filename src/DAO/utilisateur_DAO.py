@@ -33,8 +33,8 @@ class Utilisateur_DAO(metaclass=Singleton):
                         {
                             "id": utilisateur.id,
                             "mdp": utilisateur.mdp,
-                            "dd": utilisateur.dd,
-                            "ddc": utilisateur.ddc,
+#                            "dd": utilisateur.dd,
+#                            "ddc": utilisateur.ddc,
                         },
                     )# si on ajoute un utilisateur, c'est à la création de son compte donc
                     # dd et ddc n'existe pas (encore) il faut que tu prennes la date actuelle pour les deux (lien avec session?)
@@ -56,7 +56,7 @@ class Utilisateur_DAO(metaclass=Singleton):
                     result = cursor.fetchone()
                     if result:
                         return Utilisateur(
-                            id=result[0], mdp=result[1], dd=result[2], ddc=result[3]
+                    id=row["id"], mdp=row["mdp"], dd=row["dd"], ddc=row["ddc"]
                         ) # t'es sur que ca marche avec le numero des index, j'ai toujours vu avec le nom des colonnes
                     else:
                         return None
