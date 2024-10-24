@@ -5,8 +5,8 @@ CREATE SCHEMA bdd;
 -- Les utilisateurs
 --------------------------------------------------------------
 
-DROP TABLE IF EXISTS bdd.compte CASCADE;
-CREATE TABLE bdd.compte (
+DROP TABLE IF EXISTS bdd.utilisateur CASCADE;
+CREATE TABLE bdd.utilisateur (
     id_utilisateur SERIAL PRIMARY KEY,
     pseudo VARCHAR UNIQUE NOT NULL,
     mdp VARCHAR NOT NULL
@@ -20,7 +20,7 @@ DROP TABLE IF EXISTS bdd.playlist;
 
 CREATE TABLE bdd.playlist (
     id_playlist SERIAL PRIMARY KEY,
-    id_utilisateur INTEGER REFERENCES bdd.compte(id_utilisateur),
+    id_utilisateur INTEGER REFERENCES bdd.utilisateur(id_utilisateur),
     nom_playlist VARCHAR NOT NULL
 );
 
