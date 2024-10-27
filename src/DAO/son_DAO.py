@@ -13,7 +13,6 @@ class Son_DAO(metaclass=Singleton):
         """
         Adds a new 'son' to the database.
         """
-        created = False
         try:
             with DBConnection().connection as connection:
                 with connection.cursor() as cursor:
@@ -22,23 +21,13 @@ class Son_DAO(metaclass=Singleton):
                         VALUES (%s, %s, %s, %s)
                         RETURNING id_son;
                     """ 
-                    cursor.execute(
-                        insert_query,
-                        (
-                            son.id_son,
-                            son.nom,
-                            son.caracteristiques,
-                            str(son.path_stockage) if son.path_stockage else None,
-                        ),
-                    )
+                    cursor.execute(insert_query)
                     # Fetch the generated id_son
                     res = cursor.fetchone()
-                if res:
-                    son.id_son = res[0]
-                    return True
+                    return res['id_son']
         except Exception as e:
             print(f"Error adding son: {e}")
-            return False
+            return None
 
     def get_son_by_id(self, id_son: int) -> Son:
         with DBConnection().connection as connection:
@@ -48,7 +37,6 @@ class Son_DAO(metaclass=Singleton):
                     {"id_son": id_son},
                 )
                 res = cursor.fetchone()
-
         if res:
             son = Son(
                 id_son=res["id_son"],
@@ -59,19 +47,33 @@ class Son_DAO(metaclass=Singleton):
             return son
         return None
 
-def delete_son(self, son:Son) -> bool:
-        try:
-            with DBConnection().connection as connection:
-                with connection.cursor() as cursor:
-                    cursor.execute(
-                        "REQUETE SQL %(id_playlist)s",
-                        {"id_playlist": id_playlist, "id_son": id_son}
-                    )
-                connection.commit() # ou fetch_all etc
-            return True
-        except Exception as e:
-            print(f"Error deleting son: {e}")
-            return False
+    def get_son_by_name(self, name_son: int) -> Son:
+        with DBConnection().connection as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT * FROM Son WHERE id_son = %(name_son)s;",
+                    {"id_son": name_son},
+                )
+                res = cursor.fetchone()
+        if res:
+            son = Son(
+                id_son=res["id_son"],
+                nom=res["nom"],
+                caracteristiques=res["tags"],
+                path=res["path_stockage"]
+            )
+            return son
+        return None
+
+
+    def supprimer_son(self, id_son):
+        with DBConnection().connection as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "DELETE FROM son WHERE id_son = %(id_son)s",
+                    {"id_playlist": id_son},
+                )
+            connection.commit()
 
 
 

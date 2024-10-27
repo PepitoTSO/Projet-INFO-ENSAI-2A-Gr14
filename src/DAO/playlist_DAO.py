@@ -77,7 +77,7 @@ class Playlist_DAO(metaclass=Singleton):
                 playlists.append(playlist)
         return playlists
 
-    def supprimer_playlist(self, id_playlist):
+    def supprimer_playlist(self, id_playlist):  # y'a pas un prblm? id_playlist n'existe pas dans son
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
