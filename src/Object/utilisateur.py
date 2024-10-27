@@ -3,5 +3,3 @@ class Utilisateur:
 
         self.pseudo = pseudo
         self.mdp_hache = mdp_hache
-
-    
