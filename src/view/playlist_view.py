@@ -1,61 +1,3 @@
-'''
-A relier aux fonctions de playlistservice
-'''
-
-
-from InquirerPy import prompt
-
-from view.abstract_view import AbstractView
-
-from Service.PlaylistService import PlaylistService
-
-
-class PlaylistView(AbstractView):
-    def __init__(self):
-        self.__questions = [
-            {
-                "type": "list",
-                "name": "choix",
-                "message": "Menu playlist",  # lister les playlist dispo pour l'utilisateur à l'apparition du menu?
-                "choices": [
-                    "Ajouter playlist",
-                    "Modifier playlist",
-                    "Supprimer playlist",
-                    "Jouer playlist",
-                    "Revenir au menu",
-                ],
-            }
-        ]
-
-    def display_info(self):
-        with open("src/dessin/banner.txt", "r", encoding="utf-8") as asset:
-            print(asset.read())
-
-    def make_choice(self):
-        reponse = prompt(self.__questions)
-        if reponse["choix"] == "Revenir au menu":
-            from view.menu_principal import MenuView
-
-            return MenuView()
-
-        elif reponse["choix"] == "Modifier playlist":  # A implementer
-            return PlaylistView()
-
-        elif reponse["choix"] == "Supprimer playlist":
-
-            return PlaylistView()
-
-        elif reponse["choix"] == "Jouer playlist":
-
-            return PlaylistView()
-        elif reponse["choix"] == "Ajouter playlist":
-
-            return PlaylistView()
-
-
-
-
-
 from InquirerPy import inquirer
 
 from View.abstract_view import AbstractView
@@ -106,7 +48,7 @@ class PlaylistView(AbstractView):
                 return MenuView()
 
             case "Lancer une playlist":
-                #Comment demander à l'utilisateur quelle playlist il veur écouter ?
+                #Comment demander à l'utilisateur quelle playlist il veut écouter ?
                 #Y'a pas get_playlist_by_user ?
                 Utilisateur = Utilisateur()
 
@@ -134,5 +76,27 @@ class PlaylistView(AbstractView):
                 PlaylistService().creer_playlist(nom_playlist)
 
             case "Modifier une playlist":
-                
+                from View.modif_playlist_view import ModifPlaylistView
 
+                return ModifPlaylistView
+
+            case "Supprimer une playlist":
+                Utilisateur = Utilisateur()
+
+                playlists = utilisateur(list_playlist)
+                playlists.append("Retour au Menu Principal")
+
+                choix = inquirer.select(
+                    message="Choisissez une playlist : ",
+                    choices=playlists,
+                ).execute()
+
+                if choix == "Retour au Menu Joueur":
+                    from View.menu_principal_view import MenuView
+
+                    return MenuView()
+
+                from Service.PlaylistService import PlaylistService
+
+                PlaylistService().supprimer_playlist()
+                return MenuView()

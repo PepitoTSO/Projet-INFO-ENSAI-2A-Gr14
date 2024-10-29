@@ -1,4 +1,3 @@
-
 from InquirerPy import prompt
 from InquirerPy import inquirer
 
@@ -39,13 +38,13 @@ class RechSonView(AbstractView):
             inquirer_recherche = {
                 "type": "input",
                 "message": "Quel est l'objet de votre recherche ?",
-                "name": "Recherche"
+                "name": "Recherche",
             }
 
             recherche = prompt([inquirer_recherche])
 
-            api=apifreesound()
-            resultat = api.recherche_son(recherche['Recherche'])
+            api = apifreesound()
+            resultat = api.recherche_son(recherche["Recherche"])
             print(resultat)
 
             return RechSonView()
@@ -57,13 +56,13 @@ class RechSonView(AbstractView):
             inquirer_id = {
                 "type": "input",
                 "message": "Quel est l'id du son?",
-                "name": "id"
+                "name": "id",
             }
 
             inq_id = prompt([inquirer_id])
-            api=apifreesound()
-            api.dl_son(int(inq_id['id']))
+            api = apifreesound()
+            api.dl_son(int(inq_id["id"]))
 
-            #et ajouter à la bdd
+            # et ajouter à la bdd
 
             return RechSonView()
