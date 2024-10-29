@@ -47,7 +47,7 @@ class Son_DAO(metaclass=Singleton):
             return son
         return None
 
-    def get_son_by_name(self, name_son: int) -> Son:
+    def get_son_by_name(self, name_son: int) -> Son: #ajout par rapport au diag_classe
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
@@ -65,6 +65,29 @@ class Son_DAO(metaclass=Singleton):
             return son
         return None
 
+
+    def get_all_son(self)->list(Son):
+        try:
+            list_son = []
+            with DBConnection().connection as connection:
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        "SELECT * FROM son"
+                    )
+
+                    res = cursor.fetchall()
+            for son_data in res:
+                son = Son(
+                    id_son=son_data["id_son"],
+                    nom=son_data["nom"],
+                    tags=son_data["tags"],
+                    path_stockage=son_data["path_stockage"],
+                    )
+                list_son.append(son)
+            return list_son    
+        except Exception as e:
+            print(f"Error get_all_son :{e}")
+            return None    
 
     def supprimer_son(self, id_son):
         with DBConnection().connection as connection:
