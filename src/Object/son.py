@@ -12,18 +12,30 @@ class Son:
     Classe qui contient la définition d'un son : ses caractéristiques
     """
 
-    def __init__(self, id_son, nom="pas_def", caracteristiques="pas_def") -> None:
+    def __init__(self, id_son, nom="pas_de_nom", tags=("pas","de","tags"),path_stockage=None) -> None:
+        if not isinstance(id_son, int):
+            raise TypeError("id_son doit être int")
+        if not isinstance(nom_son, str):
+            raise TypeError("nom doit être str")
+        if not isinstance(tags, list):
+            raise TypeError("tags doit être list")
+        if not isinstance(path_stockage, str):
+            raise TypeError("path_stocakge doit être str")
         self.id_son = id_son
-        self.nom = nom  # à voir si on fait pas DAO.trouver_son_par_id
-        self.caracteristiques = (
-            caracteristiques  # à voir si on fait pas DAO.trouver_son_par_id
-        )
-        self.path_stockage = Path(f"./data/son/{id_son}.mp3")
+        self.nom = nom 
+        self.tags = tags
+        self.path_stockage = Path(path_stockage)
+        if path_stockage == None: #gestion si pas de path_stocakge
+            try :
+                self.path_stockage = Path(f"./data/son/{id_son}.mp3")
+            except Exception as e:
+                print(f"Prblm pour trouver le fichier son. La solution la plus simple est de télécharger correctement le fichier :{e}")
 
-    def __repr__(self):
+
+    def __repr__(self): #plus joli pour afficher dans la commande
         return f"{self.id_son=}, {self.nom=}, {self.caracteristiques=}"
 
-    ## à relier à l'interface graphique
+#La partie lecture d'un unique son. Dans quelle classe?
     def play(self):
         # Charger et jouer la musique
         pygame.mixer.music.load(str(self.path_stockage))
@@ -48,22 +60,5 @@ class Son:
         time.sleep(temps)
         self.stop()
 
-    def play_multiple_sounds(sound_files):  # Chatgpt
-        sounds = [
-            Son(i, f"sound_{i}", "test", file) for i, file in enumerate(sound_files)
-        ]
-        for sound in sounds:
-            sound.play()
-            time.sleep(
-                0.1
-            )  # Un léger délai pour éviter de jouer tous les sons en même temps
-
-    def jouer_aleatoire(self):
-        pass
 
 
-if __name__ == "__main__":
-    test = Son(1, "test", "oui", "data/test.mp3")
-    print(test.id_son)
-    print(repr(test))
-    test.play()
