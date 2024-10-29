@@ -13,7 +13,9 @@ class Playlist_DAO(metaclass=Singleton):
     Uses the Singleton pattern to ensure a single instance.
     """
 
-    def ajouter_playlist(self, nom_playlist) -> int: # c'est pas plutot retourne Bool si réussite ou échec
+    def creer_playlist(
+        self, nom_playlist
+    ) -> int:  # c'est pas plutot retourne Bool si réussite ou échec
         id_utilisateur = Session().utilisateur.id
 
         with DBConnection().connection as connection:
@@ -26,7 +28,7 @@ class Playlist_DAO(metaclass=Singleton):
                 res = cursor.fetchone()
 
         if res:
-            return res['id_playlist']  # Retourner l'ID de la nouvelle playlist
+            return res["id_playlist"]  # Retourner l'ID de la nouvelle playlist
 
         return None  # Retourner None si l'insertion a échoué
 
@@ -51,7 +53,9 @@ class Playlist_DAO(metaclass=Singleton):
             )
         return playlist
 
-    def get_all_playlists_by_user(self, id_user: int):  #ça n'existe pas get_son_ordre_by_playlist
+    def get_all_playlists_by_user(
+        self, id_user: int
+    ):  # ça n'existe pas get_son_ordre_by_playlist
         playlists = []
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
@@ -77,7 +81,9 @@ class Playlist_DAO(metaclass=Singleton):
                 playlists.append(playlist)
         return playlists
 
-    def supprimer_playlist(self, id_playlist):  # y'a pas un prblm? id_playlist n'existe pas dans son
+    def supprimer_playlist(
+        self, id_playlist
+    ):  # y'a pas un prblm? id_playlist n'existe pas dans son
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
@@ -109,14 +115,14 @@ class Playlist_DAO(metaclass=Singleton):
                     cursor.execute(
                         "UPDATE son SET ordre_son_in_plist = ordre_son_in_plist + 1 "
                         "WHERE id_playlist = %(id_playlist)s AND ordre_son_in_plist >= %(ordre)s",
-                        {"id_playlist": id_playlist, "ordre": ordre}
+                        {"id_playlist": id_playlist, "ordre": ordre},
                     )
                 else:
                     # Decrement order of songs with order > ordre
                     cursor.execute(
                         "UPDATE son SET ordre_son_in_plist = ordre_son_in_plist - 1 "
                         "WHERE id_playlist = %(id_playlist)s AND ordre_son_in_plist > %(ordre)s",
-                        {"id_playlist": id_playlist, "ordre": ordre}
+                        {"id_playlist": id_playlist, "ordre": ordre},
                     )
             connection.commit()
 
@@ -134,7 +140,7 @@ class Playlist_DAO(metaclass=Singleton):
                 # Récupérer les détails de la playlist originale
                 cursor.execute(
                     "SELECT nom_playlist FROM Playlist WHERE id_playlist = %(id_playlist)s;",
-                    {"id_playlist": id_playlist}
+                    {"id_playlist": id_playlist},
                 )
                 original_playlist = cursor.fetchone()
 
@@ -142,7 +148,9 @@ class Playlist_DAO(metaclass=Singleton):
                     return False  # Si la playlist originale n'existe pas
 
                 # Créer une nouvelle playlist avec le même nom pour l'utilisateur de session
-                new_id_playlist = self.ajouter_playlist(original_playlist['nom_playlist'])
+                new_id_playlist = self.ajouter_playlist(
+                    original_playlist["nom_playlist"]
+                )
 
                 if not new_id_playlist:
                     return False  # Si la création de la nouvelle playlist a échoué
@@ -150,7 +158,7 @@ class Playlist_DAO(metaclass=Singleton):
                 # Copier les chansons de la playlist originale dans la nouvelle playlist
                 cursor.execute(
                     "SELECT nom, ordre_son_in_plist, tags, path_stockage FROM Son WHERE id_playlist = %(id_playlist)s;",
-                    {"id_playlist": id_playlist}
+                    {"id_playlist": id_playlist},
                 )
                 chansons = cursor.fetchall()
 
@@ -160,11 +168,11 @@ class Playlist_DAO(metaclass=Singleton):
                         "VALUES (%(id_playlist)s, %(nom)s, %(ordre)s, %(tags)s, %(path)s);",
                         {
                             "id_playlist": new_id_playlist,
-                            "nom": chanson['nom'],
-                            "ordre": chanson['ordre_son_in_plist'],
-                            "tags": chanson['tags'],
-                            "path": chanson['path_stockage']
-                        }
+                            "nom": chanson["nom"],
+                            "ordre": chanson["ordre_son_in_plist"],
+                            "tags": chanson["tags"],
+                            "path": chanson["path_stockage"],
+                        },
                     )
 
             connection.commit()

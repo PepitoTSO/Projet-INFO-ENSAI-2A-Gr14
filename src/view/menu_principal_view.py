@@ -1,63 +1,3 @@
-from InquirerPy import prompt
-
-from view.abstract_view import AbstractView
-
-
-class MenuView(AbstractView):
-    def __init__(self):
-        self.__questions = [
-            {
-                "type": "list",
-                "name": "choix",
-                "message": "Menu principal",
-                "choices": [
-                    "Rechercher son",
-                    "Sons",
-                    "Playlists",
-                    "Infos",
-                    "Quitter",
-                ],
-            }
-        ]
-
-    def display_info(self):
-        with open("src/dessin/banner.txt", "r", encoding="utf-8") as asset:
-            print(asset.read())
-
-    def make_choice(self):
-        reponse = prompt(self.__questions)
-        if reponse["choix"] == "Quitter":
-            pass
-
-        elif reponse["choix"] == "Rechercher son":
-            from view.recherche_son_view import RechSonView
-
-            return RechSonView()
-
-        elif reponse["choix"] == "Sons":
-            from view.son_view import SonView
-
-            return SonView()
-
-        elif reponse["choix"] == "Playlists":
-            from view.playlist_view import PlaylistView
-
-            return PlaylistView()
-
-        elif reponse["choix"] == "Infos":
-
-            info = """Bonjour et bienvenu sur notre application ! 
-              Vous pouvez vous connecter ou créer un compte pour accéder à nos services. 
-              Cette application a été créée dans le but de vous aider à créer une ambiance pour vos parties de jeux de rôles. 
-              Vous pouvez ajouter des sons à votre playlist et les jouer en boucle ou les arrêter à tout moment afin de permettre une immersion totale des joueurs. 
-              Vous pouvez aussi créer des playlists personnalisées pour chaque partie. 
-              N'hésitez pas à nous contacter pour toute question ou suggestion. 
-              Merci de votre confiance et bonne partie !"""  # C'est ici pour le texte des pourquoi et comment
-            print(info)
-
-            return MenuView()
-
-
 from InquirerPy import inquirer
 
 from View.abstract_view import AbstractView
@@ -89,14 +29,14 @@ class MenuView(AbstractView):
             Retourne la vue choisie par l'utilisateur dans le terminal
         """
 
-        print("\n" + "-" * 50 + "\nMenu Utilisateur\n" + "-" * 50 + "\n")
+        print("\n" + "-" * 50 + "\nMenu Principal\n" + "-" * 50 + "\n")
 
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
                 "Rechercher un son",
-                "Sons",
-                "Playlists",
+                "Gérer mes Sons",
+                "Gérer mes Playlists",
                 "Infos",
                 "Se déconnecter",
             ],
@@ -112,10 +52,17 @@ class MenuView(AbstractView):
             case "Rechercher un son":
                 from View.recherche_son_view import RechSonView
 
-            case "Afficher des pokemons (par appel à un Webservice)":
-                from view.pokemon_vue import PokemonVue
+                return RechSonView()
 
-                return PokemonVue()
+            case "Gérer mes Sons":
+                from View.son_view import SonView
+
+                return SonView()
+
+            case "Gérer mes Playlists":
+                from View.playlist_view import PlaylistView
+
+                return PlaylistView()
 
             case "Infos":
                 MenuView.messageInfoMenu()
