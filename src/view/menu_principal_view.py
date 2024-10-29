@@ -1,46 +1,6 @@
-'''
-Y'a eu du nettoyage surtout pour la session  et les noms des utilisateurs qui pop dans les messages d'inquirer
-
-'''
-
 from InquirerPy import prompt
 
 from view.abstract_view import AbstractView
-
-
-class StartView(AbstractView):
-    def __init__(self):
-        self.__questions = [
-            {
-                "type": "list",
-                "name": "choix",
-                "message": "Bienvenue",
-                "choices": [
-                    "Connection",
-                    "Inscription",
-                    "Quitter",
-                ],
-            }
-        ]
-
-    def display_info(self):
-        with open("src/dessin/banner.txt", "r", encoding="utf-8") as asset:
-            print(asset.read())
-
-    def make_choice(self):
-        reponse = prompt(self.__questions)
-        if reponse["choix"] == "Quitter":
-            pass
-
-        elif reponse["choix"] == "Connection":
-            from view.connection_view import ConnectionView
-
-            return ConnectionView()
-
-        elif reponse["choix"] == "Inscription":
-            from view.inscription_view import InscriptionView
-
-            return InscriptionView()
 
 
 class MenuView(AbstractView):
@@ -92,7 +52,7 @@ class MenuView(AbstractView):
               Vous pouvez ajouter des sons à votre playlist et les jouer en boucle ou les arrêter à tout moment afin de permettre une immersion totale des joueurs. 
               Vous pouvez aussi créer des playlists personnalisées pour chaque partie. 
               N'hésitez pas à nous contacter pour toute question ou suggestion. 
-              Merci de votre confiance et bonne partie !"""   # C'est ici pour le texte des pourquoi et comment
+              Merci de votre confiance et bonne partie !"""  # C'est ici pour le texte des pourquoi et comment
             print(info)
 
             return MenuView()

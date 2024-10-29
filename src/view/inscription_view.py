@@ -1,33 +1,45 @@
-'''
-A faire
-Pour l'instant c'est juste pour etre coherent avec les diagrammes etc
-'''
+import regex
 
-from InquirerPy import prompt
+from InquirerPy import inquirer
+from InquirerPy.validator import PasswordValidator, EmptyInputValidator
 
-from view.abstract_view import AbstractView
+from prompt_toolkit.validation import ValidationError, Validator
+
+from View.abstract_view import AbstractView
+from Service.UtilisateurService import UtilisateurService
 
 
 class InscriptionView(AbstractView):
-    def __init__(self):
-        self.__questions = [
-            {
-                "type": "list",
-                "name": "choix",
-                "message": "pas encore fait",
-                "choices": [
-                    "pas le choix"
-                ]
-            }
-        ]
+    def choisir_menu(self):
+        # Demande à l'utilisateur de saisir pseudo, mot de passe...
+        pseudo = inquirer.text(message="Entrez votre pseudo : ").execute()
 
-    def display_info(self):
-        pass
+        # if JoueurService().pseudo_deja_utilise(pseudo):
+        #    from view.accueil.accueil_vue import AccueilVue
 
-    def make_choice(self):
-        reponse = prompt(self.__questions)
-        if reponse["choix"] == "pas le choix":
+        #    return AccueilVue(f"Le pseudo {pseudo} est déjà utilisé.")
 
-            from view.menu_principal import MenuView
+        mdp = inquirer.secret(
+            message="Entrez votre mot de passe : ",
+            validate=PasswordValidator(
+                length=8,
+                cap=True,
+                number=True,
+                message="Au moins 8 caractères, incluant une majuscule et un chiffre",
+            ),
+        ).execute()
 
-            return MenuView()
+        # Appel du service pour créer l'utilisateur
+        utilisateur = UtilisateurService.creer_utilisateur(
+            mdp_nh=mdp, pseudo_utilisateur=pseudo
+        )
+
+        # Si l'utilisateur a été créé
+        if utilisateur:
+            message = f"Votre compte {pseudo} a été créé. Vous pouvez maintenant vous connecter."
+        else:
+            message = "Erreur de connexion (pseudo ou mot de passe invalide)"
+
+        from View.accueil.accueil_view import AccueilView
+
+        return AccueilView(message)
