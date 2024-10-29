@@ -1,6 +1,7 @@
-from Object.son import son
 from DAO.son_DAO import son_DAO
 from Object.son import Son
+import time
+import random
 
 
 class sonService:
@@ -11,8 +12,13 @@ class sonService:
 
         self.son = son
 
+    ##La partie DAO
+
     def supprimer_son(self):
         son_DAO().supprimer_son(self.son.id_son)
+
+    def ajouter_son(self):
+        son_DAO.ajouter_son(self.son)
 
     ## la partie lecteur son
 
@@ -26,5 +32,20 @@ class sonService:
                 0.1
             )  # Un léger délai pour éviter de jouer tous les sons en même temps
 
-    def jouer_aleatoire(self):
-        pass
+    def jouer_aleatoire(self,attente_min, attente_max, duree):
+        '''
+        Methode pour jouer un son aléatoirement pendant une duree et à une fréquence définie par attente_min et max.
+        Par exemple, des bruits d'éclair ou d'animaux qui seront superposés à ceux d'une forêt
+        '''
+        if not isinstance(duree, int):
+            raise TypeError('duree doit etre int')
+        if not isinstance(attente_min, int) and attente_min>0:
+            raise TypeError('attente_min doit etre int et positif')
+        if not isinstance(attente_max, int) and attente_max>attente_min:
+            raise TypeError('attente_max doit etre int et plus grand que attente_min')
+
+        debut=time.time()
+        while time.time()-debut < duree:
+            self.sound.play()
+            attente_random = random.uniform(attente_min,attente_max)
+        
