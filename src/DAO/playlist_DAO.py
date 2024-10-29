@@ -51,7 +51,7 @@ class Playlist_DAO(metaclass=Singleton):
             )
         return playlist
 
-    def get_all_playlists_by_user(self, id_user: int):
+    def get_all_playlists_by_user(self, id_user: int):  #ça n'existe pas get_son_ordre_by_playlist
         playlists = []
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
