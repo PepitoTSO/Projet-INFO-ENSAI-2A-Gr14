@@ -1,6 +1,6 @@
 import dotenv
 
-from view.menu_principal import StartView
+from view.menu_principalgit pull import StartView
 
 # This script is the entry point of your application
 
