@@ -1,29 +1,10 @@
-import unittest
+from unittest import TestCase, TextTestRunner, TestLoader
 from Object.utilisateur import Utilisateur
 from Object.son import Son
 from Object.playlist import Playlist
 
 
-def setUpModule():
-    print("Setting up module resources...")
-
-
-def tearDownModule():
-    print("Tearing down module resources...")
-
-
-class TestPlaylist(unittest.TestCase):
-
-    def setUp(self):
-        # Common setup for all tests
-        self.utilisateur = Utilisateur(1)
-        self.son1 = Son(1, "Song 1", "Caracteristiques 1")
-        self.son2 = Son(2, "Song 2", "Caracteristiques 2")
-        self.playlist = Playlist(self.utilisateur, 1, "Playlist 1", [])
-
-    def tearDown(self):
-        # Cleanup (runs after every test)
-        self.playlist = None
+class TestPlaylist(TestCase):
 
     def test_ajouter_son(self):
         # GIVEN
