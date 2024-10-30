@@ -67,13 +67,20 @@ def __init__(
         self.dict_son[ordre] = son
 
     def supprimer_son(self, son: Son):
-        for i in range(len(self.list_son)):
-            if self.list_son[i][0] == son:
-                ordre = self.list_son[i][1]
-                self.list_son.pop(i)
-        for i in range(len(self.list_son)):
-            if self.list_son[i][1] > ordre:
-                self.list_son[i][1] += -1
+        ordre_to_remove = None
+        for ordre, existing_son in self.dict_son.items():
+            if existing_son == son:
+                ordre_to_remove = ordre
+                break
+        if ordre_to_remove is None:
+            # Son not found in the playlist
+            return
+        # Remove the son from the playlist
+        del self.dict_son[ordre_to_remove]
+        # Shift orders of subsequent songs
+        for ordre in sorted(self.dict_son.keys()):
+            if ordre > ordre_to_remove:
+                self.dict_son[ordre - 1] = self.dict_son.pop(ordre)
 
     def changer_ordre(self, son, ordre: int):
 

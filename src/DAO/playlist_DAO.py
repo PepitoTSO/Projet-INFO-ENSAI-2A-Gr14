@@ -12,17 +12,19 @@ class Playlist_DAO(metaclass=Singleton):
     Uses the Singleton pattern to ensure a single instance.
     """
 
-    def creer_playlist(
-        self, nom_playlist
-    ) -> int:  # c'est pas plutot retourne Bool si réussite ou échec
-        id_utilisateur = Session().utilisateur.id
-
+    def ajouter_playlist(self, playlist: Playlist) -> bool:
+        res = None
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "INSERT INTO Playlist (id_utilisateur, nom_playlist) "
-                    "VALUES (%(id_utilisateur)s, %(nom_playlist)s) RETURNING id_playlist;",
-                    {"id_utilisateur": id_utilisateur, "nom_playlist": nom_playlist},
+                    "INSERT INTO playlist (id_playlist, id_utilisateur, nom_playlist) "
+                    "VALUES (%(id_playlist)s, %(id_utilisateur)s, %(nom_playlist)s)   "
+                    "RETURNING id_playlist;                                           ",
+                    {
+                        "id_playlist": playlist.id_playlist,
+                        "id_utilisateur": playlist.id_utilisateur,
+                        "nom_playlist": playlist.nom_playlist,
+                    },
                 )
                 res = cursor.fetchone()
 
