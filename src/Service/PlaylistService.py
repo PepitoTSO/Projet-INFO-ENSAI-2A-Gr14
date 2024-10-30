@@ -12,6 +12,9 @@ class PlaylistService:
 
         self.playlist = playlist
 
+    def creer_playlist(self):
+        Playlist_DAO().creer_playlist(self.playlist.nom_playlist)
+
     def supprimer_playlist(self):
         Playlist_DAO().supprimer_playlist(self.playlist.id_playlist)
 
