@@ -1,5 +1,7 @@
 from InquirerPy import inquirer
 
+from View.abstract_view import AbstractView
+
 
 class AccueilView(AbstractView):
     """Vue d'accueil de l'application"""
@@ -28,9 +30,9 @@ class AccueilView(AbstractView):
                 pass
 
             case "Se connecter":
-                from View.accueil.connexion_view import connexion
+                from View.accueil.connexion_view import ConnexionView
 
-                return connexion_view("Connexion à l'application")
+                return ConnexionView("Connexion à l'application")
 
             case "Créer un compte":
                 from View.accueil.inscription_view import InscriptionView
@@ -38,7 +40,7 @@ class AccueilView(AbstractView):
                 return InscriptionView("Création de compte joueur")
 
             case "Infos sur l'appli":
-                VueAccueil.messageInfo()
+                AccueilView.messageInfo()
 
     def messageInfo(self):
         print(

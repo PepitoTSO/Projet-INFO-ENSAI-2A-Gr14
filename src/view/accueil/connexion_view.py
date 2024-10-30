@@ -34,7 +34,7 @@ class ConnectionView(AbstractView):
 from InquirerPy import inquirer
 
 from View.abstract_view import AbstractView
-from Viewiew.session import Session
+from View.session import Session
 
 from Service.UtilisateurService import UtilisateurService
 
@@ -54,7 +54,7 @@ class ConnexionView(AbstractView):
 
         # Si l'utilisateur a été trouvé à partir des ses identifiants de connexion
         if utilisateur:
-            message = f"Vous êtes connecté sous le pseudo {joueur.pseudo}"
+            message = f"Vous êtes connecté sous le pseudo {pseudo}"
             Session().connexion(utilisateur)
 
             from View.menu_principal_view import MenuView
