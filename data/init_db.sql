@@ -19,7 +19,7 @@ DROP TABLE IF EXISTS bdd.playlist;
 
 CREATE TABLE bdd.playlist (
     id_playlist SERIAL PRIMARY KEY,
-    id_utilisateur VARCHAR REFERENCES bdd.utilisateurs(id_utilisateur),
+    pseudo VARCHAR REFERENCES bdd.utilisateurs(pseudo),
     nom_playlist VARCHAR NOT NULL
 );
 
