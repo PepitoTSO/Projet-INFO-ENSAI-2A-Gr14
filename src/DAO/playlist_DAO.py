@@ -1,7 +1,6 @@
 from utils.singleton import Singleton  # Importing the Singleton metaclass
 from DAO.db_connection import DBConnection
 from Object.playlist import Playlist
-from src.View.session import Session
 from src.DAO.utilisateur_DAO import Utilisateur_DAO
 from src.DAO.son_DAO import Son_DAO
 from src.Object.son import Son

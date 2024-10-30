@@ -1,24 +1,25 @@
 import unittest
-from Object.playlist import (
-    Playlist,
-)  # Assuming the main class is called Playlist
+from Object.playlist import Playlist
 from Object.son import Son
 from Object.utilisateur import Utilisateur
 
 
 class TestPlaylist(unittest.TestCase):
     def setUp(self):
-        # Creating instances required for Playlist
         self.utilisateur = Utilisateur(
-            "John Doe", "johndoe@example.com"
-        )  # Example Utilisateur instance
+            pseudo="John Doe", mdp_hache="hashed_password", list_playlist=[]
+        )
+        # Create Son instances
+        self.son1 = Son(
+            id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage=None
+        )
+        self.son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage=None)
+        self.son3 = Son(id_son=3, nom="son3", tags=["pluie"], path_stockage=None)
+        self.new_son = Son(
+            id_son=4, nom="new_son", tags=["nouveau"], path_stockage=None
+        )
+        # Start with an empty playlist
         self.playlist = Playlist(self.utilisateur, 1, "My Playlist", {})
-
-        # Creating some Son instances
-        self.son1 = Son("Song 1", "Artist 1", 3.5)  # Example Son instance
-        self.son2 = Son("Song 2", "Artist 2", 4.0)
-        self.son3 = Son("Song 3", "Artist 3", 2.8)
-        self.new_son = Son("New Song", "New Artist", 3.7)
 
     def test_ajouter_son_empty_playlist(self):
         """Test adding a son to an empty playlist."""
