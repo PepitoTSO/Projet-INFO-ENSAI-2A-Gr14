@@ -2,6 +2,8 @@ import dotenv
 
 from view.menu_principalgit pull import StartView
 
+
+###TEST
 # This script is the entry point of your application
 
 if __name__ == "__main__":
