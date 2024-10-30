@@ -18,7 +18,7 @@ if __name__ == "__main__":
         # Display the info of the view
         current_view.display_info()
         # ask user for a choice
-        current_view = current_view.choix
+        current_view = current_view.make.choice()
 
     with open(
         "src/dessin/bye.txt", "r", encoding="utf-8"
