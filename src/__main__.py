@@ -1,16 +1,15 @@
 import dotenv
 
-from view.menu_principalgit pull import StartView
+from View.accueil.accueil_view import AccueilView
 
 
-###TEST
 # This script is the entry point of your application
 
 if __name__ == "__main__":
     dotenv.load_dotenv(override=True)
 
     # run the Start View
-    current_view = StartView()
+    current_view = AccueilView()
 
     # while current_view is not none, the application is still running
     while current_view:
@@ -22,7 +21,5 @@ if __name__ == "__main__":
         # ask user for a choice
         current_view = current_view.make.choice()
 
-    with open(
-        "src/dessin/bye.txt", "r", encoding="utf-8"
-    ) as asset:
+    with open("src/dessin/bye.txt", "r", encoding="utf-8") as asset:
         print(asset.read())
