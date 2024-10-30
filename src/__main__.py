@@ -17,7 +17,7 @@ if __name__ == "__main__":
         with open("src/dessin/border.txt", "r", encoding="utf-8") as asset:
             print(asset.read())
         # Display the info of the view
-        current_view.display_info(self)
+        current_view.display_info()
         # ask user for a choice
         current_view = current_view.choix
 
