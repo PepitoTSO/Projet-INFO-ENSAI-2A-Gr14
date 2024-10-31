@@ -1,6 +1,6 @@
 import dotenv
 
-from view.menu_principalgit pull import StartView
+from view.accueil.accueil_view import AcceuilView
 
 
 ###TEST
@@ -10,7 +10,7 @@ if __name__ == "__main__":
     dotenv.load_dotenv(override=True)
 
     # run the Start View
-    current_view = StartView()
+    current_view = AcceuilView()
 
     # while current_view is not none, the application is still running
     while current_view:

@@ -1,6 +1,6 @@
 from InquirerPy import inquirer
 
-from View.abstract_view import AbstractView
+from view.abstract_view import AbstractView
 
 
 class AccueilView(AbstractView):
