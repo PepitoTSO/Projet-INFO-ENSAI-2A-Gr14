@@ -17,12 +17,12 @@ class Playlist_DAO(metaclass=Singleton):
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "INSERT INTO playlist (id_playlist, id_utilisateur, nom_playlist) "
-                    "VALUES (%(id_playlist)s, %(id_utilisateur)s, %(nom_playlist)s)   "
+                    "INSERT INTO playlist (id_playlist, pseudo, nom_playlist) "
+                    "VALUES (%(id_playlist)s, %(pseudo)s, %(nom_playlist)s)   "
                     "RETURNING id_playlist;                                           ",
                     {
                         "id_playlist": playlist.id_playlist,
-                        "id_utilisateur": playlist.id_utilisateur,
+                        "pseudo": playlist.pseudo,
                         "nom_playlist": playlist.nom_playlist,
                     },
                 )
@@ -37,13 +37,13 @@ class Playlist_DAO(metaclass=Singleton):
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT * FROM playlist WHERE id_playlist = %(id)s",
-                    {"id": id_playlist},
+                    "SELECT * FROM playlist WHERE id_playlist = %(id_playlist)s",
+                    {"id_playlist": id_playlist},
                 )
 
                 res = cursor.fetchone()
         if res:
-            user = Utilisateur_DAO.get_utilisateur(self, res["id_user"])
+            user = Utilisateur_DAO.get_utilisateur(self, res["pseudo"])
             liste_son = Son_DAO().get_son_ordre_by_playlist(id_playlist)
 
             playlist = Playlist(
