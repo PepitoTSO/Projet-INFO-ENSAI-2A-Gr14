@@ -33,8 +33,8 @@ class ConnectionView(AbstractView):
 
 from InquirerPy import inquirer
 
-from View.abstract_view import AbstractView
-from View.session import Session
+from view.abstract_view import AbstractView
+from view.session import Session
 
 from Service.UtilisateurService import UtilisateurService
 
@@ -57,11 +57,11 @@ class ConnexionView(AbstractView):
             message = f"Vous êtes connecté sous le pseudo {pseudo}"
             Session().connexion(utilisateur)
 
-            from View.menu_principal_view import MenuView
+            from view.menu_principal_view import MenuView
 
             return MenuView(message)
 
         message = "Erreur de connexion (pseudo ou mot de passe invalide)"
-        from View.accueil.accueil_view import AccueilView
+        from view.accueil.accueil_view import AccueilView
 
         return AccueilView(message)

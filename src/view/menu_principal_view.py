@@ -1,7 +1,7 @@
 from InquirerPy import inquirer
 
-from View.abstract_view import AbstractView
-from View.session import Session
+from view.abstract_view import AbstractView
+from view.session import Session
 
 from Service.UtilisateurService import UtilisateurService
 
@@ -45,7 +45,7 @@ class MenuView(AbstractView):
         match choix:
             case "Se déconnecter":
                 Session().deconnexion()
-                from View.accueil.accueil_view import AccueilView
+                from view.accueil.accueil_view import AccueilView
 
                 return AccueilView()
 
@@ -55,12 +55,12 @@ class MenuView(AbstractView):
                 return RechSonView()
 
             case "Gérer mes Sons":
-                from View.son_view import SonView
+                from view.son_view import SonView
 
                 return SonView()
 
             case "Gérer mes Playlists":
-                from View.playlist_view import PlaylistView
+                from view.playlist_view import PlaylistView
 
                 return PlaylistView()
 

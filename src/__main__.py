@@ -1,6 +1,6 @@
 import dotenv
 
-from View.accueil.accueil_view import AccueilView
+from view.accueil.accueil_view import AccueilView
 
 
 # This script is the entry point of your application
@@ -9,7 +9,7 @@ if __name__ == "__main__":
     dotenv.load_dotenv(override=True)
 
     # run the Start View
-    current_view = AcceuilView()
+    current_view = AccueilView()
 
     # while current_view is not none, the application is still running
     while current_view:

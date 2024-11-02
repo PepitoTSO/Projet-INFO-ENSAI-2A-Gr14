@@ -1,7 +1,7 @@
 from InquirerPy import inquirer
 
-from View.abstract_view import AbstractView
-from View.session import Session
+from view.abstract_view import AbstractView
+from view.session import Session
 
 from Object.utilisateur import Utilisateur
 from Object.playlist import Playlist
@@ -38,12 +38,12 @@ class PlaylistView(AbstractView):
         match choix:
             case "Se déconnecter":
                 Session().deconnexion()
-                from View.accueil.accueil_view import AccueilView
+                from view.accueil.accueil_view import AccueilView
 
                 return AccueilView()
 
             case "Revenir au menu":
-                from View.menu_principal_view import MenuView
+                from view.menu_principal_view import MenuView
 
                 return MenuView()
 
@@ -61,7 +61,7 @@ class PlaylistView(AbstractView):
                 ).execute()
 
                 if choix == "Retour au Menu Joueur":
-                    from View.menu_principal_view import MenuView
+                    from view.menu_principal_view import MenuView
 
                     return MenuView()
 
@@ -76,7 +76,7 @@ class PlaylistView(AbstractView):
                 PlaylistService().creer_playlist(nom_playlist)
 
             case "Modifier une playlist":
-                from View.modif_playlist_view import ModifPlaylistView
+                from view.modif_playlist_view import ModifPlaylistView
 
                 return ModifPlaylistView
 
@@ -92,11 +92,13 @@ class PlaylistView(AbstractView):
                 ).execute()
 
                 if choix == "Retour au Menu Joueur":
-                    from View.menu_principal_view import MenuView
+                    from view.menu_principal_view import MenuView
 
                     return MenuView()
 
                 from Service.PlaylistService import PlaylistService
 
                 PlaylistService().supprimer_playlist()
+                from view.menu_principal_view import MenuView
+                
                 return MenuView()

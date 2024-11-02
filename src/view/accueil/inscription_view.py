@@ -5,7 +5,7 @@ from InquirerPy.validator import PasswordValidator, EmptyInputValidator
 
 from prompt_toolkit.validation import ValidationError, Validator
 
-from View.abstract_view import AbstractView
+from view.abstract_view import AbstractView
 from Service.UtilisateurService import UtilisateurService
 
 
@@ -40,6 +40,6 @@ class InscriptionView(AbstractView):
         else:
             message = "Erreur de connexion (pseudo ou mot de passe invalide)"
 
-        from View.accueil.accueil_view import AccueilView
+        from view.accueil.accueil_view import AccueilView
 
         return AccueilView(message)
