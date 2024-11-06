@@ -13,14 +13,17 @@ class Playlist_DAO(metaclass=Singleton):
     Uses the Singleton pattern to ensure a single instance.
     """
 
-    def ajouter_playlist(self, playlist: Playlist) -> bool:
-        res = None
+        def ajouter_playlist(self, playlist: Playlist) -> bool:
+        """
+        Ajoute une nouvelle playlist et ses sons à la base de données.
+        """
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
+                # Insert the playlist into the playlist table
                 cursor.execute(
                     "INSERT INTO playlist (id_playlist, pseudo, nom_playlist) "
-                    "VALUES (%(id_playlist)s, %(pseudo)s, %(nom_playlist)s)   "
-                    "RETURNING id_playlist;                                           ",
+                    "VALUES (%(id_playlist)s, %(pseudo)s, %(nom_playlist)s) "
+                    "RETURNING id_playlist;",
                     {
                         "id_playlist": playlist.id_playlist,
                         "pseudo": playlist.pseudo,
@@ -29,12 +32,49 @@ class Playlist_DAO(metaclass=Singleton):
                 )
                 res = cursor.fetchone()
 
-        if res:
-            return res
+                if res:
+                    for son, ordre in playlist.list_son:
+                        cursor.execute(
+                            "INSERT INTO playlist_son_join (id_playlist, id_son, ordre_son_playlist) "
+                            "VALUES (%(id_playlist)s, %(id_son)s, %(ordre)s);",
+                            {
+                                "id_playlist": playlist.id_playlist,
+                                "id_son": son.id_son,
+                                "ordre": ordre
+                            },
+                        )
+                    return True
 
         return False  # Retourner False si l'insertion a échoué
 
-    def get_playlist_by_id(self, id_playlist: int):
+
+    def get_sons_by_id_playlist(self, id_playlist: int) -> list[list]:
+        """
+        Récupère tous les sons de la playlist spécifiée par id_playlist
+        ainsi que leur ordre dans la playlist.
+        """
+        sons = []
+        with DBConnection().connection as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT id_son, nom_son, tags, path_stockage, ordre_son_playlist"
+                    "FROM son JOIN playlist_son_join ON id_playlist                 "
+                    "WHERE id_playlist = %(id_playlist)s;                           ",
+                        {"id_playlist": id_playlist}
+                    )
+                res = cursor.fetchall()
+
+        for son_data in res:
+            son = Son(
+                id_son=son_data["id_son"],
+                nom=son_data["nom_son"],
+                tags=son_data["tags"],
+                path_stockage=son_data["path_stockage"]
+                )
+            sons.append([son, son_data["ordre_son_playlist"]])
+        return sons
+
+    def get_playlist_by_id_playlist(self, id_playlist: int):
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
@@ -46,8 +86,7 @@ class Playlist_DAO(metaclass=Singleton):
 
         if res:
             user = Utilisateur_DAO().get_utilisateur(res["pseudo"])
-            liste_son = Son_DAO().get_son_ordre_by_playlist(id_playlist)
-
+            liste_son = Playlist_DAO().get_sons_by_id_playlist(id_playlist)
             playlist = Playlist(
                 utilisateur=user,
                 id_playlist=id_playlist,
@@ -59,6 +98,9 @@ class Playlist_DAO(metaclass=Singleton):
         return None  # Playlist n'est pas trouvé
 
     def get_all_playlists_by_user(self, utilisateur: Utilisateur):
+        """
+        Récupère toutes les playlists d'un utilisateur
+        """
         playlists = []
         pseudo = utilisateur.pseudo
         with DBConnection().connection as connection:
@@ -67,40 +109,42 @@ class Playlist_DAO(metaclass=Singleton):
                     "SELECT * FROM playlist WHERE pseudo = %(pseudo)s",
                     {"pseudo": pseudo},
                 )
-
                 res = cursor.fetchall()
 
         if res:
-            user = Utilisateur_DAO().get_utilisateur(utilisateur)
             for playlist_data in res:
-                liste_son = Son_DAO().get_son_ordre_by_playlist(
-                    playlist_data["id_playlist"]
-                )
+                liste_son = Playlist_DAO().get_sons_by_id_playlist(playlist_data["id_playlist"])
+
                 playlist = Playlist(
-                    utilisateur=user,
+                    utilisateur=utilisateur,
                     id_playlist=playlist_data["id_playlist"],
                     nom_playlist=playlist_data["nom_playlist"],
                     list_son=liste_son,
                 )
                 playlists.append(playlist)
+
         return playlists
 
-    def supprimer_playlist(
-        self, id_playlist
-    ):  # y'a pas un prblm? id_playlist n'existe pas dans son
-        with DBConnection().connection as connection:
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "DELETE FROM son WHERE id_playlist = %(id_playlist)s",
-                    {"id_playlist": id_playlist},
-                )
 
-                cursor.execute(
-                    "DELETE FROM playlist WHERE id_playlist = %(id_playlist)s",
-                    {"id_playlist": id_playlist},
-                )
+        def supprimer_playlist(self, id_playlist: int) -> bool:
+            """
+            Supprime la playlist spécifiée par id_playlist ainsi que ses associations de sons.
+            """
+            with DBConnection().connection as connection:
+                with connection.cursor() as cursor:
+                    # Supprimer les associations des sons avec la playlist dans la table d'association
+                    cursor.execute(
+                        "DELETE FROM playlist_son_join WHERE id_playlist = %(id_playlist)s",
+                        {"id_playlist": id_playlist},
+                    )
 
-            connection.commit()
+                    # Supprimer la playlist elle-même
+                    cursor.execute(
+                        "DELETE FROM playlist WHERE id_playlist = %(id_playlist)s",
+                        {"id_playlist": id_playlist},
+                    )
+
+            return True  # Retourner True si la suppression est réussie
 
     def modifier_nom_playlist(self, id_playlist, nouveau_nom):
         with DBConnection().connection as connection:

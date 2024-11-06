@@ -20,7 +20,7 @@ class Son_DAO(metaclass=Singleton):
                         INSERT INTO son (id_son, nom_son, tags, path_stockage)
                         VALUES (%s, %s, %s, %s)
                         RETURNING id_son;
-                    """ 
+                    """
                     cursor.execute(insert_query)
                     # Fetch the generated id_son
                     res = cursor.fetchone()
@@ -65,7 +65,6 @@ class Son_DAO(metaclass=Singleton):
             return son
         return None
 
-
     def get_all_son(self)->list(Son):
         try:
             list_son = []
@@ -84,10 +83,10 @@ class Son_DAO(metaclass=Singleton):
                     path_stockage=son_data["path_stockage"],
                     )
                 list_son.append(son)
-            return list_son    
+            return list_son
         except Exception as e:
             print(f"Error get_all_son :{e}")
-            return None    
+            return None
 
     def supprimer_son(self, id_son):
         with DBConnection().connection as connection:
@@ -98,6 +97,30 @@ class Son_DAO(metaclass=Singleton):
                 )
             connection.commit()
 
+    def get_all_son_ordre_by_id_playlist(self, id_playlist: int) -> list[list]:
+        """
+        Retrieves all 'sons' from the specified playlist along with their order in the playlist.
+        """
+        sons = []
+        with DBConnection().connection as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT id_son, nom_son, tags, path_stockage        "
+                    "FROM son JOIN playlist_son_join ON id_playlist
+                    "WHERE id_playlist = %(id_playlist)s;               ",
+                        {"id_playlist": id_playlist}
+                    )
+                res = cursor.fetchall()
+
+        for son_data in res:
+            son = Son(
+                id_son=son_data["id_son"],
+                nom=son_data["nom"],
+                tags=son_data["tags"],
+                path_stockage=son_data["path_stockage"]
+                )
+                sons.append([son, son_data["ordre_son_in_plist"]])
+        return sons_with_order
 
 
 
@@ -132,35 +155,7 @@ class Son_DAO(metaclass=Singleton):
         except Exception as e:
             print(f"Error deleting son: {e}")
             return False
-
-    def get_all_son_ordre_by_playlist(self, id_playlist: int) -> list[list]:
-        """
-        Retrieves all 'sons' from the specified playlist along with their order in the playlist.
-        """
-        sons_with_order = []
-        try:
-            with DBConnection().connection as connection:
-                with connection.cursor() as cursor:
-                    cursor.execute(
-                        "SELECT id_son, nom, caracteristiques, path_stockage, ordre_son_in_plist FROM Son WHERE id_playlist = %(id_playlist)s ORDER BY ordre_son_in_plist;",
-                        {"id_playlist": id_playlist}
-                    )
-                    res = cursor.fetchall()
-
-            for son_data in res:
-                son = Son(
-                    id_son=son_data["id_son"],
-                    nom=son_data["nom"],
-                    caracteristiques=son_data["tags"],
-                    path=son_data["path_stockage"]
-                )
-                sons_with_order.append([son, son_data["ordre_son_in_plist"]])
-        except Exception as e:
-            print(f"Error retrieving sons: {e}")
-
-        return sons_with_order
 '''
-
 
 
 
