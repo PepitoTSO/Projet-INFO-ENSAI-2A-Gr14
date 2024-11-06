@@ -35,20 +35,6 @@ class Playlist:
         self.nom_playlist = nom_playlist
         self.list_son = list_son
 
-    """
-    def ajouter_son_playlist(self, son: Son, ordre: int):
-        # Réajuster les ordres si l'ordre est déjà pris
-        for item in self.list_son:
-            if item[1] >= ordre:
-                item[1] += 1
-
-        # Ajouter le nouveau son à la playlist avec l'ordre spécifié
-        self.list_son.append([ordre, son])
-
-        # Trier la playlist par ordre croissant
-        self.list_son.sort(key=lambda x: x[1])
-    """
-
     def ajouter_son_playlist(self, son: Son, ordre: int):
         # Vérifier si la position demandée est valide
         if ordre < 1 or ordre > len(self.list_son) + 1:
@@ -89,7 +75,7 @@ class Playlist:
         return True
 
     def changer_ordre(self, son, ordre: int):
-        if ordre > len(self.list_son) + 1 or ordre < 0:
+        if ordre > len(self.list_son) + 1 or ordre < 1:
             raise ValueError(
                 "La position ne peut etre inférieure à 0 ou supérieure à len(list_son)"
             )
@@ -103,40 +89,6 @@ class Playlist:
         for item in self.list_son:
             if item[0] == son and item[1] != ordre:
                 item[0] = ancien_son
-
-    """
-    def changer_ordre(self, son, ordre: int):
-        # Vérifier si la position demandée est valide
-        if ordre < 1 or ordre > len(self.list_son):
-            raise ValueError(
-                "La position ne peut être inférieure à 1 ou supérieure à la taille de la liste"
-            )
-
-        # Trouver l'index du 'son' actuel dans la liste
-        index_a_changer = None
-        for index, item in enumerate(self.list_son):
-            if item[0] == son:
-                index_a_changer = index
-                break
-
-        if index_a_changer is None:
-            raise ValueError("Le son spécifié n'est pas présent dans la liste.")
-
-        # Supprimer le 'son' de sa position actuelle
-        element = self.list_son.pop(index_a_changer)
-
-        # Ajuster l'index pour l'insertion car `ordre` est en base 1
-        nouvel_index = ordre - 1
-
-        # Insérer l'élément à la nouvelle position
-        self.list_son.insert(nouvel_index, element)
-
-        # Réindexer la liste pour que les ordres soient cohérents (base 1)
-        for i, item in enumerate(self.list_son):
-            item[1] = i + 1  # Assigner un ordre basé sur la position actuelle dans la liste
-
-
-    """
 
     def changer_nom_playlist(self, nouveau_nom):
         if not isinstance(nouveau_nom, str):
