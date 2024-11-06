@@ -33,8 +33,17 @@ class Son:
                     f"Prblm pour trouver le fichier son. La solution la plus simple est de télécharger correctement le fichier :{e}"
                 )
 
+    """
     def __repr__(self):  # plus joli pour afficher dans la commande
         return f"{self.id_son=}, {self.nom=}, {self.caracteristiques=}"
+    """
+
+    # Tom :
+    def __str__(self):
+        tags_str = ", ".join(
+            self.tags
+        )  # Convert tags list to a string for easy display
+        return f"Son ID: {self.id_son}, Nom: '{self.nom}', Tags: [{tags_str}], Chemin: {self.path_stockage}"
 
     # La partie lecture d'un unique son. Dans quelle classe?
     def play(self):
