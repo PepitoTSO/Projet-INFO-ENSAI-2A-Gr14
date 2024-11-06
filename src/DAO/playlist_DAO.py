@@ -1,6 +1,7 @@
-from utils.singleton import Singleton  # Importing the Singleton metaclass
+from utils.singleton import Singleton
 from DAO.db_connection import DBConnection
 from Object.playlist import Playlist
+from Object.utilisateur import Utilisateur
 from src.DAO.utilisateur_DAO import Utilisateur_DAO
 from src.DAO.son_DAO import Son_DAO
 from src.Object.son import Son
@@ -29,9 +30,9 @@ class Playlist_DAO(metaclass=Singleton):
                 res = cursor.fetchone()
 
         if res:
-            return res["id_playlist"]  # Retourner l'ID de la nouvelle playlist
+            return res
 
-        return None  # Retourner None si l'insertion a échoué
+        return False  # Retourner False si l'insertion a échoué
 
     def get_playlist_by_id(self, id_playlist: int):
         with DBConnection().connection as connection:
@@ -42,8 +43,9 @@ class Playlist_DAO(metaclass=Singleton):
                 )
 
                 res = cursor.fetchone()
+
         if res:
-            user = Utilisateur_DAO.get_utilisateur(self, res["pseudo"])
+            user = Utilisateur_DAO().get_utilisateur(res["pseudo"])
             liste_son = Son_DAO().get_son_ordre_by_playlist(id_playlist)
 
             playlist = Playlist(
@@ -52,23 +54,24 @@ class Playlist_DAO(metaclass=Singleton):
                 nom_playlist=res["nom_playlist"],
                 list_son=liste_son,
             )
-        return playlist
+            return playlist
 
-    def get_all_playlists_by_user(
-        self, id_user: int
-    ):  # ça n'existe pas get_son_ordre_by_playlist
+        return None  # Playlist n'est pas trouvé
+
+    def get_all_playlists_by_user(self, utilisateur: Utilisateur):
         playlists = []
+        pseudo = utilisateur.pseudo
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT * FROM playlist WHERE id_utilisateur = %(id_user)s",
-                    {"id_user": id_user},
+                    "SELECT * FROM playlist WHERE pseudo = %(pseudo)s",
+                    {"pseudo": pseudo},
                 )
 
                 res = cursor.fetchall()
 
         if res:
-            user = Utilisateur_DAO.get_utilisateur(self, id_user)
+            user = Utilisateur_DAO().get_utilisateur(utilisateur)
             for playlist_data in res:
                 liste_son = Son_DAO().get_son_ordre_by_playlist(
                     playlist_data["id_playlist"]

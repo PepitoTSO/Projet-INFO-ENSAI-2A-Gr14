@@ -1,7 +1,5 @@
 class Jointure_DAO:
-    def get_all_id_son_by_id_playlist(
-        self, id_playlist
-    ) -> list[Son]:  # a deplacer dans une DAO de jointure
+    def get_all_id_son_by_id_playlist(self, id_playlist) -> list[Son]:
         sons = []
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
