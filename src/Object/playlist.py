@@ -62,7 +62,7 @@ class Playlist:
                 item[1] += 1
 
         # Ajouter le nouveau son à la playlist
-        self.list_son.append([ordre, son])
+        self.list_son.append([son, ordre])
 
         # Trier la playlist par ordre croissant
         self.list_son.sort(key=lambda x: x[1])
@@ -172,5 +172,14 @@ playlist = Playlist(
 )
 print(playlist)
 
-playlist.ajouter_son_playlist(son3, 3)
+playlist.ajouter_son_playlist(son3, 1)
+print(playlist)
+
+playlist.supprimer_son(son3)
+print(playlist)
+
+playlist.changer_ordre(son1, 2)
+print(playlist)
+
+playlist.changer_nom_playlist("playlist1")
 print(playlist)
