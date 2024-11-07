@@ -105,9 +105,9 @@ class Son_DAO(metaclass=Singleton):
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT id_son, nom_son, tags, path_stockage        "
-                    "FROM son JOIN playlist_son_join ON id_playlist
-                    "WHERE id_playlist = %(id_playlist)s;               ",
+                    """SELECT id_son, nom_son, tags, path_stockage
+                    FROM son JOIN playlist_son_join ON id_playlist
+                    WHERE id_playlist = %(id_playlist)s""",
                         {"id_playlist": id_playlist}
                     )
                 res = cursor.fetchall()
@@ -119,7 +119,7 @@ class Son_DAO(metaclass=Singleton):
                 tags=son_data["tags"],
                 path_stockage=son_data["path_stockage"]
                 )
-                sons.append([son, son_data["ordre_son_in_plist"]])
+            sons.append([son, son_data["ordre_son_in_plist"]])
         return sons_with_order
 
 

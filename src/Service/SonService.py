@@ -2,7 +2,9 @@ from DAO.son_DAO import son_DAO
 from Object.son import Son
 import time
 import random
-
+# Initialiser Pygame
+pygame.init()
+pygame.mixer.init()
 
 class sonService:
 
@@ -18,9 +20,33 @@ class sonService:
         son_DAO().supprimer_son(self.son.id_son)
 
     def ajouter_son(self):
-        son_DAO.ajouter_son(self.son)
+        son_DAO().ajouter_son(self.son)
 
     ## la partie lecteur son
+
+    def play(self):
+        # Charger et jouer la musique
+        pygame.mixer.music.load(str(self.son.path_stockage))
+        pygame.mixer.music.play()
+
+        # Attendre que la musique soit terminée
+        while pygame.mixer.music.get_busy():
+            time.sleep(1)
+
+    def pause(self):
+        pygame.mixer.music.pause()
+
+    def unpause(self):
+        pygame.mixer.music.unpause()
+
+    def stop(self):
+        pygame.mixer.music.stop()
+
+    def jouer_en_boucle(self, temps):
+        pygame.mixer.music.load(str(self.son.path_stockage))
+        pygame.mixer.music.play(-1)  # -1 pour jouer en boucle
+        time.sleep(temps)
+        self.stop()
 
     def play_multiple_sounds(sound_files):  # Chatgpt
         sounds = [
