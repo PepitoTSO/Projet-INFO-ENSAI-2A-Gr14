@@ -9,14 +9,13 @@ import logging
 from utils.log_decorator import log
 
 
-
 class Playlist_DAO(metaclass=Singleton):
     """
     Data Access Object (DAO) for Playlist operations.
     Uses the Singleton pattern to ensure a single instance.
     """
 
-        def ajouter_playlist(self, playlist: Playlist) -> bool:
+    def ajouter_playlist(self, playlist: Playlist) -> bool:
         """
         Ajoute une nouvelle playlist et ses sons à la base de données.
         """
@@ -28,7 +27,7 @@ class Playlist_DAO(metaclass=Singleton):
                     "RETURNING id_playlist;",
                     {
                         "id_playlist": playlist.id_playlist,
-                        "pseudo": playlist.pseudo,
+                        "pseudo": playlist.utilisateur.pseudo,
                         "nom_playlist": playlist.nom_playlist,
                     },
                 )
@@ -41,14 +40,13 @@ class Playlist_DAO(metaclass=Singleton):
                             "VALUES (%(id_playlist)s, %(id_son)s, %(ordre)s);",
                             {
                                 "id_playlist": playlist.id_playlist,
-                                "id_son": son.id_son,
-                                "ordre": ordre
+                                "id_son": son,
+                                "ordre": ordre,
                             },
                         )
                     return True
 
         return False  # Retourner False si l'insertion a échoué
-
 
     def get_sons_by_id_playlist(self, id_playlist: int) -> list[list]:
         """
@@ -62,8 +60,8 @@ class Playlist_DAO(metaclass=Singleton):
                     "SELECT id_son, nom_son, tags, path_stockage, ordre_son_playlist"
                     "FROM son JOIN playlist_son_join ON id_playlist                 "
                     "WHERE id_playlist = %(id_playlist)s;                           ",
-                        {"id_playlist": id_playlist}
-                    )
+                    {"id_playlist": id_playlist},
+                )
                 res = cursor.fetchall()
 
         for son_data in res:
@@ -71,8 +69,8 @@ class Playlist_DAO(metaclass=Singleton):
                 id_son=son_data["id_son"],
                 nom=son_data["nom_son"],
                 tags=son_data["tags"],
-                path_stockage=son_data["path_stockage"]
-                )
+                path_stockage=son_data["path_stockage"],
+            )
             sons.append([son, son_data["ordre_son_playlist"]])
         return sons
 
@@ -115,7 +113,9 @@ class Playlist_DAO(metaclass=Singleton):
 
         if res:
             for playlist_data in res:
-                liste_son = Playlist_DAO().get_sons_by_id_playlist(playlist_data["id_playlist"])
+                liste_son = Playlist_DAO().get_sons_by_id_playlist(
+                    playlist_data["id_playlist"]
+                )
 
                 playlist = Playlist(
                     utilisateur=utilisateur,
@@ -127,10 +127,9 @@ class Playlist_DAO(metaclass=Singleton):
 
         return playlists
 
-
     def supprimer_playlist(self, id_playlist: int) -> bool:
         """
-            Supprime la playlist spécifiée par id_playlist ainsi que ses associations de sons.
+        Supprime la playlist spécifiée par id_playlist ainsi que ses associations de sons.
         """
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
@@ -138,13 +137,13 @@ class Playlist_DAO(metaclass=Singleton):
                 cursor.execute(
                     "DELETE FROM playlist_son_join WHERE id_playlist = %(id_playlist)s",
                     {"id_playlist": id_playlist},
-                    )
+                )
 
                 # Supprimer la playlist elle-même
                 cursor.execute(
                     "DELETE FROM playlist WHERE id_playlist = %(id_playlist)s",
                     {"id_playlist": id_playlist},
-                    )
+                )
 
         return True  # Retourner True si la suppression est réussie
 
@@ -156,24 +155,36 @@ class Playlist_DAO(metaclass=Singleton):
                     {"nouveau_nom": nouveau_nom, "id_playlist": id_playlist},
                 )
 
-        def changer_ordre(self, playlist: Playlist, ordre: int):
-        """a
+    def changer_ordre(self, playlist: Playlist, son: Son, ordre: int):
+        """
         Modifie l'ordre des sons dans une playlist spécifiée.
         """
+        playlist.changer_ordre(son, ordre)
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                     "UPDATE playlist_son_join SET ordre_son_playlist = ordre_son_playlist + 1 "
-                      "WHERE id_playlist = %(id_playlist)s AND ordre_son_playlist >= %(ordre)s",
-                      {"id_playlist": id_playlist, "ordre": ordre},
-                    )
-                    # Decrement the order of songs with order > ordre
+                    "UPDATE playlist_son_join SET ordre_son_playlist = %(nouvel_ordre)s "
+                    "WHERE id_playlist = %(id_playlist)s AND id_son = %(id_son)s",
+                    {
+                        "id_playlist": playlist.id_playlist,
+                        "id_son": son.id_son,
+                        "nouvel_ordre": ordre,
+                    },
+                )
+
+                # Modifie l'ordre de tous les sons dans la playlist dans la table playlist.list_son.
+                for s, ordre in playlist.list_son:
                     cursor.execute(
-                        "UPDATE playlist_son_join SET ordre_son_playlist = ordre_son_playlist - 1 "
-                        "WHERE id_playlist = %(id_playlist)s AND ordre_son_playlist > %(ordre)s",
-                        {"id_playlist": id_playlist, "ordre": ordre},
+                        "UPDATE playlist_son_join SET ordre_son_playlist = %(ordre)s "
+                        "WHERE id_playlist = %(id_playlist)s AND id_son = %(id_son)s",
+                        {
+                            "id_playlist": playlist.id_playlist,
+                            "id_son": s.id_son,
+                            "ordre": ordre,
+                        },
                     )
 
+        return True
 
     def supprimer_son(self, id_playlist, son: Son):
         id_son = son.id

@@ -74,7 +74,15 @@ class Playlist:
                 item[1] = item[1] - 1
         return True
 
-    def changer_ordre(self, son, ordre: int):
+    def changer_ordre(self, son: Son, ordre: int):
+        # Vérification que son est dans la playlist
+        trouve = False
+        for item in self.list_son:
+            if item[0].id_son == son.id_son:
+                trouvé = True
+        if trouve == False:
+            return False
+
         if ordre > len(self.list_son) + 1 or ordre < 1:
             raise ValueError(
                 "La position ne peut etre inférieure à 0 ou supérieure à len(list_son)"
