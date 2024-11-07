@@ -24,7 +24,7 @@ class Son_DAO(metaclass=Singleton):
                     cursor.execute(insert_query)
                     # Fetch the generated id_son
                     res = cursor.fetchone()
-                    return res['id_son']
+                    return res["id_son"]
         except Exception as e:
             print(f"Error adding son: {e}")
             return None
@@ -42,12 +42,12 @@ class Son_DAO(metaclass=Singleton):
                 id_son=res["id_son"],
                 nom=res["nom"],
                 caracteristiques=res["tags"],
-                path=res["path_stockage"]
+                path=res["path_stockage"],
             )
             return son
         return None
 
-    def get_son_by_name(self, name_son: int) -> Son: #ajout par rapport au diag_classe
+    def get_son_by_name(self, name_son: int) -> Son:  # ajout par rapport au diag_classe
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
@@ -60,19 +60,17 @@ class Son_DAO(metaclass=Singleton):
                 id_son=res["id_son"],
                 nom=res["nom"],
                 caracteristiques=res["tags"],
-                path=res["path_stockage"]
+                path=res["path_stockage"],
             )
             return son
         return None
 
-    def get_all_son(self)->list(Son):
+    def get_all_son(self) -> list(Son):
         try:
             list_son = []
             with DBConnection().connection as connection:
                 with connection.cursor() as cursor:
-                    cursor.execute(
-                        "SELECT * FROM son"
-                    )
+                    cursor.execute("SELECT * FROM son")
 
                     res = cursor.fetchall()
             for son_data in res:
@@ -81,7 +79,7 @@ class Son_DAO(metaclass=Singleton):
                     nom=son_data["nom"],
                     tags=son_data["tags"],
                     path_stockage=son_data["path_stockage"],
-                    )
+                )
                 list_son.append(son)
             return list_son
         except Exception as e:
@@ -108,8 +106,8 @@ class Son_DAO(metaclass=Singleton):
                     """SELECT id_son, nom_son, tags, path_stockage
                     FROM son JOIN playlist_son_join ON id_playlist
                     WHERE id_playlist = %(id_playlist)s""",
-                        {"id_playlist": id_playlist}
-                    )
+                    {"id_playlist": id_playlist},
+                )
                 res = cursor.fetchall()
 
         for son_data in res:
@@ -117,31 +115,13 @@ class Son_DAO(metaclass=Singleton):
                 id_son=son_data["id_son"],
                 nom=son_data["nom"],
                 tags=son_data["tags"],
-                path_stockage=son_data["path_stockage"]
-                )
+                path_stockage=son_data["path_stockage"],
+            )
             sons.append([son, son_data["ordre_son_in_plist"]])
-        return sons_with_order
+        return sons
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''
+"""
     def supprimer_son_by_playlist(self, id_playlist: int, id_son: int) -> bool:
         try:
             with DBConnection().connection as connection:
@@ -155,53 +135,7 @@ class Son_DAO(metaclass=Singleton):
         except Exception as e:
             print(f"Error deleting son: {e}")
             return False
-'''
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+"""
 
 
 #     def ajouter_son(self, son: Son) -> bool:

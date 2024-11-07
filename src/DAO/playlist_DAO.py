@@ -186,13 +186,85 @@ class Playlist_DAO(metaclass=Singleton):
 
         return True
 
-    def supprimer_son(self, id_playlist, son: Son):
+        def supprimer_son(self, playlist: Playlist, son: Son):
+        """
+        Supprime un son de la playlist spécifiée et ajuste l'ordre des autres sons.
 
-        Son_DAO().supprimer_son_by_playlist(id_playlist, id_son)
+        Arguments:
+        - playlist: La playlist dont on veut supprimer le son.
+        - son: L'objet Son à supprimer.
+        """
+        with DBConnection().connection as connection:
+            with connection.cursor() as cursor:
+                # Supprimer le son de la table `playlist_son_join`
+                cursor.execute(
+                    "DELETE FROM playlist_son_join WHERE id_playlist = %(id_playlist)s AND id_son = %(id_son)s",
+                    {
+                        "id_playlist": playlist.id_playlist,
+                        "id_son": son.id_son,
+                    },
+                )
 
-    def ajouter_son(id_playlist, son, ordre):
-        id_son = son.id
-        Son_DAO().ajouter_son(id_playlist, id_son, ordre)
+                # Mettre à jour la playlist interne pour supprimer le son
+                playlist.list_son = [pair for pair in playlist.list_son if pair[0].id_son != son.id_son]
+
+                # Réajuster l'ordre des autres sons dans la playlist après suppression
+                for i, (s, _) in enumerate(playlist.list_son):
+                    nouveau_ordre = i + 1
+                    playlist.list_son[i] = (s, nouveau_ordre)
+
+                    # Mettre à jour l'ordre dans la base de données
+                    cursor.execute(
+                        "UPDATE playlist_son_join SET ordre_son_playlist = %(ordre)s "
+                        "WHERE id_playlist = %(id_playlist)s AND id_son = %(id_son)s",
+                        {
+                            "id_playlist": playlist.id_playlist,
+                            "id_son": s.id_son,
+                            "ordre": nouveau_ordre,
+                        },
+                    )
+
+        return True
+
+    def ajouter_son(self, playlist: Playlist, son: Son, ordre: int):
+        """
+        Ajoute un son à une playlist spécifiée et ajuste l'ordre des autres sons.
+
+        """
+        with DBConnection().connection as connection:
+            with connection.cursor() as cursor:
+                # Incrémenter l'ordre des sons existants à partir de la position spécifiée
+                for i, (s, current_ordre) in enumerate(playlist.list_son):
+                    if current_ordre >= ordre:
+                        nouveau_ordre = current_ordre + 1
+                        playlist.list_son[i] = (s, nouveau_ordre)
+
+                        # Mettre à jour l'ordre dans la base de données
+                        cursor.execute(
+                            "UPDATE playlist_son_join SET ordre_son_playlist = %(ordre)s "
+                            "WHERE id_playlist = %(id_playlist)s AND id_son = %(id_son)s",
+                            {
+                                "id_playlist": playlist.id_playlist,
+                                "id_son": s.id_son,
+                                "ordre": nouveau_ordre,
+                            },
+                        )
+
+                # Ajouter le nouveau son dans la playlist et dans la base de données
+                playlist.list_son.insert(ordre - 1, (son, ordre))
+
+                # Ajouter dans la table `playlist_son_join`
+                cursor.execute(
+                    "INSERT INTO playlist_son_join (id_playlist, id_son, ordre_son_playlist) "
+                    "VALUES (%(id_playlist)s, %(id_son)s, %(ordre)s)",
+                    {
+                        "id_playlist": playlist.id_playlist,
+                        "id_son": son.id_son,
+                        "ordre": ordre,
+                    },
+                )
+
+        return True
 
     def copier_playlist(self, id_playlist: int):
         with DBConnection().connection as connection:
