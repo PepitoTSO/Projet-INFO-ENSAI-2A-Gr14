@@ -5,15 +5,27 @@ from Object.utilisateur import Utilisateur
 
 class Utilisateur_DAO(metaclass=Singleton):
     """
-    Data Access Object (DAO) for Utilisateur operations.
-    Uses the Singleton pattern to ensure a single instance.
+    Data Access Object (DAO) pour les opérations sur les Utilisateurs.
+    Utilise le modèle Singleton pour assurer une instance unique.
+
+    Attributes
+    ----------
+    None
     """
 
     def creer_utilisateur(self, utilisateur: Utilisateur) -> bool:
-        """Crée un nouvel utilisateur dans la base de données.
+        """
+        Crée un nouvel utilisateur dans la base de données.
 
-        Retourne True si la création est réussie,
-        ou False si l'utilisateur existe déjà ou en cas d'erreur.
+        Parameters
+        ----------
+        utilisateur : Utilisateur
+            L'objet Utilisateur à créer dans la base de données.
+
+        Returns
+        -------
+        bool
+            True si l'utilisateur a été créé avec succès, False sinon.
         """
 
         # Vérifie si l'utilisateur existe déjà
@@ -35,11 +47,20 @@ class Utilisateur_DAO(metaclass=Singleton):
             return False  # Renvoie False en cas d'erreur
 
     def get_utilisateur(self, utilisateur: Utilisateur) -> Utilisateur:
-        """Récupère un utilisateur par son pseudo.
-
-        Retourne l'objet Utilisateur si trouvé,
-        ou None si l'utilisateur n'existe pas.
         """
+        Récupère un utilisateur par son pseudo.
+
+        Parameters
+        ----------
+        utilisateur : Utilisateur
+            L'objet Utilisateur à récupérer.
+
+        Returns
+        -------
+        Utilisateur or None
+            L'objet Utilisateur correspondant si trouvé, None sinon.
+        """
+
         pseudo_utilisateur = utilisateur.pseudo
         try:
             with DBConnection().connection as connection:
@@ -50,17 +71,29 @@ class Utilisateur_DAO(metaclass=Singleton):
                     )
                     row = cursor.fetchone()
                     if row is not None:
-                        return Utilisateur(pseudo=row['pseudo'], mdp_hache=row['mdp_hache'])
+                        return Utilisateur(
+                            pseudo=row["pseudo"], mdp_hache=row["mdp_hache"]
+                        )
                     return None
         except Exception as e:
             print(f"Erreur lors de la récupération de l'utilisateur : {str(e)}")
             return None
 
     def se_connecter(self, utilisateur: Utilisateur) -> bool:
-        """Vérifie les informations d'identification d'un utilisateur pour la connexion.
+        """
+        Vérifie les informations d'identification d'un utilisateur pour
+        la connexion.
 
-        Retourne True si les informations sont valides,
-        ou False si l'utilisateur n'existe pas ou si le mot de passe est incorrect.
+        Parameters
+        ----------
+        utilisateur : Utilisateur
+            L'objet Utilisateur contenant les informations de connexion.
+
+        Returns
+        -------
+        bool
+            True si les informations d'identification sont valides,
+            False sinon.
         """
 
         try:
@@ -72,7 +105,7 @@ class Utilisateur_DAO(metaclass=Singleton):
                     )
                     row = cursor.fetchone()
                     if row is not None:
-                        if row['mdp_hache'] == utilisateur.mdp_hache:
+                        if row["mdp_hache"] == utilisateur.mdp_hache:
                             return True
                         else:
                             print("Mot de passe incorrect.")
@@ -87,14 +120,26 @@ class Utilisateur_DAO(metaclass=Singleton):
     def modifier_utilisateur(
         self, ancien_utilisateur: Utilisateur, nouvel_utilisateur: Utilisateur
     ) -> bool:
-        """Modifie les informations d'un utilisateur dans la base de données.
+        """
+        Modifie les informations d'un utilisateur dans la base de données.
 
-        Retourne True si la modification est réussie,
-        ou False si l'utilisateur n'existe pas ou en cas d'erreur.
+        Parameters
+        ----------
+        ancien_utilisateur : Utilisateur
+            L'objet Utilisateur avant la modification.
+        nouvel_utilisateur : Utilisateur
+            L'objet Utilisateur mis à jour.
+
+        Returns
+        -------
+        bool
+            True si la modification a réussi, False sinon.
         """
         existing_utilisateur = self.get_utilisateur(ancien_utilisateur)
         if existing_utilisateur is None:
-            print(f"Utilisateur avec le pseudo {ancien_utilisateur.pseudo} n'existe pas déjà.")
+            print(
+                f"Utilisateur avec le pseudo {ancien_utilisateur.pseudo} n'existe pas déjà."
+            )
             return False
         try:
             with DBConnection().connection as connection:

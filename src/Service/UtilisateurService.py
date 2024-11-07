@@ -7,6 +7,10 @@ import hashlib
 class UtilisateurService:
     """
     Permet de gérer les différents services liés à l'utilisateur.
+    
+    Attributes
+    ----------
+    None
     """
 
     def se_connecter(self, mdp_nh: str, pseudo_utilisateur: str):
