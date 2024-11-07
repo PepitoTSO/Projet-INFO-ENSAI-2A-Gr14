@@ -74,14 +74,16 @@ class Playlist:
                 item[1] = item[1] - 1
         return True
 
+    ### La fonctionnalité de voir si son est bien dans playlist n'est pas testé dans le fichier test
     def changer_ordre(self, son: Son, ordre: int):
         # Vérification que son est dans la playlist
         trouve = False
         for item in self.list_son:
             if item[0].id_son == son.id_son:
                 trouvé = True
+                break
         if trouve == False:
-            return False
+            raise ValueError("Son doit être dans la playlist")
 
         if ordre > len(self.list_son) + 1 or ordre < 1:
             raise ValueError(

@@ -187,7 +187,7 @@ class Playlist_DAO(metaclass=Singleton):
         return True
 
     def supprimer_son(self, id_playlist, son: Son):
-        id_son = son.id
+
         Son_DAO().supprimer_son_by_playlist(id_playlist, id_son)
 
     def ajouter_son(id_playlist, son, ordre):
