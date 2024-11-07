@@ -5,6 +5,9 @@ from Object.utilisateur import Utilisateur
 from src.DAO.utilisateur_DAO import Utilisateur_DAO
 from src.DAO.son_DAO import Son_DAO
 from src.Object.son import Son
+import logging
+from utils.log_decorator import log
+
 
 
 class Playlist_DAO(metaclass=Singleton):
@@ -19,7 +22,6 @@ class Playlist_DAO(metaclass=Singleton):
         """
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
-                # Insert the playlist into the playlist table
                 cursor.execute(
                     "INSERT INTO playlist (id_playlist, pseudo, nom_playlist) "
                     "VALUES (%(id_playlist)s, %(pseudo)s, %(nom_playlist)s) "
@@ -126,53 +128,52 @@ class Playlist_DAO(metaclass=Singleton):
         return playlists
 
 
-        def supprimer_playlist(self, id_playlist: int) -> bool:
-            """
+    def supprimer_playlist(self, id_playlist: int) -> bool:
+        """
             Supprime la playlist spécifiée par id_playlist ainsi que ses associations de sons.
-            """
-            with DBConnection().connection as connection:
-                with connection.cursor() as cursor:
-                    # Supprimer les associations des sons avec la playlist dans la table d'association
-                    cursor.execute(
-                        "DELETE FROM playlist_son_join WHERE id_playlist = %(id_playlist)s",
-                        {"id_playlist": id_playlist},
+        """
+        with DBConnection().connection as connection:
+            with connection.cursor() as cursor:
+                # Supprimer les associations des sons avec la playlist dans la table d'association
+                cursor.execute(
+                    "DELETE FROM playlist_son_join WHERE id_playlist = %(id_playlist)s",
+                    {"id_playlist": id_playlist},
                     )
 
-                    # Supprimer la playlist elle-même
-                    cursor.execute(
-                        "DELETE FROM playlist WHERE id_playlist = %(id_playlist)s",
-                        {"id_playlist": id_playlist},
+                # Supprimer la playlist elle-même
+                cursor.execute(
+                    "DELETE FROM playlist WHERE id_playlist = %(id_playlist)s",
+                    {"id_playlist": id_playlist},
                     )
 
-            return True  # Retourner True si la suppression est réussie
+        return True  # Retourner True si la suppression est réussie
 
     def modifier_nom_playlist(self, id_playlist, nouveau_nom):
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "UPDATE playlists SET nom_playlist = %(nouveau_nom)s WHERE id_playlist = %(id_playlist)s",
+                    "UPDATE playlists ET nom_playlist = %(nouveau_nom)s WHERE id_playlist = %(id_playlist)s",
                     {"nouveau_nom": nouveau_nom, "id_playlist": id_playlist},
                 )
-            connection.commit()
 
-    def changer_ordre(self, id_playlist: int, ordre: int, ajout: bool):
+        def changer_ordre(self, playlist: Playlist, ordre: int):
+        """a
+        Modifie l'ordre des sons dans une playlist spécifiée.
+        """
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
-                if ajout:
-                    # Increment order of songs with order >= ordre
+                cursor.execute(
+                     "UPDATE playlist_son_join SET ordre_son_playlist = ordre_son_playlist + 1 "
+                      "WHERE id_playlist = %(id_playlist)s AND ordre_son_playlist >= %(ordre)s",
+                      {"id_playlist": id_playlist, "ordre": ordre},
+                    )
+                    # Decrement the order of songs with order > ordre
                     cursor.execute(
-                        "UPDATE son SET ordre_son_in_plist = ordre_son_in_plist + 1 "
-                        "WHERE id_playlist = %(id_playlist)s AND ordre_son_in_plist >= %(ordre)s",
+                        "UPDATE playlist_son_join SET ordre_son_playlist = ordre_son_playlist - 1 "
+                        "WHERE id_playlist = %(id_playlist)s AND ordre_son_playlist > %(ordre)s",
                         {"id_playlist": id_playlist, "ordre": ordre},
                     )
-                else:
-                    # Decrement order of songs with order > ordre
-                    cursor.execute(
-                        "UPDATE son SET ordre_son_in_plist = ordre_son_in_plist - 1 "
-                        "WHERE id_playlist = %(id_playlist)s AND ordre_son_in_plist > %(ordre)s",
-                        {"id_playlist": id_playlist, "ordre": ordre},
-                    )
-            connection.commit()
+
 
     def supprimer_son(self, id_playlist, son: Son):
         id_son = son.id
