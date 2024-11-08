@@ -7,7 +7,7 @@ import hashlib
 class UtilisateurService:
     """
     Permet de gérer les différents services liés à l'utilisateur.
-    
+
     Attributes
     ----------
     None
@@ -133,11 +133,18 @@ class UtilisateurService:
                 mdp_hache=Session.utilisateur.mdp_hache,
             )
             mdp_hache = self.hacher_mot_de_passe(nouveau_mdp_nh)
-            Session.utilisateur.mot_de_passe_hache = mdp_hache
+
+            # Correction : utilisation de 'mdp_hache' au lieu de 'mot_de_passe_hache'
+            Session.utilisateur.mdp_hache = mdp_hache
             Session.utilisateur.pseudo = pseudo_utilisateur
 
             user_modif = Utilisateur(pseudo=pseudo_utilisateur, mdp_hache=mdp_hache)
+
+            # Modification de l'utilisateur dans la BDD
             reponse = Utilisateur_DAO.modifier_utilisateur(
                 ancien_utilisateur, user_modif
             )
-        return reponse
+
+            return reponse  # Retourner le résultat de la modification
+        else:
+            return False  # Si aucun utilisateur n'est connecté, retournez False
