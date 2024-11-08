@@ -2,9 +2,7 @@ import unittest
 from unittest.mock import patch
 from Object.utilisateur import Utilisateur
 from view.session import Session
-from Service.UtilisateurService import (
-    UtilisateurService,
-)  # Assurez-vous que le chemin d'import est correct
+from Service.UtilisateurService import UtilisateurService
 
 
 class TestUtilisateurService(unittest.TestCase):
