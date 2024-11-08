@@ -10,6 +10,7 @@ if __name__ == "__main__":
 
     # run the Start View
     current_view = AccueilView()
+    current_view.choisir_menu()
 
     # while current_view is not none, the application is still running
     while current_view:

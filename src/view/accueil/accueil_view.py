@@ -6,14 +6,11 @@ from view.abstract_view import AbstractView
 class AccueilView(AbstractView):
     """Vue d'accueil de l'application"""
 
-    def premier_menu(self):
-        """
-        Interface du premier menu
-        """
-
-    def display_info(self):
+    def choisir_menu(self):
         with open("src/dessin/banner.txt", "r", encoding="utf-8") as asset:
             print(asset.read())
+
+        print("\n" + "-" * 50 + "\nAccueil\n" + "-" * 50 + "\n")
 
         choix = inquirer.select(
             message="Faites votre choix : ",
@@ -30,21 +27,22 @@ class AccueilView(AbstractView):
                 pass
 
             case "Se connecter":
-                from View.accueil.connexion_view import ConnexionView
+                from view.accueil.connexion_view import ConnexionView
 
                 return ConnexionView("Connexion à l'application")
 
             case "Créer un compte":
-                from View.accueil.inscription_view import InscriptionView
+                from view.accueil.inscription_view import InscriptionView
 
                 return InscriptionView("Création de compte joueur")
 
             case "Infos sur l'appli":
-                AccueilView.messageInfo()
+                accueil = AccueilView()
+                accueil.messageInfo()
 
     def messageInfo(self):
         print(
-            "Bonjour et bienvenu sur notre application ! \n"
+            "Bonjour et bienvenue sur notre application ! \n"
             "Vous pouvez vous connecter ou créer un compte pour accéder à nos services. \n"
             "Cette application a été créée dans le but de vous aider à créer une ambiance pour vos parties de jeux de rôles. \n"
             "Vous pouvez ajouter des sons à votre playlist et les jouer en boucle ou les arrêter à tout moment afin de permettre une immersion totale des joueurs. \n"

@@ -7,7 +7,9 @@ pygame.init()
 pygame.mixer.init()
 
 class sonService:
-
+    '''
+    Implemente les méthodes associées à la classe Son
+    '''
     def __init__(self, son: son):
         if not isinstance(son, son):
             raise TypeError("La son n'est pas type son.")
@@ -20,7 +22,10 @@ class sonService:
         son_DAO().supprimer_son(self.son.id_son)
 
     def ajouter_son(self):
-        son_DAO().ajouter_son(self.son)
+        r=son_DAO().ajouter_son(self.son)
+        if r == None:
+            print("Erreur lors de l'ajout")
+        return r
 
     ## la partie lecteur son
 
@@ -43,12 +48,15 @@ class sonService:
         pygame.mixer.music.stop()
 
     def jouer_en_boucle(self, temps):
+        if not isinstance(temps, int):
+            raise TypeError("temps doit être int")
         pygame.mixer.music.load(str(self.son.path_stockage))
         pygame.mixer.music.play(-1)  # -1 pour jouer en boucle
         time.sleep(temps)
         self.stop()
 
-    def play_multiple_sounds(sound_files):  # Chatgpt
+#elle est un peu bizarre celle là
+    def play_multiple_sounds(self, sound_files):  # Chatgpt
         sounds = [
             Son(i, f"sound_{i}", "test", file) for i, file in enumerate(sound_files)
         ]
@@ -74,4 +82,5 @@ class sonService:
         while time.time()-debut < duree:
             self.sound.play()
             attente_random = random.uniform(attente_min,attente_max)
-        
+            time.sleep(attente_random)
+        self.stop()

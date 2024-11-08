@@ -5,7 +5,7 @@ from pathlib import Path
 
 class Son:
     """
-    Classe qui contient la définition d'un son : ses caractéristiques
+    Classe qui contient la définition d'un son
     """
 
     def __init__(self, id_son, nom="pas_de_nom", tags=[], path_stockage=None) -> None:
