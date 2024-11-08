@@ -2,9 +2,9 @@ from utils.singleton import Singleton
 from DAO.db_connection import DBConnection
 from Object.playlist import Playlist
 from Object.utilisateur import Utilisateur
-from src.DAO.utilisateur_DAO import Utilisateur_DAO
-from src.DAO.son_DAO import Son_DAO
-from src.Object.son import Son
+from DAO.utilisateur_DAO import Utilisateur_DAO
+from DAO.son_DAO import Son_DAO
+from Object.son import Son
 import logging
 from utils.log_decorator import log
 
@@ -22,7 +22,7 @@ class Playlist_DAO(metaclass=Singleton):
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "INSERT INTO playlist (id_playlist, pseudo, nom_playlist) "
+                    "INSERT INTO bdd.playlist (id_playlist, pseudo, nom_playlist) "
                     "VALUES (%(id_playlist)s, %(pseudo)s, %(nom_playlist)s) "
                     "RETURNING id_playlist;",
                     {
@@ -36,11 +36,11 @@ class Playlist_DAO(metaclass=Singleton):
                 if res:
                     for son, ordre in playlist.list_son:
                         cursor.execute(
-                            "INSERT INTO playlist_son_join (id_playlist, id_son, ordre_son_playlist) "
+                            "INSERT INTO bdd.playlist_son_join (id_playlist, id_son, ordre_son_playlist) "
                             "VALUES (%(id_playlist)s, %(id_son)s, %(ordre)s);",
                             {
                                 "id_playlist": playlist.id_playlist,
-                                "id_son": son,
+                                "id_son": son.id_son,
                                 "ordre": ordre,
                             },
                         )
@@ -58,7 +58,7 @@ class Playlist_DAO(metaclass=Singleton):
             with connection.cursor() as cursor:
                 cursor.execute(
                     "SELECT id_son, nom_son, tags, path_stockage, ordre_son_playlist"
-                    "FROM son JOIN playlist_son_join ON id_playlist                 "
+                    "FROM bdd.son JOIN bdd.playlist_son_join ON id_playlist                 "
                     "WHERE id_playlist = %(id_playlist)s;                           ",
                     {"id_playlist": id_playlist},
                 )
@@ -186,14 +186,11 @@ class Playlist_DAO(metaclass=Singleton):
 
         return True
 
-        def supprimer_son(self, playlist: Playlist, son: Son):
+    def supprimer_son(self, playlist: Playlist, son: Son):
         """
         Supprime un son de la playlist spécifiée et ajuste l'ordre des autres sons.
-
-        Arguments:
-        - playlist: La playlist dont on veut supprimer le son.
-        - son: L'objet Son à supprimer.
         """
+        playlist.supprimer_son(son)
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
                 # Supprimer le son de la table `playlist_son_join`
@@ -205,25 +202,17 @@ class Playlist_DAO(metaclass=Singleton):
                     },
                 )
 
-                # Mettre à jour la playlist interne pour supprimer le son
-                playlist.list_son = [pair for pair in playlist.list_son if pair[0].id_son != son.id_son]
-
-                # Réajuster l'ordre des autres sons dans la playlist après suppression
-                for i, (s, _) in enumerate(playlist.list_son):
-                    nouveau_ordre = i + 1
-                    playlist.list_son[i] = (s, nouveau_ordre)
-
-                    # Mettre à jour l'ordre dans la base de données
+                # Mettre à jour l'ordre dans la base de données
+                for s, ordre in playlist.list_son:
                     cursor.execute(
                         "UPDATE playlist_son_join SET ordre_son_playlist = %(ordre)s "
                         "WHERE id_playlist = %(id_playlist)s AND id_son = %(id_son)s",
                         {
                             "id_playlist": playlist.id_playlist,
                             "id_son": s.id_son,
-                            "ordre": nouveau_ordre,
+                            "ordre": ordre,
                         },
                     )
-
         return True
 
     def ajouter_son(self, playlist: Playlist, son: Son, ordre: int):
@@ -231,29 +220,10 @@ class Playlist_DAO(metaclass=Singleton):
         Ajoute un son à une playlist spécifiée et ajuste l'ordre des autres sons.
 
         """
+        playlist.ajouter_son_playlist(son, ordre)
         with DBConnection().connection as connection:
             with connection.cursor() as cursor:
-                # Incrémenter l'ordre des sons existants à partir de la position spécifiée
-                for i, (s, current_ordre) in enumerate(playlist.list_son):
-                    if current_ordre >= ordre:
-                        nouveau_ordre = current_ordre + 1
-                        playlist.list_son[i] = (s, nouveau_ordre)
-
-                        # Mettre à jour l'ordre dans la base de données
-                        cursor.execute(
-                            "UPDATE playlist_son_join SET ordre_son_playlist = %(ordre)s "
-                            "WHERE id_playlist = %(id_playlist)s AND id_son = %(id_son)s",
-                            {
-                                "id_playlist": playlist.id_playlist,
-                                "id_son": s.id_son,
-                                "ordre": nouveau_ordre,
-                            },
-                        )
-
-                # Ajouter le nouveau son dans la playlist et dans la base de données
-                playlist.list_son.insert(ordre - 1, (son, ordre))
-
-                # Ajouter dans la table `playlist_son_join`
+                # Nouveau son dans la table
                 cursor.execute(
                     "INSERT INTO playlist_son_join (id_playlist, id_son, ordre_son_playlist) "
                     "VALUES (%(id_playlist)s, %(id_son)s, %(ordre)s)",
@@ -264,48 +234,76 @@ class Playlist_DAO(metaclass=Singleton):
                     },
                 )
 
-        return True
-
-    def copier_playlist(self, id_playlist: int):
-        with DBConnection().connection as connection:
-            with connection.cursor() as cursor:
-                # Récupérer les détails de la playlist originale
-                cursor.execute(
-                    "SELECT nom_playlist FROM Playlist WHERE id_playlist = %(id_playlist)s;",
-                    {"id_playlist": id_playlist},
-                )
-                original_playlist = cursor.fetchone()
-
-                if not original_playlist:
-                    return False  # Si la playlist originale n'existe pas
-
-                # Créer une nouvelle playlist avec le même nom pour l'utilisateur de session
-                new_id_playlist = self.ajouter_playlist(
-                    original_playlist["nom_playlist"]
-                )
-
-                if not new_id_playlist:
-                    return False  # Si la création de la nouvelle playlist a échoué
-
-                # Copier les chansons de la playlist originale dans la nouvelle playlist
-                cursor.execute(
-                    "SELECT nom, ordre_son_in_plist, tags, path_stockage FROM Son WHERE id_playlist = %(id_playlist)s;",
-                    {"id_playlist": id_playlist},
-                )
-                chansons = cursor.fetchall()
-
-                for chanson in chansons:
+                # Mettre à jour l'ordre dans la base de données
+                for s, ordre in playlist.list_son:
                     cursor.execute(
-                        "INSERT INTO Son (id_playlist, nom, ordre_son_in_plist, tags, path_stockage) "
-                        "VALUES (%(id_playlist)s, %(nom)s, %(ordre)s, %(tags)s, %(path)s);",
+                        "UPDATE playlist_son_join SET ordre_son_playlist = %(ordre)s "
+                        "WHERE id_playlist = %(id_playlist)s AND id_son = %(id_son)s",
                         {
-                            "id_playlist": new_id_playlist,
-                            "nom": chanson["nom"],
-                            "ordre": chanson["ordre_son_in_plist"],
-                            "tags": chanson["tags"],
-                            "path": chanson["path_stockage"],
+                            "id_playlist": playlist.id_playlist,
+                            "id_son": s.id_son,
+                            "ordre": ordre,
                         },
                     )
+        return True
 
-            connection.commit()
-            return True  # Retourner True si la copie a réussi
+    def copier_playlist(self, id_playlist: int, utilisateur: Utilisateur) -> bool:
+        """
+        Copie une playlist existante pour un utilisateur donné.
+
+        Arguments:
+        - id_playlist: L'identifiant de la playlist à copier.
+        - utilisateur: L'utilisateur pour lequel la playlist est copiée.
+        """
+        try:
+            with DBConnection().connection as connection:
+                with connection.cursor() as cursor:
+                    # Récupérer les détails de la playlist originale
+                    cursor.execute(
+                        "SELECT nom_playlist FROM playlist WHERE id_playlist = %(id_playlist)s;",
+                        {"id_playlist": id_playlist},
+                    )
+                    original_playlist = cursor.fetchone()
+
+                    if not original_playlist:
+                        return False  # Si la playlist originale n'existe pas
+
+                    # Créer une nouvelle playlist avec le même nom pour l'utilisateur donné
+                    nouveau_nom_playlist = (
+                        original_playlist["nom_playlist"] + " (copie)"
+                    )
+                    cursor.execute(
+                        "INSERT INTO playlist (pseudo, nom_playlist) VALUES (%(pseudo)s, %(nom_playlist)s) RETURNING id_playlist;",
+                        {
+                            "pseudo": utilisateur.pseudo,
+                            "nom_playlist": nouveau_nom_playlist,
+                        },
+                    )
+                    new_id_playlist = cursor.fetchone()["id_playlist"]
+
+                    # Si la création de la nouvelle playlist a échoué
+                    if not new_id_playlist:
+                        return False
+
+                    # Récupérer les sons associés à la playlist originale
+                    cursor.execute(
+                        "SELECT id_son, ordre_son_playlist FROM playlist_son_join WHERE id_playlist = %(id_playlist)s;",
+                        {"id_playlist": id_playlist},
+                    )
+                    sons = cursor.fetchall()
+
+                    # Copier chaque son de l'ancienne playlist vers la nouvelle
+                    for son in sons:
+                        cursor.execute(
+                            "INSERT INTO playlist_son_join (id_playlist, id_son, ordre_son_playlist) "
+                            "VALUES (%(id_playlist)s, %(id_son)s, %(ordre)s);",
+                            {
+                                "id_playlist": new_id_playlist,
+                                "id_son": son["id_son"],
+                                "ordre": son["ordre_son_playlist"],
+                            },
+                        )
+        except Exception as e:
+            logging.info(e)
+
+        return True  # Retourner True si la copie a réussi

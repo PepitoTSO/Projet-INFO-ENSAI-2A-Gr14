@@ -3,16 +3,12 @@ import time
 from pathlib import Path
 
 
-
-
 class Son:
     """
     Classe qui contient la définition d'un son : ses caractéristiques
     """
 
-    def __init__(
-        self, id_son, nom="pas_de_nom", tags=("pas", "de", "tags"), path_stockage=None
-    ) -> None:
+    def __init__(self, id_son, nom="pas_de_nom", tags=[], path_stockage=None) -> None:
         if not isinstance(id_son, int):
             raise TypeError("id_son doit être int")
         if not isinstance(nom, str):
@@ -42,5 +38,3 @@ class Son:
             self.tags
         )  # Convert tags list to a string for easy display
         return f"Son ID: {self.id_son}, Nom: '{self.nom}', Tags: [{tags_str}], Chemin: {self.path_stockage}"
-
-

@@ -1,6 +1,7 @@
 from utils.singleton import Singleton
 from db_connection import DBConnection
-from son import Son
+from Object.son import Son
+from typing import List
 
 
 class Son_DAO(metaclass=Singleton):
@@ -13,21 +14,29 @@ class Son_DAO(metaclass=Singleton):
         """
         Adds a new 'son' to the database.
         """
+        tags_string = ",".join(son.tags) if isinstance(son.tags, list) else son.tags
+
         try:
             with DBConnection().connection as connection:
                 with connection.cursor() as cursor:
-                    insert_query = """
-                        INSERT INTO son (id_son, nom_son, tags, path_stockage)
-                        VALUES (%s, %s, %s, %s)
-                        RETURNING id_son;
-                    """
-                    cursor.execute(insert_query)
-                    # Fetch the generated id_son
+                    cursor.execute(
+                        "INSERT INTO bdd.son (id_son, nom_son, tags, path_stockage)"
+                        "VALUES (%(id_son)s, %(nom_son)s, %(tags)s, %(path_stockage)s) "
+                        "RETURNING id_son;",
+                        {
+                            "id_son": son.id_son,
+                            "nom_son": son.nom,
+                            "tags": tags_string,
+                            "path_stockage": str(son.path_stockage),
+                        },
+                    )
                     res = cursor.fetchone()
-                    return res["id_son"]
+
+                if res:
+                    return True
         except Exception as e:
             print(f"Error adding son: {e}")
-            return None
+            return False
 
     def get_son_by_id(self, id_son: int) -> Son:
         with DBConnection().connection as connection:
@@ -65,7 +74,7 @@ class Son_DAO(metaclass=Singleton):
             return son
         return None
 
-    def get_all_son(self) -> list(Son):
+    def get_all_son(self) -> List[Son]:
         try:
             list_son = []
             with DBConnection().connection as connection:
