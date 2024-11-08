@@ -20,3 +20,5 @@ Juste un memo pour ne pas oublier 2 ou 3 trucs
 
 - choisir une pratique entre le init ou simplement création interne pour cleAPI entre autre. Faire un getter pour la variable sensible?
 - questionner la securite d'un chargement des variables sensibles dans le code
+
+## 

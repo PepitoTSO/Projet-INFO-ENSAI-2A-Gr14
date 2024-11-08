@@ -2,6 +2,7 @@ from Object.playlist import Playlist
 from DAO.playlist_DAO import Playlist_DAO
 from Object.son import Son
 from Service.SonService import SonService
+from Api_FreeSound import apifreesound
 
 
 class PlaylistService:
@@ -53,15 +54,20 @@ class PlaylistService:
         Playlist_DAO().changer_ordre_son(id_playlist, ordre, True)
         Playlist_DAO().ajouter_son(id_playlist, son, ordre)
 
+
+
     def jouer_playlist(self):
 
         n = len(self.playlist.list_son)
+        api=apifreesound() # Merlin a modifié ici et après
         for i in range(n):
             son = self.playlist.list_son[i][0]
-            SonService().telecharger_son(son.id_son)
+            api.dl_son(son.id_son)
 
         for j in range(n):
             for i in range(n):
                 if self.playlist.list_son[i][1] == j:
                     son = self.playlist.list_son[i][0]
-                    SonService().jouer_son(son.id_son)
+                    son_a_jouer=SonService(son)
+                    son_a_jouer.play()
+

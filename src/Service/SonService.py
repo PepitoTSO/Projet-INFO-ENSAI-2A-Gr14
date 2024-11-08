@@ -84,3 +84,5 @@ class sonService:
             attente_random = random.uniform(attente_min,attente_max)
             time.sleep(attente_random)
         self.stop()
+
+
