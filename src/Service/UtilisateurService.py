@@ -141,9 +141,10 @@ class UtilisateurService:
             user_modif = Utilisateur(pseudo=pseudo_utilisateur, mdp_hache=mdp_hache)
 
             # Modification de l'utilisateur dans la BDD
-            reponse = Utilisateur_DAO.modifier_utilisateur(ancien_utilisateur, user_modif)
+            reponse = Utilisateur_DAO.modifier_utilisateur(
+                ancien_utilisateur, user_modif
+            )
 
             return reponse  # Retourner le résultat de la modification
         else:
             return False  # Si aucun utilisateur n'est connecté, retournez False
-
