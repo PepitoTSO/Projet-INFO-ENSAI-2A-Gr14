@@ -24,10 +24,10 @@ sonDAO = Son_DAO()
 
 utilisateurDAO.creer_utilisateur(utilisateur)
 sonDAO.ajouter_son(son1)
-sonDAO.ajouter_son(son2)
+# sonDAO.ajouter_son(son2)
 # print(sonDAO.get_all_son()[0])
 # sonDAO.get_all_son_ordre_by_id_playlist() - pas encore tester !!!!
 # print(sonDAO.get_son_by_id(2))
-print(sonDAO.get_son_by_name("son1"))
-sonDAO.supprimer_son(1)
+# print(sonDAO.get_son_by_name("son1"))
 # playlistDAO.ajouter_playlist(playlist)
+print(playlistDAO.get_sons_by_playlist(playlist))

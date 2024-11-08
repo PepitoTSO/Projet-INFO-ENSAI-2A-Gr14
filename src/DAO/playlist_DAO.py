@@ -65,11 +65,12 @@ class Playlist_DAO(metaclass=Singleton):
 
         return False  # Retourner False si l'insertion a échoué
 
-    def get_sons_by_id_playlist(self, id_playlist: int) -> list[list]:
+    def get_sons_by_playlist(self, playlist: Playlist) -> list[list]:
         """
         Récupère tous les sons de la playlist spécifiée par id_playlist
         ainsi que leur ordre dans la playlist.
         """
+        id_playlist = playlist.id_playlist
         sons = []
         with DBConnection().connection as connection:
             with connection.cursor(
@@ -90,7 +91,7 @@ class Playlist_DAO(metaclass=Singleton):
             son = Son(
                 id_son=son_data["id_son"],
                 nom=son_data["nom_son"],
-                tags=son_data["tags"],
+                tags=[son_data["tags"]],
                 path_stockage=son_data["path_stockage"],
             )
             sons.append([son, son_data["ordre_son_playlist"]])
