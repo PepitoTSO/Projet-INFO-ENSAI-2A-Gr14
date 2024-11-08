@@ -95,6 +95,7 @@ class Son_DAO(metaclass=Singleton):
                 )
             connection.commit()
 
+#a mettre dans jointure?
     def get_all_son_ordre_by_id_playlist(self, id_playlist: int) -> list[list]:
         """
         Retrieves all 'sons' from the specified playlist along with their order in the playlist.
