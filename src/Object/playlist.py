@@ -118,6 +118,7 @@ class Playlist:
         return playlist_str
 
 
+"""
 son1 = Son(
     id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
 )
@@ -145,3 +146,4 @@ print(playlist)
 
 playlist.changer_nom_playlist("playlist1")
 print(playlist)
+"""
