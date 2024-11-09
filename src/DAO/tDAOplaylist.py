@@ -22,8 +22,8 @@ playlistDAO = Playlist_DAO()
 utilisateurDAO = Utilisateur_DAO()
 sonDAO = Son_DAO()
 
-utilisateurDAO.creer_utilisateur(utilisateur)
-sonDAO.ajouter_son(son1)
+# utilisateurDAO.creer_utilisateur(utilisateur)
+# sonDAO.ajouter_son(son1)
 # sonDAO.ajouter_son(son2)
 # print(sonDAO.get_all_son()[0])
 # sonDAO.get_all_son_ordre_by_id_playlist() - pas encore tester !!!!

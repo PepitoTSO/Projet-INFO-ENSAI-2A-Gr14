@@ -65,7 +65,7 @@ class Playlist_DAO(metaclass=Singleton):
 
         return False  # Retourner False si l'insertion a échoué
 
-    def get_sons_by_playlist(self, playlist: Playlist) -> list[list]:
+    def get_sons_by_playlist(self, playlist: Playlist) -> list[Son]:
         """
         Récupère tous les sons de la playlist spécifiée par id_playlist
         ainsi que leur ordre dans la playlist.
