@@ -8,8 +8,8 @@ class Jointure_DAO:
                     {"id_playlist": id_playlist},
                 )
                 res = cursor.fetchall()
-# Y'a un truc bizarre, on veut les id_son par playlist pas des lists de sons
-        for son_data in res: 
+        # Y'a un truc bizarre, on veut les id_son par playlist pas des lists de sons
+        for son_data in res:
             son = Son(
                 id_son=son_data["id_son"],
                 nom=son_data["nom"],
