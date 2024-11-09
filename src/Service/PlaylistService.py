@@ -8,12 +8,12 @@ from Api_FreeSound import apifreesound
 
 class PlaylistService:
 
-    ##### Attention la session doit être modifiée dans la vue,
-    ##### dès qu'il shoisit une playlist ça doit modifier session.Playlist
-    ##### et dès qu'il quitte les menus où il a besoin d'une playlist ça
-    ##### doit la remettre à None
+    # Attention la session doit être modifiée dans la vue,
+    # dès qu'il shoisit une playlist ça doit modifier session.Playlist
+    # et dès qu'il quitte les menus où il a besoin d'une playlist ça
+    # doit la remettre à None
 
-    ###ATTENTION CAS PARTICULIER quand on crée ou modifie une playlist, on met la playlist de session direct dedans
+    # ATTENTION CAS PARTICULIER quand on crée ou modifie une playlist, on met la playlist de session direct dedans
 
     def creer_playlist(self, nom_playlist: str, list_son: list(list()) = [[]]):
 
@@ -83,6 +83,7 @@ class PlaylistService:
     def afficher_playlist(self):
         utilisateur = Session().utilisateur
         liste_playlist = Playlist_DAO().get_all_playlists_by_user(utilisateur)
+        return liste_playlist
         # je sais pas quoi faire
 
     # def __init__(self, playlist: Playlist):
