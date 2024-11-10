@@ -24,14 +24,18 @@ class PlaylistView(AbstractView):
 
         print("\n" + "-" * 50 + "\nMenu Playlists\n" + "-" * 50 + "\n")
 
+        playlist_service = PlaylistService()
+
+        playlists = playlist_service.afficher_playlist()
+
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
-                "Afficher mes playlists",
-                "Lancer une playlist",
-                "Créer une playlist",
+                "Jouer une playlist",
                 "Modifier une playlist",
+                "Créer une playlist",
                 "Supprimer une playlist",
+                "Copier une playlist",
                 "Revenir au menu principal",
                 "Se déconnecter",
             ],
@@ -49,23 +53,39 @@ class PlaylistView(AbstractView):
 
                 return MenuView()
 
-            case "Lancer une playlist":
-                playlist_service = PlaylistService()
-
-                playlists = playlist_service.afficher_playlist()
+            case "Jouer une playlist":
                 playlists.append("Retour au Menu Principal")
 
-                choix = inquirer.select(
+                jouer_playlist = inquirer.select(
                     message="Choisissez une playlist : ",
                     choices=playlists,
                 ).execute()
 
-                if choix == "Retour au Menu Joueur":
+                if jouer_playlist == "Retour au Menu Joueur":
                     from view.menu_principal_view import MenuView
 
                     return MenuView()
 
-                playlist_service.jouer_playlist()
+                from view.jouer_playlist_view import JouerPlaylistView
+
+                return JouerPlaylistView
+
+            case "Modifier une playlist":
+                playlists.append("Retour au Menu Principal")
+
+                modifier_playlist = inquirer.select(
+                    message="Choisissez une playlist : ",
+                    choices=playlists,
+                ).execute()
+
+                if modifier_playlist == "Retour au Menu Joueur":
+                    from view.menu_principal_view import MenuView
+
+                    return MenuView()
+
+                from view.modif_playlist_view import ModifPlaylistView
+
+                return ModifPlaylistView
 
             case "Créer une playlist":
                 nom_playlist = inquirer.text(
@@ -75,15 +95,7 @@ class PlaylistView(AbstractView):
 
                 PlaylistService().creer_playlist(nom_playlist)
 
-            case "Modifier une playlist":
-                from view.modif_playlist_view import ModifPlaylistView
-
-                return ModifPlaylistView
-
             case "Supprimer une playlist":
-                playlist_service = PlaylistService()
-
-                playlists = playlist_service.afficher_playlist()
                 playlists.append("Retour au Menu Principal")
 
                 choix = inquirer.select(

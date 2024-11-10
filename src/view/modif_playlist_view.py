@@ -8,7 +8,7 @@ from Service.PlaylistService import PlaylistService
 
 class ModifPlaylistView(AbstractView):
     """
-    Vue du menu de la gestion des playlists
+    Vue du menu de la modification des playlists
     """
 
     def choisir_menu(self):

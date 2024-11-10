@@ -40,9 +40,20 @@ from Service.UtilisateurService import UtilisateurService
 
 
 class ConnexionView(AbstractView):
-    """Vue de Connexion (saisie de pseudo et mdp)"""
+    """
+    Vue du menu de connexion d'un utilisateur
+    """
 
     def choisir_menu(self):
+        """Choix du menu suivant de l'utilisateur
+
+        Return
+        ------
+        vue
+            Retourne la vue choisie par l'utilisateur dans le terminal
+        """
+
+        print("\n" + "-" * 50 + "\nMenu Inscription\n" + "-" * 50 + "\n")
         # Demande à l'utilisateur de saisir pseudo et mot de passe
         pseudo = inquirer.text(message="Entrez votre pseudo : ").execute()
         mdp = inquirer.secret(message="Entrez votre mot de passe :").execute()

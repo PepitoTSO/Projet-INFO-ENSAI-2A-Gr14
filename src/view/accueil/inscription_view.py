@@ -1,4 +1,4 @@
-#import regex
+# import regex
 
 from InquirerPy import inquirer
 from InquirerPy.validator import PasswordValidator, EmptyInputValidator
@@ -10,7 +10,21 @@ from Service.UtilisateurService import UtilisateurService
 
 
 class InscriptionView(AbstractView):
+    """
+    Vue du menu d'inscription d'un utilisateur
+    """
+
     def choisir_menu(self):
+        """Choix du menu suivant de l'utilisateur
+
+        Return
+        ------
+        vue
+            Retourne la vue choisie par l'utilisateur dans le terminal
+        """
+
+        print("\n" + "-" * 50 + "\nMenu Inscription\n" + "-" * 50 + "\n")
+
         # Demande à l'utilisateur de saisir pseudo, mot de passe...
         pseudo = inquirer.text(message="Entrez votre pseudo : ").execute()
 

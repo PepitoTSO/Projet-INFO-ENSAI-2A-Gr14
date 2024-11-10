@@ -7,7 +7,7 @@ from Service.UtilisateurService import UtilisateurService
 
 
 class MenuView(AbstractView):
-    """Vue du menu de l'utilisateur
+    """Vue du menu principal de l'utilisateur
 
     Attributes
     ----------
