@@ -1,5 +1,3 @@
-import pygame
-import time
 from pathlib import Path
 
 
@@ -8,7 +6,7 @@ class Son:
     Classe qui contient la définition d'un son
     """
 
-    def __init__(self, id_son, nom="pas_de_nom", tags=[]) -> None:
+    def __init__(self, id_son, nom="pas_de_nom", tags=[], path_stockage=None) -> None:
         if not isinstance(id_son, int):
             raise TypeError("id_son doit être int")
         if not isinstance(nom, str):
@@ -18,12 +16,16 @@ class Son:
         self.id_son = id_son
         self.nom = nom
         self.tags = tags
-        try:
-            self.path_stockage = Path(f"./data/son/{id_son}.mp3")
-        except Exception as e:
-            print(
-                f"Prblm pour trouver le fichier son. La solution la plus simple est de télécharger correctement le fichier :{e}"
-            )
+        if path_stockage is None:
+            try:
+                self.path_stockage = Path(f"./data/son/{id_son}.mp3")
+            except Exception as e:
+                print(
+                    f"Prblm pour trouver le fichier son. La solution la plus simple est\
+                        de télécharger correctement le fichier :{e}"
+                )
+        else:
+            self.path_stockage = path_stockage
 
     def __str__(self):
         tags_str = ", ".join(

@@ -7,6 +7,7 @@ import random
 # Initialiser Pygame
 pygame.init()
 pygame.mixer.init()
+pygame.mixer.set_num_channels(8) # pour superposer jusqu'à 8 sons
 
 
 class SonService():
@@ -59,7 +60,7 @@ class SonService():
         # Attendre que la musique soit terminée
         while pygame.mixer.music.get_busy():
             time.sleep(1)
-
+            
     def pause(self):
         pygame.mixer.music.pause()
 
@@ -72,7 +73,7 @@ class SonService():
     def jouer_en_boucle(self, son: Son, temps: int):
         if not isinstance(temps, int):
             raise TypeError("temps doit être int")
-        pygame.mixer.music.load(str(son.son.path_stockage))
+        pygame.mixer.music.load(str(son.path_stockage))
         pygame.mixer.music.play(-1)  # -1 pour jouer en boucle
         time.sleep(temps)
         self.stop()
@@ -106,3 +107,29 @@ class SonService():
             attente_random = random.uniform(attente_min, attente_max)
             time.sleep(attente_random)
         self.stop()
+
+    def superposer_son(self, son: Son):
+        '''
+        Joue un son avec Pygame
+        Params:
+        son : Son
+            Une instance de son
+        Returns:
+    
+        '''
+        # Charger et jouer la musique
+        pygame.mixer.music.load(str(son.path_stockage))
+        channel_libre = pygame.mixer.find_channel()
+        if channel_libre:
+            channel_libre.play(son)
+
+        # Attendre que la musique soit terminée
+        while pygame.mixer.music.get_busy():
+            time.sleep(1)
+
+
+if __name__ == '__main__':
+    son_test = Son(1, path_stockage='./data/test.mp3')
+    SonService().jouer_en_boucle(son_test, 10)
+    time.sleep(3)
+    SonService().superposer_son(son_test)
