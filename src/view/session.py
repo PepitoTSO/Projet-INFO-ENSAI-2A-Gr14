@@ -11,7 +11,7 @@ class Session(metaclass=Singleton):
     Sans cela, il faudrait transmettre ce joueur entre les différentes vues.
     """
 
-    def __init__(self, utilisateur: Utilisateur, playlist: Playlist):
+    def __init__(self, utilisateur: Utilisateur = None, playlist: Playlist = None):
         """Création de la session"""
         self.utilisateur = utilisateur
         self.playlist = playlist
