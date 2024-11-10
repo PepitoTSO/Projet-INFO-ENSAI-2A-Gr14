@@ -43,7 +43,7 @@ class Son_DAO(metaclass=Singleton):
 
                     if res is not None:
                         print(f"Son added with id: {res['id_son']}")
-                        return True
+                        return res["id_son"]
 
         except Exception as e:
             print(f"Error adding son: {e.__class__.__name__}: {e}")

@@ -17,7 +17,7 @@ class Playlist:
         if not isinstance(utilisateur, Utilisateur):
             raise TypeError("L'utilisateur n'est pas de la classe Utilisateur.")
         if not isinstance(id_playlist, (int, type(None))):
-            raise TypeError("L'id de la playlist doit être de type int.")
+            raise TypeError("L'id de la playlist doit être de type int ou None.")
         if not isinstance(nom_playlist, str):
             raise TypeError("Le nom de la playlist doit être un str.")
         if not isinstance(list_son, list):
@@ -106,6 +106,30 @@ class Playlist:
 
         self.nom_playlist = nouveau_nom
 
+    def retirer_son(self, son: Son):
+        # Trouver l'item à supprimer
+        item_a_supprimer = None
+        for item in self.list_son:
+            if item[0] == son:
+                item_a_supprimer = item
+                break
+        if item_a_supprimer is None:
+            # Son non trouvé dans la playlist
+            return False
+
+        # Obtenir l'ordre du son à supprimer
+        ordre_a_supprimer = item_a_supprimer[1]
+
+        # Supprimer le son de la playlist
+        self.list_son.remove(item_a_supprimer)
+
+        # Décrémenter l'ordre des sons suivants
+        for item in self.list_son:
+            if item[1] > ordre_a_supprimer:
+                item[1] -= 1
+
+        return True
+
     def __str__(self):
         # Building a representation of the playlist
         playlist_str = f"Playlist '{self.nom_playlist}' (ID: {self.id_playlist}) by {self.utilisateur}:\n"
@@ -125,14 +149,17 @@ son1 = Son(
 son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
 son3 = Son(id_son=3, nom="son3", tags=["pluie"], path_stockage="data/test.mp3")
 utilisateur = Utilisateur("a", "b")
-print(son1)
-print(utilisateur)
+
 playlist = Playlist(
     utilisateur=utilisateur,
     id_playlist=1,
     nom_playlist="test",
     list_son=[[son1, 1], [son2, 2]],
 )
+playlist.ajouter_son_playlist(son3, 3)
+playlist.supprimer_son(son1)
+print(playlist.list_son[1][0])
+
 print(playlist)
 
 playlist.ajouter_son_playlist(son3, 1)
