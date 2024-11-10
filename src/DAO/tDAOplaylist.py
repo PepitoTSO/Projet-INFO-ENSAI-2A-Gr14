@@ -6,15 +6,19 @@ from DAO.playlist_DAO import Playlist_DAO
 from DAO.son_DAO import Son_DAO
 
 son1 = Son(
-    id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
+    id_son=56,
+    nom="Tom's Song",
+    tags=["pas", "de", "tags"],
+    path_stockage="data/test.mp3",
 )
 son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
 son3 = Son(id_son=3, nom="son3", tags=["pluie"], path_stockage="data/test.mp3")
 utilisateur = Utilisateur("user1", "b")
+print(son1)
 playlist = Playlist(
     utilisateur=utilisateur,
     id_playlist=1,
-    nom_playlist="test",
+    nom_playlist="CA marche connard5",
     list_son=[[son1, 1], [son2, 2]],
 )
 
@@ -22,7 +26,7 @@ playlistDAO = Playlist_DAO()
 utilisateurDAO = Utilisateur_DAO()
 sonDAO = Son_DAO()
 
-# playlistDAO.ajouter_playlist(playlist)
+playlistDAO.ajouter_playlist(playlist)
 # utilisateurDAO.creer_utilisateur(utilisateur)
 # sonDAO.ajouter_son(son1)
 # sonDAO.ajouter_son(son2)
@@ -35,3 +39,4 @@ sonDAO = Son_DAO()
 # print(sonDAO.get_son_by_name("Song 1"))
 # playlistDAO.ajouter_playlist(playlist)
 # print(playlistDAO.get_sons_by_playlist(playlist))
+print(playlistDAO.get_playlist(playlist))

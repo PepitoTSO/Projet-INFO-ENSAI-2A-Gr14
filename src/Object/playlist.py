@@ -142,7 +142,6 @@ class Playlist:
         return playlist_str
 
 
-"""
 son1 = Son(
     id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
 )
@@ -152,10 +151,11 @@ utilisateur = Utilisateur("a", "b")
 
 playlist = Playlist(
     utilisateur=utilisateur,
-    id_playlist=1,
+    id_playlist=None,
     nom_playlist="test",
     list_son=[[son1, 1], [son2, 2]],
 )
+"""
 playlist.ajouter_son_playlist(son3, 3)
 playlist.supprimer_son(son1)
 print(playlist.list_son[1][0])

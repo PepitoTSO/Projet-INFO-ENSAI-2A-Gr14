@@ -90,6 +90,7 @@ class Playlist_DAO(metaclass=Singleton):
         ainsi que leur ordre dans la playlist.
         """
         sons = []
+        res = []  # Initialize res to avoid UnboundLocalError in case of an exception
         try:
             with DBConnection().connection as connection:
                 with connection.cursor(
@@ -105,9 +106,8 @@ class Playlist_DAO(metaclass=Singleton):
                         (id_playlist,),
                     )
                     res = cursor.fetchall()
-
         except Exception as e:
-            logging.info(e)
+            logging.info(f"Error retrieving songs: {e}")
 
         for son_data in res:
             son = Son(
@@ -117,6 +117,7 @@ class Playlist_DAO(metaclass=Singleton):
                 path_stockage=son_data["path_stockage"],
             )
             sons.append([son, son_data["ordre_son_playlist"]])
+
         return sons
 
     @log
@@ -358,14 +359,14 @@ playlist = Playlist(
 # 2. Get all songs of a playlist
 songs_in_playlist = playlist_dao.get_sons_by_playlist_id(playlist.id_playlist)
 print("Songs in playlist:", [(s[0].nom, s[1]) for s in songs_in_playlist])
-
+"""
 # 3. Get playlist by id_playlist
 playlist_by_id = playlist_dao.get_playlist(playlist)
 if playlist_by_id:
     print("Playlist found:", playlist_by_id.nom_playlist)
 else:
     print("Playlist not found.")
-
+"""
 # 4. Get all playlists by user
 all_playlists = playlist_dao.get_all_playlists_by_user(utilisateur)
 print("All playlists by user:", [pl.nom_playlist for pl in all_playlists])
