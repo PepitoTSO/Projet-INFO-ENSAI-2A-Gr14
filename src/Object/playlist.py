@@ -16,7 +16,7 @@ class Playlist:
     ):
         if not isinstance(utilisateur, Utilisateur):
             raise TypeError("L'utilisateur n'est pas de la classe Utilisateur.")
-        if not isinstance(id_playlist, int):
+        if not isinstance(id_playlist, (int, type(None))):
             raise TypeError("L'id de la playlist doit être de type int.")
         if not isinstance(nom_playlist, str):
             raise TypeError("Le nom de la playlist doit être un str.")
