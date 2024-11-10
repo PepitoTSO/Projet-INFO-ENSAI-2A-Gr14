@@ -5,7 +5,9 @@ from view.session import Session
 
 
 class AccueilView(AbstractView):
-    """Vue d'accueil de l'application"""
+    """
+    Vue de l'accueil de l'application
+    """
 
     def choisir_menu(self):
         with open("src/dessin/banner.txt", "r", encoding="utf-8") as asset:

@@ -8,6 +8,10 @@ from Api_FreeSound.apifreesound import apifreesound
 
 
 class RechSonPlaylistView(AbstractView):
+    """
+    Vue du menu de la recherche des sons/playlists
+    """
+
     def choisir_menu(self):
         """Choix du menu suivant de l'utilisateur
 
