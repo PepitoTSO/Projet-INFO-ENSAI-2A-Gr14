@@ -48,20 +48,21 @@ class ConnexionView(AbstractView):
         mdp = inquirer.secret(message="Entrez votre mot de passe :").execute()
 
         # Appel du service pour trouver l'utilisateur
-        utilisateur = UtilisateurService.se_connecter(
+        utilisateur_service = UtilisateurService()
+        utilisateur = utilisateur_service.se_connecter(
             mdp_nh=mdp, pseudo_utilisateur=pseudo
         )
 
         # Si l'utilisateur a été trouvé à partir des ses identifiants de connexion
         if utilisateur:
-            message = f"Vous êtes connecté sous le pseudo {pseudo}"
+            message1 = f"Vous êtes connecté sous le pseudo {pseudo}"
             Session().connexion(utilisateur)
 
             from view.menu_principal_view import MenuView
 
-            return MenuView(message)
+            return MenuView(message1)
 
-        message = "Erreur de connexion (pseudo ou mot de passe invalide)"
+        message2 = "Erreur de connexion (pseudo ou mot de passe invalide)"
         from view.accueil.accueil_view import AccueilView
 
-        return AccueilView(message)
+        return AccueilView(message2)

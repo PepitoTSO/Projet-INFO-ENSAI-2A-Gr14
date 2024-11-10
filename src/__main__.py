@@ -17,10 +17,10 @@ if __name__ == "__main__":
         # a border between view
         with open("src/dessin/border.txt", "r", encoding="utf-8") as asset:
             print(asset.read())
-        # Display the info of the view
-        current_view.display_info()
+        # Affichage du menu
+        current_view.afficher()
         # ask user for a choice
-        current_view = current_view.choix
+        current_view = current_view.choisir_menu()
 
     with open("src/dessin/bye.txt", "r", encoding="utf-8") as asset:
         print(asset.read())
