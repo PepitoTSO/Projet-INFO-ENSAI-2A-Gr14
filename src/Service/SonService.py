@@ -127,7 +127,7 @@ class SonService():
         while pygame.mixer.music.get_busy():
             time.sleep(1)
 
-    def play_channel(self, son: Son, canal = None):
+    def play_channel(self, son: Son, canal=None):
         '''
         Joue un son avec Pygame
         Params:
@@ -137,6 +137,7 @@ class SonService():
     
         '''
         son_a_jouer = pygame.mixer.Sound(str(son.path_stockage))
+
         if canal is None:
             canal = pygame.mixer.find_channel()
         else:
@@ -144,9 +145,12 @@ class SonService():
         canal.play(son_a_jouer)
 
 
+
 if __name__ == '__main__':
     son_test = Son(1, path_stockage='./data/test.mp3')
     SonService().play_channel(son_test, 2)
-    time.sleep(3)
+    time.sleep(9)
     SonService().play_channel(son_test, 3)
+    time.sleep(6)
+    SonService().play_channel(son_test)
     time.sleep(3)
