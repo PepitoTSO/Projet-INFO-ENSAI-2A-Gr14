@@ -1,7 +1,3 @@
-"""
-A relier aux fonctions de son service parce que ça marche mieux
-"""
-
 from InquirerPy import prompt
 
 from view.abstract_view import AbstractView
@@ -17,10 +13,13 @@ class SonView(AbstractView):
                 "name": "choix",
                 "message": "Menu son",  # lister les son dispo pour l'utilisateur à l'apparition du menu?
                 "choices": [
-                    "Ajouter son",
-                    "Supprimer son",
-                    "Jouer son",
-                    "Revenir au menu",
+                    "Afficher tous mes sons",
+                    "Jouer un son",
+                    "Ajouter un son",
+                    "Supprimer un son",
+                    "Jouer en boucle un son",
+                    "Jouer en simulatané un autre son",
+                    "Revenir au menu principal",
                 ],
             }
         ]

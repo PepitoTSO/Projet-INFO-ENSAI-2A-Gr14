@@ -27,11 +27,12 @@ class PlaylistView(AbstractView):
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
+                "Afficher mes playlists",
                 "Lancer une playlist",
                 "Créer une playlist",
                 "Modifier une playlist",
                 "Supprimer une playlist",
-                "Revenir au menu",
+                "Revenir au menu principal",
                 "Se déconnecter",
             ],
         ).execute()
@@ -43,7 +44,7 @@ class PlaylistView(AbstractView):
 
                 return AccueilView()
 
-            case "Revenir au menu":
+            case "Revenir au menu principal":
                 from view.menu_principal_view import MenuView
 
                 return MenuView()

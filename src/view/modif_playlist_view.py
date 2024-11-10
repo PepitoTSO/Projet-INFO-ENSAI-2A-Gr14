@@ -18,8 +18,10 @@ class ModifPlaylistView(AbstractView):
             message="Faites votre choix : ",
             choices=[
                 "Changer le nom de la playlist",
+                "Ajouter un son",
+                "Supprimer un son"
                 "Changer l'ordre des sons",
-                "Revenir au menu",
+                "Revenir au menu précédent",
                 "Se déconnecter",
             ],
         ).execute()

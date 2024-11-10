@@ -19,6 +19,7 @@ class AccueilView(AbstractView):
                 "Se connecter",
                 "Créer un compte",
                 "Infos sur l'appli",
+                "Mot de passe oublié",
                 "Quitter",
             ],
         ).execute()

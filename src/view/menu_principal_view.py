@@ -50,9 +50,9 @@ class MenuView(AbstractView):
                 return AccueilView()
 
             case "Rechercher un son":
-                from View.recherche_son_view import RechSonView
+                from view.recherche_son_playlist_view import RechSonPlaylistView
 
-                return RechSonView()
+                return RechSonPlaylistView()
 
             case "Gérer mes Sons":
                 from view.son_view import SonView
