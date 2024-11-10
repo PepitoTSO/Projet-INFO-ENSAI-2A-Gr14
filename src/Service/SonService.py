@@ -9,12 +9,12 @@ pygame.init()
 pygame.mixer.init()
 
 
-class SonService:
+class SonService():
     """
     Implemente les méthodes associées à la classe Son
     """
     ##La partie DAO
-    def supprimer_son(son: Son):
+    def supprimer_son(self, son: Son):
         '''
         Supprime un son selon la DAO
         Params:
@@ -27,7 +27,7 @@ class SonService:
             raise TypeError('id_son doit être int')
         Son_DAO().supprimer_son(son.id_son)
 
-    def ajouter_son(son: Son):
+    def ajouter_son(self, son: Son):
         '''
         Ajoute un son selon la DAO
         Params:
@@ -43,7 +43,7 @@ class SonService:
 
     ## la partie lecteur son
 
-    def play(son: Son):
+    def play(self, son: Son):
         '''
         Joue un son avec Pygame
         Params:
@@ -60,13 +60,13 @@ class SonService:
         while pygame.mixer.music.get_busy():
             time.sleep(1)
 
-    def pause():
+    def pause(self):
         pygame.mixer.music.pause()
 
-    def unpause():
+    def unpause(self):
         pygame.mixer.music.unpause()
 
-    def stop():
+    def stop(self):
         pygame.mixer.music.stop()
 
     def jouer_en_boucle(self, son: Son, temps: int):
