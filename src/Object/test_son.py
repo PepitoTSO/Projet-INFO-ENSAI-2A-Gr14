@@ -4,7 +4,7 @@ import pygame
 
 class TestSon(unittest.TestCase):
 
-    def test_repr(self):
+    def test_str(self):
 
     #Given
         test = Son(1, 'test', 'oui', 'data/test.mp3')
