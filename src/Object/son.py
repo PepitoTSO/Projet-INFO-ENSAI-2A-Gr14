@@ -8,7 +8,7 @@ class Son:
     Classe qui contient la définition d'un son
     """
 
-    def __init__(self, id_son, nom="pas_de_nom", tags=[], path_stockage=None) -> None:
+    def __init__(self, id_son, nom="pas_de_nom", tags=[]) -> None:
         if not isinstance(id_son, int):
             raise TypeError("id_son doit être int")
         if not isinstance(nom, str):
@@ -18,14 +18,12 @@ class Son:
         self.id_son = id_son
         self.nom = nom
         self.tags = tags
-        self.path_stockage = Path(path_stockage)
-        if path_stockage is None:  # gestion si pas de path_stocakge
-            try:
-                self.path_stockage = Path(f"./data/son/{id_son}.mp3")
-            except Exception as e:
-                print(
-                    f"Prblm pour trouver le fichier son. La solution la plus simple est de télécharger correctement le fichier :{e}"
-                )
+        try:
+            self.path_stockage = Path(f"./data/son/{id_son}.mp3")
+        except Exception as e:
+            print(
+                f"Prblm pour trouver le fichier son. La solution la plus simple est de télécharger correctement le fichier :{e}"
+            )
 
     def __str__(self):
         tags_str = ", ".join(
