@@ -22,7 +22,7 @@ class PlaylistView(AbstractView):
             Retourne la vue choisie par l'utilisateur dans le terminal
         """
 
-        print("\n" + "-" * 50 + "\nMenu Playlist\n" + "-" * 50 + "\n")
+        print("\n" + "-" * 50 + "\nMenu Playlists\n" + "-" * 50 + "\n")
 
         choix = inquirer.select(
             message="Faites votre choix : ",

@@ -23,10 +23,10 @@ class SonService:
     ##La partie DAO
 
     def supprimer_son(self):
-        son_DAO().supprimer_son(self.son.id_son)
+        Son_DAO().supprimer_son(self.son.id_son)
 
     def ajouter_son(self):
-        r = son_DAO().ajouter_son(self.son)
+        r = Son_DAO().ajouter_son(self.son)
         if r == None:
             print("Erreur lors de l'ajout")
         return r
