@@ -8,7 +8,7 @@ from view.accueil.accueil_view import AccueilView
 if __name__ == "__main__":
     dotenv.load_dotenv(override=True)
 
-    # run the Start View
+    # run Accueil View
     current_view = AccueilView()
     current_view.choisir_menu()
 
