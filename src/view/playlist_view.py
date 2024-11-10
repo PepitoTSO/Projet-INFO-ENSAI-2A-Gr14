@@ -7,12 +7,13 @@ from Object.utilisateur import Utilisateur
 from Object.playlist import Playlist
 from Service.PlaylistService import PlaylistService
 
+
 class PlaylistView(AbstractView):
     """
     Vue du menu de la gestion des playlists
     """
 
- def choisir_menu(self):
+    def choisir_menu(self):
         """Choix du menu suivant de l'utilisateur
 
         Return
@@ -48,11 +49,9 @@ class PlaylistView(AbstractView):
                 return MenuView()
 
             case "Lancer une playlist":
-                #Comment demander à l'utilisateur quelle playlist il veut écouter ?
-                #Y'a pas get_playlist_by_user ?
-                Utilisateur = Utilisateur()
+                playlist_service = PlaylistService()
 
-                playlists = utilisateur(list_playlist)
+                playlists = playlist_service.afficher_playlist()
                 playlists.append("Retour au Menu Principal")
 
                 choix = inquirer.select(
@@ -65,12 +64,12 @@ class PlaylistView(AbstractView):
 
                     return MenuView()
 
-                from Service.PlaylistService import PlaylistService
-
-                PlaylistService().jouer_playlist()
+                playlist_service.jouer_playlist()
 
             case "Créer une playlist":
-                nom_playlist = inquirer.text(message="Nommez votre playlist : ").execute()
+                nom_playlist = inquirer.text(
+                    message="Nommez votre playlist : "
+                ).execute()
                 from Service.PlaylistService import PlaylistService
 
                 PlaylistService().creer_playlist(nom_playlist)
@@ -81,9 +80,9 @@ class PlaylistView(AbstractView):
                 return ModifPlaylistView
 
             case "Supprimer une playlist":
-                Utilisateur = Utilisateur()
+                playlist_service = PlaylistService()
 
-                playlists = utilisateur(list_playlist)
+                playlists = playlist_service.afficher_playlist()
                 playlists.append("Retour au Menu Principal")
 
                 choix = inquirer.select(
@@ -96,9 +95,7 @@ class PlaylistView(AbstractView):
 
                     return MenuView()
 
-                from Service.PlaylistService import PlaylistService
-
-                PlaylistService().supprimer_playlist()
+                playlist_service.supprimer_playlist()
                 from view.menu_principal_view import MenuView
-                
+
                 return MenuView()

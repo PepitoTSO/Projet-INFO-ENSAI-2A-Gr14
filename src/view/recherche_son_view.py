@@ -37,7 +37,7 @@ class RechSonView(AbstractView):
         elif reponse["choix"] == "Recherche classique":
             inquirer_recherche = {
                 "type": "input",
-                "message": "Quel est l'objet de votre recherche ?",
+                "message": "Que recherchez-vous ?",
                 "name": "Recherche",
             }
 

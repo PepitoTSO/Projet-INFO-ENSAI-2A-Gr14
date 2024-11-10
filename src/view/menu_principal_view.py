@@ -65,7 +65,10 @@ class MenuView(AbstractView):
                 return PlaylistView()
 
             case "Infos":
-                MenuView.messageInfoMenu()
+                menu = MenuView()
+                menu.messageInfoMenu()
+
+                return MenuView()
 
     def messageInfoMenu(self):
         print(

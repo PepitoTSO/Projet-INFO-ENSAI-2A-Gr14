@@ -1,4 +1,4 @@
-from DAO.son_DAO import son_DAO
+from DAO.son_DAO import Son_DAO
 from Object.son import Son
 import pygame
 import time
@@ -9,12 +9,12 @@ pygame.init()
 pygame.mixer.init()
 
 
-class sonService:
+class SonService:
     """
     Implemente les méthodes associées à la classe Son
     """
 
-    def __init__(self, son: son):
+    def __init__(self, son: Son):
         if not isinstance(son, son):
             raise TypeError("La son n'est pas type son.")
 

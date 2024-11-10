@@ -23,4 +23,4 @@ if __name__ == "__main__":
         current_view = current_view.choisir_menu()
 
     with open("src/dessin/bye.txt", "r", encoding="utf-8") as asset:
-        print(agsset.read())
+        print(asset.read())
