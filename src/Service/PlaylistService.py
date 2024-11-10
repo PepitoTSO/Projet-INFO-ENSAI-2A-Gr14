@@ -147,3 +147,19 @@ class PlaylistService:
     #                 son = self.playlist.list_son[i][0]
     #                 son_a_jouer = SonService(son)
     #                 son_a_jouer.play()
+
+    def play_playlist(self, playlist: Playlist, canal=1):
+        playlist_ordonnee = sorted(playlist.list_son, key=lambda x: x[1])
+        for son, _ in playlist_ordonnee:
+            SonService().play_channel(son, canal)
+
+    def play_next_son(): # il faut l'info sur le son en cours relativement à la playlist
+        pass
+
+if __name__ == '__main__':
+    from Object.utilisateur import Utilisateur
+    son_test = Son(1, path_stockage='./data/test.mp3')
+    utilisateur = Utilisateur("user1", "hashed_password")
+    p_test = Playlist(utilisateur, 1, "My Playlist", [[son_test, 1]],)
+    PlaylistService().play_playlist(p_test)
+

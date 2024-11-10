@@ -42,7 +42,7 @@ class SonService():
             print("Erreur lors de l'ajout")
         return r
 
-    ## la partie lecteur son
+    ## la partie lecteur son général
 
     def play(self, son: Son):
         '''
@@ -78,17 +78,6 @@ class SonService():
         time.sleep(temps)
         self.stop()
 
-    # elle est un peu bizarre celle là
-    def play_multiple_sounds(self, sound_files):  # Chatgpt
-        sounds = [
-            Son(i, f"sound_{i}", "test", file) for i, file in enumerate(sound_files)
-        ]
-        for sound in sounds:
-            sound.play()
-            time.sleep(
-                0.1
-            )  # Un léger délai pour éviter de jouer tous les sons en même temps
-
     def jouer_aleatoire(self, son: Son, attente_min, attente_max, duree):
         """
         Methode pour jouer un son aléatoirement pendant une duree et à une fréquence définie par attente_min et max.
@@ -108,24 +97,14 @@ class SonService():
             time.sleep(attente_random)
         self.stop()
 
-    def superposer_son(self, son: Son):
-        '''
-        Joue un son avec Pygame
-        Params:
-        son : Son
-            Une instance de son
-        Returns:
-    
-        '''
-        # Charger et jouer la musique
-        pygame.mixer.music.load(str(son.path_stockage))
-        channel_libre = pygame.mixer.find_channel()
-        if channel_libre:
-            channel_libre.play(son)
 
-        # Attendre que la musique soit terminée
-        while pygame.mixer.music.get_busy():
-            time.sleep(1)
+    def selectionner_canal(self, canal=None):  #idéalement on va retourner aussi le numéro du canal pour pas être perdu + il va y avoir des problèmes pour réserver canal 1 pour playlist
+        if canal is None:
+            canal = pygame.mixer.find_channel()
+        else:
+            canal = pygame.mixer.Channel(canal)
+        return canal
+
 
     def play_channel(self, son: Son, canal=None):
         '''
@@ -137,14 +116,12 @@ class SonService():
     
         '''
         son_a_jouer = pygame.mixer.Sound(str(son.path_stockage))
-
-        if canal is None:
-            canal = pygame.mixer.find_channel()
-        else:
-            canal = pygame.mixer.Channel(canal)
+        canal = self.selectionner_canal(canal)
         canal.play(son_a_jouer)
 
-
+    def avancer_xtemps(self, temps):
+        '''permet d'avancer 10/20/x secondes du son'''
+        pass
 
 if __name__ == '__main__':
     son_test = Son(1, path_stockage='./data/test.mp3')
