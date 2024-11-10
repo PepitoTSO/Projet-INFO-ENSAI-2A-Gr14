@@ -1,6 +1,7 @@
 from InquirerPy import inquirer
 
 from view.abstract_view import AbstractView
+from view.session import Session
 
 
 class AccueilView(AbstractView):
@@ -39,6 +40,11 @@ class AccueilView(AbstractView):
             case "Infos sur l'appli":
                 accueil = AccueilView()
                 accueil.messageInfo()
+
+                return AccueilView()
+
+            case "Infos de session":
+                return AccueilVue(Session().afficher())
 
     def messageInfo(self):
         print(

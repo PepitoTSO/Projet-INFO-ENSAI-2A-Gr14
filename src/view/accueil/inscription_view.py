@@ -30,7 +30,8 @@ class InscriptionView(AbstractView):
         ).execute()
 
         # Appel du service pour créer l'utilisateur
-        utilisateur = UtilisateurService.creer_utilisateur(
+        utilisateur_service = UtilisateurService()
+        utilisateur = utilisateur_service.creer_utilisateur(
             mdp_nh=mdp, pseudo_utilisateur=pseudo
         )
 
@@ -38,7 +39,7 @@ class InscriptionView(AbstractView):
         if utilisateur:
             message = f"Votre compte {pseudo} a été créé. Vous pouvez maintenant vous connecter."
         else:
-            message = "Erreur de connexion (pseudo ou mot de passe invalide)"
+            message = "Erreur d'inscription (pseudo ou mot de passe invalide)"
 
         from view.accueil.accueil_view import AccueilView
 

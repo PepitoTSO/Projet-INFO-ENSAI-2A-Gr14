@@ -36,7 +36,8 @@ class UtilisateurService:
             raise TypeError("Le pseudo doit être de type str.")
         mdp_hache = self.hacher_mot_de_passe(mdp_nh)
         user = Utilisateur(pseudo=pseudo_utilisateur, mdp_hache=mdp_hache)
-        reponse = Utilisateur_DAO.se_connecter(user)
+        utilisateurDAO = Utilisateur_DAO()
+        reponse = utilisateurDAO.se_connecter(user)
         if reponse:
             Session.utilisateur = user
         return reponse
@@ -87,7 +88,8 @@ class UtilisateurService:
         mdp_hache = self.hacher_mot_de_passe(mdp_nh=mdp_nh)
         new_user = Utilisateur(mdp_hache=mdp_hache, pseudo=pseudo_utilisateur)
 
-        return Utilisateur_DAO.creer_utilisateur(new_user)
+        utilisateurDAO = Utilisateur_DAO()
+        return utilisateurDAO.creer_utilisateur(new_user)
 
     def deconnecter_utilisateur(self):
         """
