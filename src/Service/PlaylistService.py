@@ -35,7 +35,7 @@ class PlaylistService:
 
         Playlist_DAO().modifier_nom_playlist(playlist_a_modif, nouvelle_playlist)
 
-    def changer_ordre_son(son: Son, ordre: int):
+    def changer_ordre_son(self, son: Son, ordre: int):
 
         playlist = Session().playlist
 
@@ -45,7 +45,7 @@ class PlaylistService:
 
         Playlist_DAO().changer_ordre(playlist, son, ordre)
 
-    def retirer_son_playlist(son: Son):
+    def retirer_son_playlist(self, son: Son):
 
         playlist = Session().playlist
         playlist.retirer_son(son)
