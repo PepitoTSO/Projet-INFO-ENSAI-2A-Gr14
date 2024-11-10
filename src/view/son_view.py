@@ -20,7 +20,7 @@ class SonView(AbstractView):
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
-                "Afficher tous mes sons",
+                "Afficher tous mes sons",  # Manque une playlist avec tous les sons de l'utilisateur
                 "Jouer un son",
                 "Ajouter un son",
                 "Supprimer un son",
@@ -55,6 +55,9 @@ class SonView(AbstractView):
                 SonService_a_jouer.jouer_son()
 
                 return SonView()
+
+            case "Ajouter un son":
+                id_son = inquirer.text(message="Entrez l'id du son : ").execute()
 
     def make_choice(self):
         reponse = prompt(self.__questions)

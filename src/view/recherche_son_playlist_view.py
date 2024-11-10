@@ -67,7 +67,7 @@ class RechSonPlaylistView(AbstractView):
                 ).execute()
 
                 api = apifreesound()
-                resultat = api.recherche_son(recherche_playlist["recherche_playlist"])
+                resultat = api.recherche_son(recherche_playlist)
                 print(resultat)
 
                 return RechSonPlaylistView()
