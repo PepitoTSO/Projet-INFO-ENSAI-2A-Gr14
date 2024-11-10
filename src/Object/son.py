@@ -19,7 +19,7 @@ class Son:
         self.nom = nom
         self.tags = tags
         self.path_stockage = Path(path_stockage)
-        if path_stockage == None:  # gestion si pas de path_stocakge
+        if path_stockage is None:  # gestion si pas de path_stocakge
             try:
                 self.path_stockage = Path(f"./data/son/{id_son}.mp3")
             except Exception as e:

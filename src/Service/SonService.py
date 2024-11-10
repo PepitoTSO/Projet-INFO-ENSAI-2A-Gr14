@@ -13,48 +13,66 @@ class SonService:
     """
     Implemente les méthodes associées à la classe Son
     """
-
-    def __init__(self, son: Son):
-        if not isinstance(son, son):
-            raise TypeError("La son n'est pas type son.")
-
-        self.son = son
-
     ##La partie DAO
+    def supprimer_son(son: Son):
+        '''
+        Supprime un son selon la DAO
+        Params:
+        son : Son
+            Une instance de son
+        Returns:
+    
+        '''
+        if not isinstance(son.id_son, int):
+            raise TypeError('id_son doit être int')
+        Son_DAO().supprimer_son(son.id_son)
 
-    def supprimer_son(self):
-        son_DAO().supprimer_son(self.son.id_son)
-
-    def ajouter_son(self):
-        r = son_DAO().ajouter_son(self.son)
-        if r == None:
+    def ajouter_son(son: Son):
+        '''
+        Ajoute un son selon la DAO
+        Params:
+        son : Son
+            Une instance de son
+        Returns:
+    
+        '''
+        r = Son_DAO().ajouter_son(son)
+        if r is None:
             print("Erreur lors de l'ajout")
         return r
 
     ## la partie lecteur son
 
-    def play(self):
+    def play(son: Son):
+        '''
+        Joue un son avec Pygame
+        Params:
+        son : Son
+            Une instance de son
+        Returns:
+    
+        '''
         # Charger et jouer la musique
-        pygame.mixer.music.load(str(self.son.path_stockage))
+        pygame.mixer.music.load(str(son.path_stockage))
         pygame.mixer.music.play()
 
         # Attendre que la musique soit terminée
         while pygame.mixer.music.get_busy():
             time.sleep(1)
 
-    def pause(self):
+    def pause():
         pygame.mixer.music.pause()
 
-    def unpause(self):
+    def unpause():
         pygame.mixer.music.unpause()
 
-    def stop(self):
+    def stop():
         pygame.mixer.music.stop()
 
-    def jouer_en_boucle(self, temps):
+    def jouer_en_boucle(self, son: Son, temps: int):
         if not isinstance(temps, int):
             raise TypeError("temps doit être int")
-        pygame.mixer.music.load(str(self.son.path_stockage))
+        pygame.mixer.music.load(str(son.son.path_stockage))
         pygame.mixer.music.play(-1)  # -1 pour jouer en boucle
         time.sleep(temps)
         self.stop()
@@ -70,7 +88,7 @@ class SonService:
                 0.1
             )  # Un léger délai pour éviter de jouer tous les sons en même temps
 
-    def jouer_aleatoire(self, attente_min, attente_max, duree):
+    def jouer_aleatoire(self, son: Son, attente_min, attente_max, duree):
         """
         Methode pour jouer un son aléatoirement pendant une duree et à une fréquence définie par attente_min et max.
         Par exemple, des bruits d'éclair ou d'animaux qui seront superposés à ceux d'une forêt
@@ -84,7 +102,7 @@ class SonService:
 
         debut = time.time()
         while time.time() - debut < duree:
-            self.sound.play()
+            self.play(son)
             attente_random = random.uniform(attente_min, attente_max)
             time.sleep(attente_random)
         self.stop()
