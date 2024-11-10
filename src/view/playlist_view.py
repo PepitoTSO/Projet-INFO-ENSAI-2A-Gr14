@@ -3,8 +3,6 @@ from InquirerPy import inquirer
 from view.abstract_view import AbstractView
 from view.session import Session
 
-from Object.utilisateur import Utilisateur
-from Object.playlist import Playlist
 from Service.PlaylistService import PlaylistService
 
 
@@ -23,10 +21,6 @@ class PlaylistView(AbstractView):
         """
 
         print("\n" + "-" * 50 + "\nMenu Playlists\n" + "-" * 50 + "\n")
-
-        playlist_service = PlaylistService()
-
-        playlists = playlist_service.afficher_playlist()
 
         choix = inquirer.select(
             message="Faites votre choix : ",
@@ -91,7 +85,6 @@ class PlaylistView(AbstractView):
                 nom_playlist = inquirer.text(
                     message="Nommez votre playlist : "
                 ).execute()
-                from Service.PlaylistService import PlaylistService
 
                 PlaylistService().creer_playlist(nom_playlist)
 

@@ -38,5 +38,9 @@ playlistDAO.ajouter_playlist(playlist)
 # print(sonDAO.get_son_by_id(13))
 # print(sonDAO.get_son_by_name("Song 1"))
 # playlistDAO.ajouter_playlist(playlist)
+<<<<<<< HEAD
 # print(playlistDAO.get_sons_by_playlist(playlist))
 print(playlistDAO.get_playlist(playlist))
+=======
+# print(playlistDAO.get_sons_by_playlist(playlist))
+>>>>>>> 2420b811ca44dca8627021c528e9f98a45456edf
