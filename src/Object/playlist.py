@@ -132,14 +132,11 @@ playlist = Playlist(
     nom_playlist="test",
     list_son=[[son1, 1], [son2, 2]],
 )
-<<<<<<< HEAD
 """
 playlist.ajouter_son_playlist(son3, 3)
 playlist.supprimer_son(son1)
 print(playlist.list_son[1][0])
 
-=======
->>>>>>> 2420b811ca44dca8627021c528e9f98a45456edf
 print(playlist)
 
 playlist.ajouter_son_playlist(son3, 1)
