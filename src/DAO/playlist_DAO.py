@@ -76,7 +76,8 @@ class Playlist_DAO(metaclass=Singleton):
                                     ordre,
                                 ),
                             )
-                        return True
+                        playlist.id_playlist = generated_id_playlist
+                        return playlist
         except Exception as e:
             print(f"Error adding playlist: {e.__class__.__name__}: {e}")
             return False
@@ -90,7 +91,7 @@ class Playlist_DAO(metaclass=Singleton):
         ainsi que leur ordre dans la playlist.
         """
         sons = []
-        res = []  # Initialize res to avoid UnboundLocalError in case of an exception
+        res = []
         try:
             with DBConnection().connection as connection:
                 with connection.cursor(
