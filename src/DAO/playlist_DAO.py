@@ -360,14 +360,14 @@ playlist = Playlist(
 # 2. Get all songs of a playlist
 songs_in_playlist = playlist_dao.get_sons_by_playlist_id(playlist.id_playlist)
 print("Songs in playlist:", [(s[0].nom, s[1]) for s in songs_in_playlist])
-"""
+
 # 3. Get playlist by id_playlist
 playlist_by_id = playlist_dao.get_playlist(playlist)
 if playlist_by_id:
     print("Playlist found:", playlist_by_id.nom_playlist)
 else:
     print("Playlist not found.")
-"""
+
 # 4. Get all playlists by user
 all_playlists = playlist_dao.get_all_playlists_by_user(utilisateur)
 print("All playlists by user:", [pl.nom_playlist for pl in all_playlists])
@@ -392,10 +392,11 @@ deleted_song_successfully = playlist_dao.supprimer_son(
     playlist, son1
 )  # Delete son1 from the playlist
 print("Song deleted successfully from playlist:", deleted_song_successfully)
-"""
+
 # 9. Add a song to a playlist
 son3 = Son(id_son=19, nom="Song 3", tags=["jazz"], path_stockage="/music/song3.mp3")
 added_song_successfully = playlist_dao.ajouter_son(
     playlist, son3, 3
 )  # Add son3 to the playlist at position 3
 print("Song added successfully to playlist:", added_song_successfully)
+"""
