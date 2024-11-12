@@ -211,7 +211,8 @@ class Playlist_DAO(metaclass=Singleton):
             return False
 
     @log
-    def modifier_nom_playlist(self, id_playlist: int, nouveau_nom: str) -> bool:
+    def modifier_nom_playlist(self, playlist: Playlist, nouveau_nom: str) -> bool:
+        id_playlist = playlist.id_playlist
         try:
             with DBConnection().connection as connection:
                 with connection.cursor() as cursor:

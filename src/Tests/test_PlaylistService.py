@@ -27,16 +27,45 @@ from view.session import Session
 
 ##### Test Supprimer une playlist
 #On en ajoute une d'abord, il faut ensuite modifier l'id de la playlist à supprimer
+# utilisateur = Utilisateur("user1", "hashed_password1")
+# son1 = Son(
+# id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
+# )
+# son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
+# list_son = [[son1, 1], [son2, 2]]
+# playlist = Playlist(utilisateur, 28, "Ma playlist", list_son)
+# Session(utilisateur, playlist, None)
+# service = PlaylistService()
+# service.supprimer_playlist()
+# print(Session().playlist)
+# Session().playlist = None
+# print(Session().playlist)
+
+
+### Test  modifier nom playlist
+#### Ajout Playlist
+# utilisateur = Utilisateur("user1", "hashed_password1")
+# son1 = Son(
+# id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
+# )
+# son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
+# list_son = [[son1, 1], [son2, 2]]
+# Session(utilisateur, None, None)
+# service = PlaylistService()
+# service.creer_playlist("Ma Playlist", list_son)
+# print(Session().playlist)
+# ############
+# service.modifier_nom_playlist("Quoicoubeh")
+# print(Session().playlist)
+
+##### Test 
 utilisateur = Utilisateur("user1", "hashed_password1")
 son1 = Son(
 id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
 )
 son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
 list_son = [[son1, 1], [son2, 2]]
-playlist = Playlist(utilisateur, 28, "Ma playlist", list_son)
-Session(utilisateur, playlist, None)
+Session(utilisateur, None, None)
 service = PlaylistService()
-service.supprimer_playlist()
-print(Session().playlist)
-Session().playlist = None
+service.creer_playlist("Ma Playlist", list_son)
 print(Session().playlist)

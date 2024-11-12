@@ -31,9 +31,8 @@ class PlaylistService:
 
         playlist_a_modif = Session().playlist
         Session().playlist.nom_playlist = nouveau_nom
-        nouvelle_playlist = Session().playlist
 
-        Playlist_DAO().modifier_nom_playlist(playlist_a_modif, nouvelle_playlist)
+        Playlist_DAO().modifier_nom_playlist(playlist_a_modif, nouveau_nom)
 
     def changer_ordre_son(self, son: Son, ordre: int):
 
