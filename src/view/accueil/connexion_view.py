@@ -34,7 +34,7 @@ class ConnexionView(AbstractView):
         # Si l'utilisateur a été trouvé à partir des ses identifiants de connexion
         if utilisateur:
             message1 = f"Vous êtes connecté sous le pseudo {pseudo}"
-            Session().connexion(utilisateur)
+            Session().utilisateur = utilisateur
 
             from view.menu_principal_view import MenuView
 

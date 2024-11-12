@@ -18,16 +18,6 @@ class Session(metaclass=Singleton):
         self.playlist = playlist
         self.son = son
 
-    def connexion(self, utilisateur: Utilisateur):
-        """Enregistement des données en session"""
-        self.utilisateur = utilisateur
-        self.debut_connexion = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-
-    def deconnexion(self):
-        """Suppression des données de la session"""
-        self.joueur = None
-        self.debut_connexion = None
-
     def afficher(self) -> str:
         """Afficher les informations de connexion"""
         res = "Actuellement en session :\n"

@@ -2,7 +2,7 @@ import unittest
 from Object.utilisateur import Utilisateur
 from Object.son import Son
 from Object.playlist import Playlist
-
+from view.session import Session
 
 class TestPlaylist(unittest.TestCase):
 
@@ -17,8 +17,9 @@ class TestPlaylist(unittest.TestCase):
         )
 
     def test_creation_playlist_valide(self):
+        Session().utilisateur = self.utilisateur
         playlist = Playlist(
-            self.utilisateur, 1, "Ma Playlist", [[self.son1, 1], [self.son2, 2]]
+            Session().utilisateur, 1, "Ma Playlist", [[self.son1, 1], [self.son2, 2]]
         )
         self.assertEqual(playlist.utilisateur, self.utilisateur)
         self.assertEqual(playlist.id_playlist, 1)

@@ -18,7 +18,6 @@ class PlaylistService:
     def creer_playlist(self, nom_playlist: str, list_son: list(list()) = []):
 
         utilisateur = Session().utilisateur
-
         playlist = Playlist(utilisateur, None, nom_playlist, list_son)
         Session().playlist = Playlist_DAO().ajouter_playlist(playlist)
 
