@@ -61,21 +61,14 @@ class PlaylistService:
         playlist.ajouter_son_playlist(son, ordre)
         Session().playlist = playlist
 
-    def jouer_playlist(self):
+    def play_playlist(self, playlist: Playlist, canal=1):
+        playlist_ordonnee = sorted(playlist.list_son, key=lambda x: x[1])
+        for son, _ in playlist_ordonnee:
+            SonService().play_channel(son, canal)
 
-        n = len(self.playlist.list_son)
-        api = apifreesound()  # Merlin a modifié ici et après
-        for i in range(n):
-            son = self.playlist.list_son[i][0]
-            api.dl_son(son.id_son)
-
-        for j in range(n):
-            for i in range(n):
-                if self.playlist.list_son[i][1] == j:
-                    son = self.playlist.list_son[i][0]
-                    son_a_jouer = SonService(son)
-                    son_a_jouer.play()
-
+    def play_next_son(): # il faut l'info sur le son en cours relativement à la playlist
+        pass
+    
     def afficher_playlist(self):
         utilisateur = Session().utilisateur
         liste_playlist = Playlist_DAO().get_all_playlists_by_user(utilisateur)
@@ -143,14 +136,6 @@ class PlaylistService:
     #                 son = self.playlist.list_son[i][0]
     #                 son_a_jouer = SonService(son)
     #                 son_a_jouer.play()
-
-    def play_playlist(self, playlist: Playlist, canal=1):
-        playlist_ordonnee = sorted(playlist.list_son, key=lambda x: x[1])
-        for son, _ in playlist_ordonnee:
-            SonService().play_channel(son, canal)
-
-    def play_next_son(): # il faut l'info sur le son en cours relativement à la playlist
-        pass
 
 """if __name__ == '__main__':
     from Object.utilisateur import Utilisateur
