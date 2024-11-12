@@ -10,124 +10,190 @@ from DAO.son_DAO import Son_DAO
 from view.session import Session
 
 
-##### Test Créer une playlist
+def test_creer_playlist():
+    """Test creer la playlist"""
 
-# utilisateur = Utilisateur("user1", "hashed_password1")
-# son1 = Son(
-# id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
-# )
-# son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
-# list_son = [[son1, 1], [son2, 2]]
-# Session(utilisateur, None, None)
-# service = PlaylistService()
-# service.creer_playlist("Ma Playlist", list_son)
-# print(Session().playlist)
+    # GIVEN
+    utilisateur = Utilisateur("user1", "hashed_password1")
+    son1 = Son(
+        id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
+    )
+    son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
+    list_son = [[son1, 1], [son2, 2]]
+    playlist_a_creer = Playlist(utilisateur, 11, "Playlist Test", list_son)
+    Session().utilisateur = utilisateur
+    Playlist_DAO().ajouter_playlist = MagicMock(return_value=playlist_a_creer)
 
+    # WHEN
 
-##### Test Supprimer une playlist
-# On en ajoute une d'abord, il faut ensuite modifier l'id de la playlist à supprimer
-# utilisateur = Utilisateur("user1", "hashed_password1")
-# son1 = Son(
-# id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
-# )
-# son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
-# list_son = [[son1, 1], [son2, 2]]
-# playlist = Playlist(utilisateur, 28, "Ma playlist", list_son)
-# Session(utilisateur, playlist, None)
-# service = PlaylistService()
-# service.supprimer_playlist()
-# print(Session().playlist)
-# Session().playlist = None
-# print(Session().playlist)
+    PlaylistService().creer_playlist("Ma playlist", list_son)
+
+    # THEN
+    assert Session().utilisateur == utilisateur
+    assert Session().playlist == playlist_a_creer
+    Session().playlist = None
+    Session().utilisateur = None
 
 
-### Test  modifier nom playlist
-#### Ajout Playlist
-# utilisateur = Utilisateur("user1", "hashed_password1")
-# son1 = Son(
-# id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
-# )
-# son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
-# list_son = [[son1, 1], [son2, 2]]
-# Session(utilisateur, None, None)
-# service = PlaylistService()
-# service.creer_playlist("Ma Playlist", list_son)
-# print(Session().playlist)
-# ############
-# service.modifier_nom_playlist("Quoicoubeh")
-# print(Session().playlist)
+def test_supprimer_playlist():
+    """Test supprimer la playlist"""
 
-##### Test changer ordre son
-# utilisateur = Utilisateur("user1", "hashed_password1")
-# son1 = Son(
-# id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
-# )
-# son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
-# list_son = [[son1, 1], [son2, 2]]
-# Session(utilisateur, None, None)
-# service = PlaylistService()
-# service.creer_playlist("Ma Playlist", list_son)
-# print(Session().playlist)
+    # GIVEN
+    utilisateur = Utilisateur("user1", "hashed_password1")
+    playlist = Playlist(utilisateur, 13, "Playlist Test", [])
+    Session().utilisateur = utilisateur
+    Session().playlist = playlist
+    Playlist_DAO().supprimer_playlist = MagicMock(return_value=True)
 
-# ###Changer l'ordre des sons
+    # WHEN
+    PlaylistService().supprimer_playlist()
 
-# service.changer_ordre_son(son1, 2)
-# print(Session().playlist)
+    # THEN
+    Playlist_DAO().supprimer_playlist.assert_called_once_with(playlist)
+    assert Session().playlist is None
+    Session().playlist = None
+    Session().utilisateur = None
 
-##### Test supprimer un son
+def test_modifier_nom_playlist():
+    """Test modifier le nom de la playlist"""
 
-# utilisateur = Utilisateur("user1", "hashed_password1")
-# son1 = Son(
-# id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
-# )
-# son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
-# list_son = [[son1, 1], [son2, 2]]
-# Session(utilisateur, None, None)
-# service = PlaylistService()
-# service.creer_playlist("Ma Playlist", list_son)
-# print(Session().playlist)
-# service.retirer_son_playlist(son1)
-# print(Session().playlist)
-# service.retirer_son_playlist(son2)
-# print(Session().playlist)
+    # GIVEN
+    utilisateur = Utilisateur("user1", "hashed_password1")
+    playlist = Playlist(utilisateur, 12, "Old Name", [])
+    Session().utilisateur = utilisateur
+    Session().playlist = playlist
+    Playlist_DAO().modifier_nom_playlist = MagicMock()
+
+    # WHEN
+    PlaylistService().modifier_nom_playlist("New Name")
+
+    # THEN
+    assert Session().playlist.nom_playlist == "New Name"
+    Playlist_DAO().modifier_nom_playlist.assert_called_once_with(playlist, "New Name")
+    Session().playlist = None
+    Session().utilisateur = None
+
+def test_changer_ordre_son():
+    """Test changer l'ordre des sons dans la playlist"""
+
+    # GIVEN
+    utilisateur = Utilisateur("user1", "hashed_password1")
+    son1 = Son(
+        id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
+    )
+    son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
+    list_son = [[son1, 1], [son2, 2]]
+    playlist = Playlist(utilisateur, 14, "Playlist Test", list_son)
+    Session().utilisateur = utilisateur
+    Session().playlist = playlist
+    Playlist_DAO().changer_ordre = MagicMock()
+
+    # WHEN
+    PlaylistService().changer_ordre_son(son1, 2)
+    print(Session().playlist)
+    # THEN
+    for liste in Session().playlist.list_son:
+        if liste[0] == son1:
+            assert liste[1] == 2
+    Playlist_DAO().changer_ordre.assert_called_once_with(playlist, son1, 2)
+    Session().playlist = None
+    Session().utilisateur = None
+
+def test_retirer_son_playlist():
+    """Test retirer un son de la playlist"""
+
+    # GIVEN
+    utilisateur = Utilisateur("user1", "hashed_password1")
+    son = Son(id_son=1, nom="son1", tags=["tag"], path_stockage="data/test.mp3")
+    playlist = Playlist(utilisateur, 15, "Playlist Test", [[son, 1]])
+    Session().utilisateur = utilisateur
+    Session().playlist = playlist
+    Playlist_DAO().supprimer_son = MagicMock()
+
+    # WHEN
+    PlaylistService().retirer_son_playlist(son)
+
+    # THEN
+    assert len(playlist.list_son) == 0
+    Playlist_DAO().supprimer_son.assert_called_once_with(playlist, son)
+    Session().playlist = None
+    Session().utilisateur = None
 
 
-##### Test copier playlist
+def test_copier_playlist():
+    """Test copier une playlist"""
 
-# utilisateur = Utilisateur("user1", "hashed_password1")
-# son1 = Son(
-# id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
-# )
-# son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
-# list_son = [[son1, 1], [son2, 2]]
-# Session(utilisateur, None, None)
-# service = PlaylistService()
-# service.creer_playlist("Ma Playlist", list_son)
-# print(Session().playlist)
-# service.copier_playlist()
-# print(Session().playlist)
+    # GIVEN
+    utilisateur = Utilisateur("user1", "hashed_password1")
+    son = Son(id_son=1, nom="son1", tags=["tag"], path_stockage="data/test.mp3")
+    playlist = Playlist(utilisateur, 12, "Original Playlist", [[son, 1]])
+    playlist_copie = Playlist(utilisateur, 16, "Original Playlist", [[son, 1]])
+    Session().utilisateur = utilisateur
+    Session().playlist = playlist
+    with patch.object(PlaylistService, 'creer_playlist', return_value=playlist_copie) as mock_creer_playlist:
+        # WHEN
+        PlaylistService().copier_playlist()
 
-##### Tests ajouter son
+        # THEN
+        mock_creer_playlist.assert_called_once_with("Original Playlist", [[son, 1]])
+        playlist_copie = Session().playlist
+        assert playlist_copie.nom_playlist == "Original Playlist"
+        assert playlist_copie.list_son == [[son, 1]]
+        assert playlist_copie.utilisateur == utilisateur
 
-# Session().playlist = None
-# utilisateur = Utilisateur("user1", "hashed_password1")
-# son1 = Son(
-# id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
-# )
-# son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3"
-# son3 = Son(id_son=70, nom="Song 70", tags=["rock"], path_stockage="/music/song2.mp3")
-# list_son = [[son1, 1], [son2, 2]]
-# Session(utilisateur, None, None)
-# service = PlaylistService()
-# service.creer_playlist("Ma Playlist", list_son)
-# print(Session().playlist)
-# service.ajouter_son_a_playlist(son3, 2)
-# print(Session().playlist)
+def test_ajouter_son_a_playlist():
+    """Test ajouter un son à la playlist"""
 
-#### Tester afficher playlist
+    # GIVEN
+    utilisateur = Utilisateur("user1", "hashed_password1")
+    playlist = Playlist(utilisateur, 12, "Playlist Test", [])
+    Session().utilisateur = utilisateur
+    Session().playlist = playlist
+    son = Son(id_son=1, nom="son1", tags=["tag"], path_stockage="data/test.mp3")
+    Playlist_DAO().ajouter_son = MagicMock()
 
-# utilisateur = Utilisateur("user1", "hashed_password1")
-# Session().utilisateur = utilisateur
+    # WHEN
+    PlaylistService().ajouter_son_a_playlist(son, 1)
 
-# liste = PlaylistService().afficher_playlist()
-# print(liste[0])
+    # THEN
+    assert playlist.list_son == [[son, 1]]
+    Playlist_DAO().ajouter_son.assert_called_once_with(playlist, son, 1)
+
+def test_play_playlist():
+    """Test jouer la playlist"""
+
+    # GIVEN
+    utilisateur = Utilisateur("user1", "hashed_password1")
+    son = Son(id_son=1, nom="son1", tags=["tag"], path_stockage="data/test.mp3")
+    playlist = Playlist(utilisateur, 12, "Playlist Test", [[son, 1]])
+    Session().utilisateur = utilisateur
+    Session().playlist = playlist
+    with patch('Service.PlaylistService.SonService.play_channel') as mock_play_channel:
+
+        # WHEN
+        PlaylistService().play_playlist(playlist)
+
+        # THEN
+        mock_play_channel.assert_called_once_with(son, 1)
+
+def test_afficher_playlist():
+    """Test afficher les playlists d'un utilisateur"""
+
+    # GIVEN
+    utilisateur = Utilisateur("user1", "hashed_password1")
+    Session().utilisateur = utilisateur
+    playlists = [Playlist(utilisateur, 1, "Playlist 1", []), Playlist(utilisateur, 2, "Playlist 2", [])]
+    Playlist_DAO().get_all_playlists_by_user = MagicMock(return_value=playlists)
+
+    # WHEN
+    result = PlaylistService().afficher_playlist()
+
+    # THEN
+    assert result == playlists
+    Playlist_DAO().get_all_playlists_by_user.assert_called_once_with(utilisateur)
+
+
+if __name__ == "__main__":
+    import pytest
+
+    pytest.main([__file__])
