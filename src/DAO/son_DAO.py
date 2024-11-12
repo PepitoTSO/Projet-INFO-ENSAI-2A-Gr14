@@ -66,7 +66,7 @@ class Son_DAO(metaclass=Singleton):
                 id_son=res["id_son"],
                 nom=res["nom_son"],
                 tags=(
-                    res["tags"].split(",")
+                    [tag.strip() for tag in res["tags"].split(",")]
                     if isinstance(res["tags"], str)
                     else res["tags"]
                 ),
@@ -90,7 +90,7 @@ class Son_DAO(metaclass=Singleton):
                 id_son=res["id_son"],
                 nom=res["nom_son"],
                 tags=(
-                    res["tags"].split(",")
+                    [tag.strip() for tag in res["tags"].split(",")]
                     if isinstance(res["tags"], str)
                     else res["tags"]
                 ),
@@ -117,7 +117,7 @@ class Son_DAO(metaclass=Singleton):
                     id_son=son_data["id_son"],
                     nom=son_data["nom_son"],
                     tags=(
-                        son_data["tags"].split(",")
+                        [tag.strip() for tag in son_data["tags"].split(",")]
                         if isinstance(son_data["tags"], str)
                         else son_data["tags"]
                     ),
@@ -169,7 +169,7 @@ class Son_DAO(metaclass=Singleton):
                     id_son=son_data["id_son"],
                     nom=son_data["nom_son"],
                     tags=(
-                        son_data["tags"].split(",")
+                        [tag.strip() for tag in son_data["tags"].split(",")]
                         if isinstance(son_data["tags"], str)
                         else son_data["tags"]
                     ),
