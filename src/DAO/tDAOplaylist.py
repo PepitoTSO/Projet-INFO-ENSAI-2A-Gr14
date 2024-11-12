@@ -27,11 +27,11 @@ playlistDAO = Playlist_DAO()
 utilisateurDAO = Utilisateur_DAO()
 
 sonDAO = Son_DAO()
-
+sonDAO.supprimer_son(6)
 # playlistDAO.ajouter_playlist(playlist)
 # utilisateurDAO.creer_utilisateur(utilisateur)
 # sonDAO.ajouter_son(son1)
-print(sonDAO.get_son_by_id(14))
+# print(sonDAO.get_son_by_id(14))
 # sonDAO.ajouter_son(son2)
 # print(sonDAO.get_all_son()[12])
 # sonDAO.supprimer_son(13)

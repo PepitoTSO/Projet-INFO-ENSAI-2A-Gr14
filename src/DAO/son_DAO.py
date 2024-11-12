@@ -133,11 +133,66 @@ class Son_DAO(metaclass=Singleton):
     def supprimer_son(self, id_son: int) -> bool:
         try:
             with DBConnection().connection as connection:
-                with connection.cursor() as cursor:
+                with connection.cursor(
+                    cursor_factory=psycopg2.extras.RealDictCursor
+                ) as cursor:
+                    # Step 1: Find all playlists containing the `Son` to be deleted
                     cursor.execute(
-                        "DELETE FROM bdd.son WHERE id_son = %s",
+                        """
+                        SELECT id_playlist FROM bdd.playlist_son_join
+                        WHERE id_son = %s;
+                        """,
                         (id_son,),
                     )
+                    playlists = cursor.fetchall()
+
+                    # Step 2: For each playlist, remove the `Son` and update order of other songs
+                    for playlist_data in playlists:
+                        id_playlist = playlist_data["id_playlist"]
+
+                        # Delete the specific `Son` from the playlist
+                        cursor.execute(
+                            """
+                            DELETE FROM bdd.playlist_son_join
+                            WHERE id_playlist = %s AND id_son = %s;
+                            """,
+                            (id_playlist, id_son),
+                        )
+
+                        # Fetch the remaining songs to update their order
+                        cursor.execute(
+                            """
+                            SELECT id_son FROM bdd.playlist_son_join
+                            WHERE id_playlist = %s
+                            ORDER BY ordre_son_playlist;
+                            """,
+                            (id_playlist,),
+                        )
+                        remaining_songs = cursor.fetchall()
+
+                        # Update the order of the remaining songs
+                        for new_order, son_data in enumerate(remaining_songs, start=1):
+                            cursor.execute(
+                                """
+                                UPDATE bdd.playlist_son_join
+                                SET ordre_son_playlist = %s
+                                WHERE id_playlist = %s AND id_son = %s;
+                                """,
+                                (new_order, id_playlist, son_data["id_son"]),
+                            )
+
+                    # Step 3: Now, delete the `Son` from the `bdd.son` table
+                    cursor.execute(
+                        """
+                        DELETE FROM bdd.son WHERE id_son = %s;
+                        """,
+                        (id_son,),
+                    )
+
+                    # Check if the delete was successful
+                    if cursor.rowcount == 0:
+                        return False
+
             return True
         except Exception as e:
             print(f"Error deleting son: {e}")

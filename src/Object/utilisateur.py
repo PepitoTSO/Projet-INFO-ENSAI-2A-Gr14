@@ -11,7 +11,6 @@ class Utilisateur:
     """
 
     def __init__(self, pseudo: str, mdp_hache: str):
-
         if not isinstance(pseudo, str):
             raise TypeError("Le pseudo n'est pas de type str.")
         if not isinstance(mdp_hache, str):

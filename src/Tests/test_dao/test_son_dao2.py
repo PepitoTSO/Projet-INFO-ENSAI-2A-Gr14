@@ -56,114 +56,107 @@ def test_lister_tous():
         assert isinstance(s, Son)
 
 
-'''
-def test_creer_ok():
-    """Création de Joueur réussie"""
+def test_ajouter_ok():
+    """Création de Son réussie"""
 
     # GIVEN
-    joueur = Joueur(pseudo="gg", age=44, mail="test@test.io")
+    son = Son(id_son=1, nom="pas_de_nom", tags=[], path_stockage=None)
 
     # WHEN
-    creation_ok = JoueurDao().creer(joueur)
+    creation_ok = Son_DAO().ajouter_son(son)
 
     # THEN
     assert creation_ok
-    assert joueur.id_joueur
 
 
-def test_creer_ko():
-    """Création de Joueur échouée (age et mail incorrects)"""
-
-    # GIVEN
-    joueur = Joueur(pseudo="gg", age="chaine de caractere", mail=12)
-
-    # WHEN
-    creation_ok = JoueurDao().creer(joueur)
-
-    # THEN
-    assert not creation_ok
-
-
-def test_modifier_ok():
-    """Modification de Joueur réussie"""
+def test_supprimer_son_existant():
+    """Suppression d'un son existant réussie"""
 
     # GIVEN
-    new_mail = "maurice@mail.com"
-    joueur = Joueur(id_joueur=997, pseudo="maurice", age=20, mail=new_mail)
+    id_son = 1
 
     # WHEN
-    modification_ok = JoueurDao().modifier(joueur)
-
-    # THEN
-    assert modification_ok
-
-
-def test_modifier_ko():
-    """Modification de Joueur échouée (id inconnu)"""
-
-    # GIVEN
-    joueur = Joueur(id_joueur=8888, pseudo="id inconnu", age=1, mail="no@mail.com")
-
-    # WHEN
-    modification_ok = JoueurDao().modifier(joueur)
-
-    # THEN
-    assert not modification_ok
-
-
-def test_supprimer_ok():
-    """Suppression de Joueur réussie"""
-
-    # GIVEN
-    joueur = Joueur(id_joueur=995, pseudo="miguel", age=1, mail="miguel@projet.fr")
-
-    # WHEN
-    suppression_ok = JoueurDao().supprimer(joueur)
+    suppression_ok = Son_DAO().supprimer_son(id_son)
 
     # THEN
     assert suppression_ok
 
 
-def test_supprimer_ko():
-    """Suppression de Joueur échouée (id inconnu)"""
+def test_supprimer_son_non_existant():
+    """Suppression d'un son échouée (id non existant)"""
 
     # GIVEN
-    joueur = Joueur(id_joueur=8888, pseudo="id inconnu", age=1, mail="no@z.fr")
+    id_son = 9999999999999
 
     # WHEN
-    suppression_ok = JoueurDao().supprimer(joueur)
+    suppression_ok = Son_DAO().supprimer_son(id_son)
 
     # THEN
     assert not suppression_ok
 
 
-def test_se_connecter_ok():
-    """Connexion de Joueur réussie"""
+def test_get_son_by_name_existant():
+    """Recherche par nom d'un son existant"""
 
     # GIVEN
-    pseudo = "batricia"
-    mdp = "9876"
+    name_son = "Song 1"
 
     # WHEN
-    joueur = JoueurDao().se_connecter(pseudo, hash_password(mdp, pseudo))
+    son = Son_DAO().get_son_by_name(name_son)
 
     # THEN
-    assert isinstance(joueur, Joueur)
+    expected_son = Son(
+        1, nom="Song 1", tags=["chill", "relax"], path_stockage="/path/to/song1"
+    )
+
+    assert son.id_son == expected_son.id_son
+    assert son.nom == expected_son.nom
+    assert son.tags == expected_son.tags
+    assert son.path_stockage == expected_son.path_stockage
 
 
-def test_se_connecter_ko():
-    """Connexion de Joueur échouée (pseudo ou mdp incorrect)"""
+def test_get_son_by_name_non_existant():
+    """Recherche par nom d'un son non existant"""
 
     # GIVEN
-    pseudo = "toto"
-    mdp = "poiuytreza"
+    name_son = "Nom qui n'existe pas"
 
     # WHEN
-    joueur = JoueurDao().se_connecter(pseudo, hash_password(mdp, pseudo))
+    son = Son_DAO().get_son_by_name(name_son)
 
     # THEN
-    assert not joueur
-'''
+    assert son is None
+
+
+def test_get_all_son_ordre_by_id_playlist_existant():
+    """Récupération des sons par ordre d'une playlist existante"""
+
+    # GIVEN
+    id_playlist = 1
+
+    # WHEN
+    sons = Son_DAO().get_all_son_ordre_by_id_playlist(id_playlist)
+
+    # THEN
+    assert isinstance(sons, list)
+    for s in sons:
+        assert isinstance(s, list)
+        assert isinstance(s[0], Son)
+        assert isinstance(s[1], int)  # L'ordre doit être un entier
+
+
+def test_get_all_son_ordre_by_id_playlist_non_existant():
+    """Récupération échouée des sons d'une playlist qui n'existe pas"""
+
+    # GIVEN
+    id_playlist = 9999999999
+
+    # WHEN
+    sons = Son_DAO().get_all_son_ordre_by_id_playlist(id_playlist)
+
+    # THEN
+    assert sons == []
+
 
 if __name__ == "__main__":
     pytest.main([__file__])
