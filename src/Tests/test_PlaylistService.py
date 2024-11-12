@@ -58,7 +58,43 @@ from view.session import Session
 # service.modifier_nom_playlist("Quoicoubeh")
 # print(Session().playlist)
 
-##### Test 
+##### Test changer ordre son
+# utilisateur = Utilisateur("user1", "hashed_password1")
+# son1 = Son(
+# id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
+# )
+# son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
+# list_son = [[son1, 1], [son2, 2]]
+# Session(utilisateur, None, None)
+# service = PlaylistService()
+# service.creer_playlist("Ma Playlist", list_son)
+# print(Session().playlist)
+
+# ###Changer l'ordre des sons
+
+# service.changer_ordre_son(son1, 2)
+# print(Session().playlist)
+
+##### Test supprimer un son
+
+# utilisateur = Utilisateur("user1", "hashed_password1")
+# son1 = Son(
+# id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
+# )
+# son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
+# list_son = [[son1, 1], [son2, 2]]
+# Session(utilisateur, None, None)
+# service = PlaylistService()
+# service.creer_playlist("Ma Playlist", list_son)
+# print(Session().playlist)
+# service.retirer_son_playlist(son1)
+# print(Session().playlist)
+# service.retirer_son_playlist(son2)
+# print(Session().playlist)
+
+
+##### Test copier playlist
+
 utilisateur = Utilisateur("user1", "hashed_password1")
 son1 = Son(
 id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
@@ -68,4 +104,24 @@ list_son = [[son1, 1], [son2, 2]]
 Session(utilisateur, None, None)
 service = PlaylistService()
 service.creer_playlist("Ma Playlist", list_son)
+print(Session().playlist)
+service.copier_playlist()
+print(Session().playlist)
+
+##### Tests ajouter son
+
+Session().playlist = None
+utilisateur = Utilisateur("user1", "hashed_password1")
+son1 = Son(
+id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
+)
+son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
+
+son3 = Son(id_son=70, nom="Song 70", tags=["rock"], path_stockage="/music/song2.mp3")
+list_son = [[son1, 1], [son2, 2]]
+Session(utilisateur, None, None)
+service = PlaylistService()
+service.creer_playlist("Ma Playlist", list_son)
+print(Session().playlist)
+service.ajouter_son_a_playlist(son3, 2)
 print(Session().playlist)

@@ -40,18 +40,15 @@ class PlaylistService:
 
         playlist.changer_ordre(son, ordre)
 
-        Session().playlist = playlist.changer_ordre(son, ordre)
+        Session().playlist = playlist
 
         Playlist_DAO().changer_ordre(playlist, son, ordre)
 
     def retirer_son_playlist(self, son: Son):
 
         playlist = Session().playlist
-        playlist.retirer_son(son)
-        Session().playlist = playlist
-
         Playlist_DAO().supprimer_son(playlist, son)
-        playlist.retirer_son(son)
+        playlist.supprimer_son(son)
         Session().playlist = playlist
 
     def copier_playlist(self):
@@ -155,10 +152,10 @@ class PlaylistService:
     def play_next_son(): # il faut l'info sur le son en cours relativement à la playlist
         pass
 
-if __name__ == '__main__':
+"""if __name__ == '__main__':
     from Object.utilisateur import Utilisateur
     son_test = Son(1, path_stockage='./data/test.mp3')
     utilisateur = Utilisateur("user1", "hashed_password")
     p_test = Playlist(utilisateur, 1, "My Playlist", [[son_test, 1]],)
-    PlaylistService().play_playlist(p_test)
+    PlaylistService().play_playlist(p_test)"""
 
