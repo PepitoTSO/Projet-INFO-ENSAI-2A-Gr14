@@ -32,3 +32,13 @@ class Son:
             self.tags
         )  # Convert tags list to a string for easy display
         return f"Son ID: {self.id_son}, Nom: '{self.nom}', Tags: [{tags_str}], Chemin: {self.path_stockage}"
+
+    def __eq__(self, other):
+        if not isinstance(other, Son):
+            return False
+        return (
+            self.id_son == other.id_son
+            and self.nom == other.nom
+            and self.tags == other.tags
+            and self.path_stockage == other.path_stockage
+        )
