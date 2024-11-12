@@ -36,7 +36,8 @@ class ModifPlaylistView(AbstractView):
             choices=[
                 "Changer le nom de la playlist",
                 "Ajouter un son à la playlist",
-                "Supprimer un son de la playlist" "Changer l'ordre d'un son",
+                "Supprimer un son de la playlist",
+                "Changer l'ordre d'un son",
                 "Revenir au menu précédent",
                 "Se déconnecter",
             ],

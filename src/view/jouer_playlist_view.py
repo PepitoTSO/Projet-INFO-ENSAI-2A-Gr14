@@ -21,7 +21,7 @@ class JouerPlaylistView(AbstractView):
             Retourne la vue choisie par l'utilisateur dans le terminal
         """
 
-        print("\n" + "-" * 50 + "\nMenu Lecture\n" + "-" * 50 + "\n")
+        print("\n" + "-" * 50 + "\nMenu Lecture des Playlists\n" + "-" * 50 + "\n")
 
         playlist_service = PlaylistService()
 
@@ -63,6 +63,30 @@ class JouerPlaylistView(AbstractView):
 
             case "Jouer un son":
                 lire_son = inquirer.select(
+                    message="Choisissez un son : ",
+                    choices=lire_playlist,
+                ).execute()
+
+                son_service = SonService()
+                son_service.play(lire_son)
+                return JouerPlaylistView
+
+            case "Jouer un son en boucle":
+                lire_son = inquirer.select(
                     message="Choisissez une playlist : ",
                     choices=lire_playlist,
                 ).execute()
+
+                son_service = SonService()
+                son_service.jouer_en_boucle(lire_son)
+                return JouerPlaylistView
+
+            case "Jouer un autre son en simultané":
+                lire_son_en_plus = inquirer.select(
+                    message="Choisissez une playlist : ",
+                    choices=lire_playlist,
+                ).execute()
+
+                son_service = SonService()
+                son_service.play_multiple_sounds(lire_son_en_plus)
+                return JouerPlaylistView

@@ -48,6 +48,8 @@ class PlaylistView(AbstractView):
                 return MenuView()
 
             case "Jouer une playlist":
+                playlist_service = PlaylistService()
+                playlists = playlist_service.afficher_playlist()
                 playlists.append("Retour au Menu Principal")
 
                 jouer_playlist = inquirer.select(
@@ -65,6 +67,8 @@ class PlaylistView(AbstractView):
                 return JouerPlaylistView
 
             case "Modifier une playlist":
+                playlist_service = PlaylistService()
+                playlists = playlist_service.afficher_playlist()
                 playlists.append("Retour au Menu Principal")
 
                 modifier_playlist = inquirer.select(
@@ -105,3 +109,5 @@ class PlaylistView(AbstractView):
                 from view.menu_principal_view import MenuView
 
                 return MenuView()
+
+            # case "Copier une playlist":
