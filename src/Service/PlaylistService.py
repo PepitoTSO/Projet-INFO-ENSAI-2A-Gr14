@@ -15,7 +15,7 @@ class PlaylistService:
 
     # ATTENTION CAS PARTICULIER quand on crée ou modifie une playlist, on met la playlist de session direct dedans
 
-    def creer_playlist(self, nom_playlist: str, list_son: list(list()) = [[]]):
+    def creer_playlist(self, nom_playlist: str, list_son: list(list()) = []):
 
         utilisateur = Session().utilisateur
 
@@ -25,7 +25,8 @@ class PlaylistService:
     def supprimer_playlist(self):
 
         playlist = Session().playlist
-        Playlist_DAO().supprimer_playlist(playlist)
+        if Playlist_DAO().supprimer_playlist(playlist):
+            Session().playlist = None
 
     def modifier_nom_playlist(self, nouveau_nom):
 
@@ -68,7 +69,7 @@ class PlaylistService:
 
     def play_next_son(): # il faut l'info sur le son en cours relativement à la playlist
         pass
-    
+
     def afficher_playlist(self):
         utilisateur = Session().utilisateur
         liste_playlist = Playlist_DAO().get_all_playlists_by_user(utilisateur)
