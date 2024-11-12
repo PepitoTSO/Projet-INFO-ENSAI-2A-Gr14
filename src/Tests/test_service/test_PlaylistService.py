@@ -24,9 +24,8 @@ from view.session import Session
 # print(Session().playlist)
 
 
-
 ##### Test Supprimer une playlist
-#On en ajoute une d'abord, il faut ensuite modifier l'id de la playlist à supprimer
+# On en ajoute une d'abord, il faut ensuite modifier l'id de la playlist à supprimer
 # utilisateur = Utilisateur("user1", "hashed_password1")
 # son1 = Son(
 # id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
