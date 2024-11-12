@@ -19,12 +19,16 @@ def test_trouver_par_id_existant():
     son = Son_DAO().get_son_by_id(id_son)
 
     # THEN
-    assert son == Son(
+    expected_son = Son(
         1, nom="Song 1", tags=["chill", "relax"], path_stockage="/path/to/song1"
     )
 
+    assert son.id_son == expected_son.id_son
+    assert son.nom == expected_son.nom
+    assert son.tags == expected_son.tags
+    assert son.path_stockage == expected_son.path_stockage
 
-'''
+
 def test_trouver_par_id_non_existant():
     """Recherche par id d'un son n'existant pas"""
 
@@ -36,8 +40,8 @@ def test_trouver_par_id_non_existant():
 
     # THEN
     assert son is None
-'''
-'''
+
+
 def test_lister_tous():
     """Vérifie que la méthode renvoie une liste de Son"""
 
@@ -47,11 +51,10 @@ def test_lister_tous():
     sons = Son_DAO().get_all_son()
 
     # THEN
-    assert isinstance(joueurs, list)
-    for j in joueurs:
-        assert isinstance(j, Joueur)
-    assert len(joueurs) >= 2
-'''
+    assert isinstance(sons, list)
+    for s in sons:
+        assert isinstance(s, Son)
+
 
 '''
 def test_creer_ok():
