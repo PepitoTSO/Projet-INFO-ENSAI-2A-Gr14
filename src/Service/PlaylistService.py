@@ -146,5 +146,5 @@ if __name__ == '__main__':
     p_test = Playlist(utilisateur, 1, "My Playlist", [[son_test, 1]],)
     Session().utilisateur = utilisateur
     Session().playlist = p_test
-    PlaylistService().play_playlist(p_test)
+    PlaylistService().play_playlist()
 
