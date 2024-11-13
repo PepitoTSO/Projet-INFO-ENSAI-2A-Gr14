@@ -178,7 +178,7 @@ def test_play_playlist():
     with patch("Service.PlaylistService.SonService.play_channel") as mock_play_channel:
 
         # WHEN
-        PlaylistService().play_playlist(playlist)
+        PlaylistService().play_playlist()
 
         # THEN
         mock_play_channel.assert_called_once_with(son, 1)
