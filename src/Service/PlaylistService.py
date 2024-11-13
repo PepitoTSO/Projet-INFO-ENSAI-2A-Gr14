@@ -61,7 +61,8 @@ class PlaylistService:
         playlist.ajouter_son_playlist(son, ordre)
         Session().playlist = playlist
 
-    def play_playlist(self, playlist: Playlist, canal=1):
+    def play_playlist(self, canal=1):
+        playlist = Session().playlist
         playlist_ordonnee = sorted(playlist.list_son, key=lambda x: x[1])
         for son, _ in playlist_ordonnee:
             SonService().play_channel(son, canal)
@@ -138,9 +139,12 @@ class PlaylistService:
     #                 son_a_jouer.play()
 
 if __name__ == '__main__':
+if __name__ == '__main__':
     from Object.utilisateur import Utilisateur
     son_test = Son(1, path_stockage='./data/test.mp3')
     utilisateur = Utilisateur("user1", "hashed_password")
     p_test = Playlist(utilisateur, 1, "My Playlist", [[son_test, 1]],)
+    Session().utilisateur = utilisateur
+    Session().playlist = p_test
     PlaylistService().play_playlist(p_test)
 
