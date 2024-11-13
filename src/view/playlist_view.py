@@ -48,18 +48,6 @@ class PlaylistView(AbstractView):
                 return MenuView()
 
             case "Jouer une playlist":
-                playlist_service = PlaylistService()
-                playlists = playlist_service.afficher_playlist()
-                playlists.append("Retour au menu précédent")
-
-                jouer_playlist = inquirer.select(
-                    message="Choisissez une playlist : ",
-                    choices=playlists,
-                ).execute()
-
-                if jouer_playlist == "Retour au menu précédent":
-                    return PlaylistView()
-
                 from view.jouer_playlist_view import JouerPlaylistView
 
                 return JouerPlaylistView

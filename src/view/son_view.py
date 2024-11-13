@@ -45,15 +45,19 @@ class SonView(AbstractView):
                 return MenuView()
 
             case "Jouer un son":
-                lire_son = inquirer.select(
-                    message="Choisissez un son : ",
-                    choices=resultat,
-                ).execute()
+                from view.recherche_son_playlist_view import RechSonPlaylistView
+
+                # rech = RechSonPlaylistView()
+                # lire_son = inquirer.select(
+                #   message="Choisissez un son : ",
+                #    choices=rech.resultat,
+                # ).execute()
 
                 id_son = inquirer.text(message="Entrez l'id du son : ").execute()
                 # DAO recherche par id  avec l'id du son
                 # renvoie les infos pour créer un objet son
-                dl_son_a_jouer = dl_son(lire_son)
+                api = apifreesound()
+                dl_son_a_jouer = api.dl_son(int(id_son))
 
                 from Object.son import Son
 
@@ -61,7 +65,9 @@ class SonView(AbstractView):
                 SonService_a_jouer = SonService()
                 SonService_a_jouer.play(son_a_jouer)
 
-                return SonView()
+                from view.jouer_son_view import JouerSonView
+
+                return JouerSonView()
 
             case "Ajouter un son":
                 id_son = inquirer.text(message="Entrez l'id du son : ").execute()

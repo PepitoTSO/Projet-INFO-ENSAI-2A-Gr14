@@ -7,7 +7,7 @@ from Service.PlaylistService import PlaylistService
 from Service.SonService import SonService
 
 
-class JouerPlaylistView(AbstractView):
+class JouerSonView(AbstractView):
     """
     Vue du menu de la lecture des sons
     """

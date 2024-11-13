@@ -57,11 +57,6 @@ class RechSonPlaylistView(AbstractView):
                 resultat = api.recherche_son(recherche_son)
                 print(resultat)
 
-                lire_playlist = inquirer.select(
-                    message="Choisissez une playlist : ",
-                    choices=resultat,
-                ).execute()
-
                 return SonView()
 
             # elif reponse["choix"] == "Recherche classique":

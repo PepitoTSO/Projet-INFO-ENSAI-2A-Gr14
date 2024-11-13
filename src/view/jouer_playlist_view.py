@@ -83,7 +83,7 @@ class JouerPlaylistView(AbstractView):
 
             case "Jouer un autre son en simultané":
                 lire_son_en_plus = inquirer.select(
-                    message="Choisissez une playlist : ",
+                    message="Choisissez une son : ",
                     choices=lire_playlist,
                 ).execute()
 
