@@ -22,3 +22,18 @@ class JouerSonView(AbstractView):
         """
 
         print("\n" + "-" * 50 + "\nMenu Lecture des Sons\n" + "-" * 50 + "\n")
+
+        choix = inquirer.select(
+            message="Faites votre choix : ",
+            choices=[
+                "Play",
+                "Pause",
+                "Unpause",
+                "Avancer de 10 secondes",
+                "Reculer de 10 secondes",
+                "Jouer le prochain son",
+                "Jouer le précédent son",
+                "Revenir au menu précédent",
+                "Se déconnecter",
+            ],
+        ).execute()

@@ -35,8 +35,8 @@ class MenuView(AbstractView):
             message="Faites votre choix : ",
             choices=[
                 "Rechercher un son/une playlist",
-                "Gérer mes Sons",
-                "Gérer mes Playlists",
+                "Gérer les Sons",
+                "Gérer les Playlists",
                 "Infos",
                 "Se déconnecter",
             ],
@@ -54,12 +54,12 @@ class MenuView(AbstractView):
 
                 return RechSonPlaylistView()
 
-            case "Gérer mes Sons":
+            case "Gérer les Sons":
                 from view.son_view import SonView
 
                 return SonView()
 
-            case "Gérer mes Playlists":
+            case "Gérer les Playlists":
                 from view.playlist_view import PlaylistView
 
                 return PlaylistView()

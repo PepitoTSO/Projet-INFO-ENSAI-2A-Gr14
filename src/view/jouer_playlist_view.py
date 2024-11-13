@@ -2,6 +2,7 @@ from InquirerPy import inquirer
 
 from view.abstract_view import AbstractView
 from view.session import Session
+from view.jouer_son_view import JouerSonView
 
 from Service.PlaylistService import PlaylistService
 from Service.SonService import SonService
@@ -59,7 +60,8 @@ class JouerPlaylistView(AbstractView):
 
             case "Lancer la playlist depuis le début":
                 playlist_service.jouer_playlist(lire_playlist)
-                return JouerPlaylistView()
+                premier_son = lire_playlist[0]
+                return JouerSonView()
 
             case "Jouer un son":
                 lire_son = inquirer.select(
@@ -69,7 +71,7 @@ class JouerPlaylistView(AbstractView):
 
                 son_service = SonService()
                 son_service.play(lire_son)
-                return JouerPlaylistView
+                return JouerSonView
 
             case "Jouer un son en boucle":
                 lire_son = inquirer.select(
@@ -79,7 +81,7 @@ class JouerPlaylistView(AbstractView):
 
                 son_service = SonService()
                 son_service.jouer_en_boucle(lire_son)
-                return JouerPlaylistView
+                return JouerSonView
 
             case "Jouer un autre son en simultané":
                 lire_son_en_plus = inquirer.select(
@@ -89,4 +91,4 @@ class JouerPlaylistView(AbstractView):
 
                 son_service = SonService()
                 son_service.play_multiple_sounds(lire_son_en_plus)
-                return JouerPlaylistView
+                return JouerSonView

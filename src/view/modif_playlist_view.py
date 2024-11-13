@@ -55,7 +55,7 @@ class ModifPlaylistView(AbstractView):
 
                 return PlaylistView()
 
-            case "Changer le nom de la playlist":
+            case "Renommer la playlist":
                 nouveau_nom_playlist = inquirer.text(
                     message="Quel est le nouveau nom de la playlist ? : "
                 ).execute()
@@ -73,7 +73,7 @@ class ModifPlaylistView(AbstractView):
                 ).execute()
 
                 modifier_playlist = playlist_service.ajouter_son_a_playlist(
-                    nouveau_son, int(ordre)
+                    nouveau_son, ordre
                 )
 
             case "Supprimer un son à la playlist":
@@ -81,8 +81,8 @@ class ModifPlaylistView(AbstractView):
                     message="Quel est le son à supprimer ? : "
                 ).execute()
 
-                modifier_playlist = playlist_service.supprimer_playlist(
-                    nouveau_son, int(ordre)
+                modifier_playlist = playlist_service.retirer_son_playlist(
+                    son_a_supprimer
                 )
 
             case "Changer l'ordre d'un son dans la playlist":
