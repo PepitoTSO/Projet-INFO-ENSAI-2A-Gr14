@@ -34,7 +34,7 @@ class MenuView(AbstractView):
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
-                "Rechercher un son",
+                "Rechercher un son/une playlist",
                 "Gérer mes Sons",
                 "Gérer mes Playlists",
                 "Infos",
@@ -49,7 +49,7 @@ class MenuView(AbstractView):
 
                 return AccueilView()
 
-            case "Rechercher un son":
+            case "Rechercher un son/une playlist":
                 from view.recherche_son_playlist_view import RechSonPlaylistView
 
                 return RechSonPlaylistView()

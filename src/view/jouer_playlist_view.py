@@ -73,7 +73,7 @@ class JouerPlaylistView(AbstractView):
 
             case "Jouer un son en boucle":
                 lire_son = inquirer.select(
-                    message="Choisissez une playlist : ",
+                    message="Choisissez un son : ",
                     choices=lire_playlist,
                 ).execute()
 
