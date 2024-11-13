@@ -138,6 +138,7 @@ class PlaylistService:
     #                 son_a_jouer = SonService(son)
     #                 son_a_jouer.play()
 
+"""
 if __name__ == '__main__':
     from Object.utilisateur import Utilisateur
     son_test = Son(1, path_stockage='./data/test.mp3')
@@ -146,4 +147,4 @@ if __name__ == '__main__':
     Session().utilisateur = utilisateur
     Session().playlist = p_test
     PlaylistService().play_playlist(p_test)
-
+"""
