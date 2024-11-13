@@ -29,11 +29,12 @@ class Son_DAO(metaclass=Singleton):
                 ) as cursor:
                     cursor.execute(
                         """
-                        INSERT INTO bdd.son (nom_son, tags, path_stockage)
-                        VALUES (%s, %s, %s)
+                        INSERT INTO bdd.son (id_son, nom_son, tags, path_stockage)
+                        VALUES (%s, %s, %s, %s)
                         RETURNING id_son;
                         """,
                         (
+                            son.id_son,
                             son.nom,
                             tags_string,
                             str(son.path_stockage),

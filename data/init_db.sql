@@ -30,7 +30,7 @@ CREATE TABLE bdd.playlist (
 DROP TABLE IF EXISTS bdd.son CASCADE;
 
 CREATE TABLE bdd.son (
-    id_son SERIAL PRIMARY KEY,
+    id_son PRIMARY KEY,
     nom_son VARCHAR,
     tags VARCHAR,
     path_stockage VARCHAR NOT NULL
