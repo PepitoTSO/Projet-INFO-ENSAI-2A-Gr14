@@ -47,7 +47,7 @@ class AccueilView(AbstractView):
                 return AccueilView()
 
             case "Infos de session":
-                return AccueilVue(Session().afficher())
+                return Session().afficher()
 
     def messageInfo(self):
         print(

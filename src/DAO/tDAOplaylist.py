@@ -8,7 +8,7 @@ from DAO.son_DAO import Son_DAO
 
 son1 = Son(
     id_son=56,
-    nom="Tom's Song",
+    nom="Test nouvelle bdd",
     tags=["pas", "de", "tags"],
     path_stockage="data/test.mp3",
 )
@@ -27,7 +27,7 @@ playlistDAO = Playlist_DAO()
 utilisateurDAO = Utilisateur_DAO()
 
 sonDAO = Son_DAO()
-sonDAO.supprimer_son(6)
+sonDAO.ajouter_son(son1)
 # playlistDAO.ajouter_playlist(playlist)
 # utilisateurDAO.creer_utilisateur(utilisateur)
 # sonDAO.ajouter_son(son1)

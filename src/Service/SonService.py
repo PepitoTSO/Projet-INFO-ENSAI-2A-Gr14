@@ -144,9 +144,5 @@ class SonService():
 
 if __name__ == '__main__':
     son_test = Son(1, path_stockage='./data/test.mp3')
-    SonService().play_channel(son_test, 2)
-    time.sleep(9)
-    SonService().play_channel(son_test, 3)
-    time.sleep(6)
-    SonService().play_channel(son_test)
-    time.sleep(3)
+    SonService().jouer_en_boucle(son_test, 2, 300)
+
