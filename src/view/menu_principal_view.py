@@ -3,8 +3,6 @@ from InquirerPy import inquirer
 from view.abstract_view import AbstractView
 from view.session import Session
 
-from Service.UtilisateurService import UtilisateurService
-
 
 class MenuView(AbstractView):
     """Vue du menu principal de l'utilisateur
@@ -34,9 +32,9 @@ class MenuView(AbstractView):
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
-                "Rechercher un son/une playlist",
-                "Gérer les Sons",
-                "Gérer les Playlists",
+                "Rechercher un son/playlist",
+                "Mes Sons",
+                "Mes Playlists",
                 "Infos",
                 "Se déconnecter",
             ],
@@ -49,17 +47,17 @@ class MenuView(AbstractView):
 
                 return AccueilView()
 
-            case "Rechercher un son/une playlist":
+            case "Rechercher un son/playlist":
                 from view.recherche_son_playlist_view import RechSonPlaylistView
 
                 return RechSonPlaylistView()
 
-            case "Gérer les Sons":
+            case "Mes Sons":
                 from view.son_view import SonView
 
                 return SonView()
 
-            case "Gérer les Playlists":
+            case "Mes Playlists":
                 from view.playlist_view import PlaylistView
 
                 return PlaylistView()

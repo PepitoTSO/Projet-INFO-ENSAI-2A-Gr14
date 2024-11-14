@@ -59,6 +59,7 @@ class JouerPlaylistView(AbstractView):
 
             case "Lancer la playlist":
                 playlist_service.jouer_playlist(lire_playlist)
+                Session().playlist
                 premier_son = lire_playlist[0]
                 son_service = SonService()
                 son_service.play(premier_son)
@@ -85,11 +86,11 @@ class JouerPlaylistView(AbstractView):
                 return JouerSonView
 
             case "Jouer un autre son en simultané":
-                lire_son_en_plus = inquirer.select(
+                lire_son = inquirer.select(
                     message="Choisissez une son : ",
                     choices=lire_playlist,
                 ).execute()
 
                 son_service = SonService()
-                son_service.play_multiple_sounds(lire_son_en_plus)
+                son_service.play_multiple_sounds(lire_son)
                 return JouerSonView()

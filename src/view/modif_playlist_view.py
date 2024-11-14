@@ -37,7 +37,7 @@ class ModifPlaylistView(AbstractView):
                 "Renommer la playlist",
                 "Ajouter un son à la playlist",
                 "Supprimer un son de la playlist",
-                "Changer l'ordre d'un son",
+                "Changer l'ordre d'un son dans la playlist",
                 "Revenir au menu précédent",
                 "Se déconnecter",
             ],
@@ -60,6 +60,7 @@ class ModifPlaylistView(AbstractView):
                     message="Quel est le nouveau nom de la playlist ? : "
                 ).execute()
 
+                Session().playlist
                 modifier_playlist = playlist_service.modifier_nom_playlist(
                     nouveau_nom_playlist
                 )
@@ -72,6 +73,7 @@ class ModifPlaylistView(AbstractView):
                     message="A quel ordre souhaitez-vous placer le son dans la playlist ? : "
                 ).execute()
 
+                Session().playlist
                 modifier_playlist = playlist_service.ajouter_son_a_playlist(
                     nouveau_son, ordre
                 )
@@ -81,6 +83,7 @@ class ModifPlaylistView(AbstractView):
                     message="Quel est le son à supprimer ? : "
                 ).execute()
 
+                Session().playlist
                 modifier_playlist = playlist_service.retirer_son_playlist(
                     son_a_supprimer
                 )
@@ -93,6 +96,7 @@ class ModifPlaylistView(AbstractView):
                     message="A Quelle place voulez-vous que le son soit situé ? : "
                 ).execute()
 
+                Session().playlist
                 modifier_playlist = playlist_service.changer_ordre_son(
                     son_a_deplacer, nouvel_ordre
                 )

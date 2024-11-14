@@ -74,7 +74,7 @@ class PlaylistView(AbstractView):
                     message="Nommez votre playlist : "
                 ).execute()
 
-                PlaylistService().creer_playlist(nom_playlist)
+                playlist_service.creer_playlist(nom_playlist)
                 return PlaylistView()
 
             case "Supprimer une playlist":
