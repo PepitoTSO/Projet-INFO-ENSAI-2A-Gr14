@@ -2,7 +2,7 @@ from InquirerPy import prompt
 from InquirerPy import inquirer
 
 from view.abstract_view import AbstractView
-from view.son_view import SonView
+from view.jouer_son_view import JouerSonView
 from view.session import Session
 
 from Api_FreeSound.apifreesound import apifreesound
@@ -56,8 +56,12 @@ class RechSonPlaylistView(AbstractView):
                 api = apifreesound()
                 resultat = api.recherche_son(recherche_son)
                 print(resultat)
+                lire_son = inquirer.select(
+                    message="Choisissez un son : ",
+                    choices=resultat,
+                ).execute()
 
-                return SonView()
+                return JouerSonView()
 
             # elif reponse["choix"] == "Recherche classique":
             # inquirer_recherche = {

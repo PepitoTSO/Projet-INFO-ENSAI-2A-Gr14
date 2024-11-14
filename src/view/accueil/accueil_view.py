@@ -9,6 +9,9 @@ class AccueilView(AbstractView):
     Vue de l'accueil de l'application
     """
 
+    def __init__(self, message):
+        super().__init__(message)
+
     def choisir_menu(self):
         with open("src/dessin/banner.txt", "r", encoding="utf-8") as asset:
             print(asset.read())
@@ -45,9 +48,6 @@ class AccueilView(AbstractView):
                 accueil.messageInfo()
 
                 return AccueilView()
-
-            case "Infos de session":
-                return Session().afficher()
 
     def messageInfo(self):
         print(

@@ -26,7 +26,6 @@ class JouerSonView(AbstractView):
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
-                "Play",
                 "Pause",
                 "Unpause",
                 "Avancer de 10 secondes",

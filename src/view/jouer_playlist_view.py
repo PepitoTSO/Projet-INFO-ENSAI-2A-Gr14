@@ -37,9 +37,8 @@ class JouerPlaylistView(AbstractView):
             message="Faites votre choix : ",
             choices=[
                 "Lancer la playlist depuis le début",
-                # "Lancer la playlist depuis un son particulier",
-                "Jouer un son",
-                "Jouer en boucle un son",
+                "Jouer un son de la playlist",
+                "Jouer un son en boucle",
                 "Jouer un autre son en simultané",
                 "Revenir au menu précédent",
                 "Se déconnecter",
@@ -51,19 +50,21 @@ class JouerPlaylistView(AbstractView):
                 Session().deconnexion()
                 from view.accueil.accueil_view import AccueilView
 
-                return AccueilView()
+                return AccueilView("Bienvenue")
 
             case "Revenir au menu précédent":
                 from view.playlist_view import PlaylistView
 
                 return PlaylistView()
 
-            case "Lancer la playlist depuis le début":
+            case "Lancer la playlist":
                 playlist_service.jouer_playlist(lire_playlist)
                 premier_son = lire_playlist[0]
+                son_service = SonService()
+                son_service.play(premier_son)
                 return JouerSonView()
 
-            case "Jouer un son":
+            case "Jouer un son de la playlist":
                 lire_son = inquirer.select(
                     message="Choisissez un son : ",
                     choices=lire_playlist,
@@ -91,4 +92,4 @@ class JouerPlaylistView(AbstractView):
 
                 son_service = SonService()
                 son_service.play_multiple_sounds(lire_son_en_plus)
-                return JouerSonView
+                return JouerSonView()
