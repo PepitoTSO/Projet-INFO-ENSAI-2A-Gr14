@@ -38,10 +38,10 @@ class UtilisateurService:
         user = Utilisateur(pseudo=pseudo_utilisateur, mdp_hache=mdp_hache)
         utilisateurDAO = Utilisateur_DAO()
         reponse = utilisateurDAO.se_connecter(user)
-        if reponse:
+        if reponse is True:
             Session.utilisateur = user
             return True
-        return None
+        return False
 
     def hacher_mot_de_passe(self, mdp_nh: str):
         """

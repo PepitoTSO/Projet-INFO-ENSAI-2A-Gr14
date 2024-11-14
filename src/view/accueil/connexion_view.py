@@ -32,7 +32,7 @@ class ConnexionView(AbstractView):
         )
 
         # Si l'utilisateur a été trouvé à partir des ses identifiants de connexion
-        if utilisateur:
+        if utilisateur is True:
             message1 = f"Vous êtes connecté sous le pseudo {pseudo}"
             Session().utilisateur = utilisateur
 
