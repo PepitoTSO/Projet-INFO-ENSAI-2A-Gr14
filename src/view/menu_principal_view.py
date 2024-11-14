@@ -44,7 +44,7 @@ class MenuView(AbstractView):
 
         match choix:
             case "Se déconnecter":
-                Session().deconnexion()
+                Session().utilisateur = None
                 from view.accueil.accueil_view import AccueilView
 
                 return AccueilView()
