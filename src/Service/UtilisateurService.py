@@ -39,7 +39,7 @@ class UtilisateurService:
         utilisateurDAO = Utilisateur_DAO()
         reponse = utilisateurDAO.se_connecter(user)
         if reponse is True:
-            Session.utilisateur = user
+            Session().utilisateur = user
             return True
         return False
 

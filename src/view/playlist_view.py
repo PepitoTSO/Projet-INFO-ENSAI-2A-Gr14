@@ -73,12 +73,13 @@ class PlaylistView(AbstractView):
                 nom_playlist = inquirer.text(
                     message="Nommez votre playlist : "
                 ).execute()
-
+                playlist_service = PlaylistService()
                 playlist_service.creer_playlist(nom_playlist)
                 return PlaylistView()
 
             case "Supprimer une playlist":
                 playlist_service = PlaylistService()
+                print(Session().utilisateur)
                 playlists = playlist_service.afficher_playlist()
                 playlists.append("Retour au menu précédent")
 
@@ -89,7 +90,7 @@ class PlaylistView(AbstractView):
 
                 if modifier_playlist == "Retour au menu précédent":
                     return PlaylistView()
-
+                Session().playlist = modifier_playlist
                 playlist_service.supprimer_playlist()
                 from view.menu_principal_view import MenuView
 
