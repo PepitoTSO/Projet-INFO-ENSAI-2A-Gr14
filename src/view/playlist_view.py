@@ -50,7 +50,7 @@ class PlaylistView(AbstractView):
             case "Jouer une playlist":
                 from view.jouer_playlist_view import JouerPlaylistView
 
-                return JouerPlaylistView
+                return JouerPlaylistView()
 
             case "Modifier une playlist":
                 playlist_service = PlaylistService()
@@ -67,7 +67,7 @@ class PlaylistView(AbstractView):
 
                 from view.modif_playlist_view import ModifPlaylistView
 
-                return ModifPlaylistView
+                return ModifPlaylistView()
 
             case "Créer une playlist":
                 nom_playlist = inquirer.text(
