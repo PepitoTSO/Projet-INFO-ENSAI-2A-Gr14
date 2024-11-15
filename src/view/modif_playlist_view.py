@@ -30,6 +30,7 @@ class ModifPlaylistView(AbstractView):
             message="Choisissez une playlist : ",
             choices=playlists,
         ).execute()
+        Session().playlist = modifier_playlist
 
         choix = inquirer.select(
             message="Faites votre choix : ",
@@ -60,7 +61,6 @@ class ModifPlaylistView(AbstractView):
                     message="Quel est le nouveau nom de la playlist ? : "
                 ).execute()
 
-                Session().playlist
                 modifier_playlist = playlist_service.modifier_nom_playlist(
                     nouveau_nom_playlist
                 )

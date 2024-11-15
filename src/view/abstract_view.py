@@ -12,7 +12,7 @@ class AbstractView(ABC):
 
     def nettoyer_console(self):
         """Insérer des lignes vides pour simuler un nettoyage"""
-        for _ in range(5):
+        for _ in range(1):
             print("")
 
     def afficher(self) -> None:
