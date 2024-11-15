@@ -147,14 +147,7 @@ class PlaylistService:
         return liste_playlist
 
     def afficher_playlist_tous(self):
-        """
-        Affiche toutes les playlists disponibles dans le système.
 
-        Returns
-        -------
-        list
-            Liste de toutes les playlists.
-        """
         liste_playlist = Playlist_DAO().get_all_playlist()
         return liste_playlist
 
