@@ -3,10 +3,36 @@ from pathlib import Path
 
 class Son:
     """
-    Classe qui contient la définition d'un son
+    Classe qui représente un son, avec des informations sur son ID, son nom, ses tags et son chemin de stockage.
+
+    Attributes
+    ----------
+    id_son : int
+        L'identifiant unique du son.
+    nom : str
+        Le nom du son (par défaut "pas_de_nom").
+    tags : list
+        Liste des tags associés au son (par défaut une liste vide).
+    path_stockage : str
+        Le chemin de stockage du fichier sonore. Si non fourni, un chemin par défaut est généré.
     """
 
     def __init__(self, id_son, nom="pas_de_nom", tags=[], path_stockage=None) -> None:
+        """
+        Initialise un objet Son avec l'ID, le nom, les tags et le chemin de stockage du fichier sonore.
+
+        Parameters
+        ----------
+        id_son : int
+            L'identifiant unique du son.
+        nom : str, optional
+            Le nom du son (par défaut "pas_de_nom").
+        tags : list, optional
+            Liste de tags associés au son (par défaut une liste vide).
+        path_stockage : str, optional
+            Le chemin du fichier de stockage du son (par défaut, il est généré à partir de l'ID).
+        """
+
         if not isinstance(id_son, int):
             raise TypeError("id_son doit être int")
         if not isinstance(nom, str):
@@ -28,6 +54,15 @@ class Son:
             self.path_stockage = path_stockage
 
     def __str__(self):
+        """
+        Retourne une chaîne de caractères représentant le son.
+
+        Returns
+        -------
+        str
+            Représentation sous forme de chaîne de caractères du son avec son ID, son nom, ses tags et son chemin de stockage.
+        """
+
         tags_str = ", ".join(
             self.tags
         )  # Convert tags list to a string for easy display
