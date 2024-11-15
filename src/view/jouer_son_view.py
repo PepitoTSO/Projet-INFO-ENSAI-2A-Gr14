@@ -45,7 +45,7 @@ class JouerSonView(AbstractView):
 
                 return AccueilView("Bienvenue")
 
-            case "Revenir au menu principal":
+            case "Revenir au menu précédent":
                 from view.menu_principal_view import MenuView
 
                 return MenuView()
