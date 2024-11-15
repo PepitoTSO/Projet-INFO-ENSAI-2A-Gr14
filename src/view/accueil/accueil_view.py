@@ -44,10 +44,10 @@ class AccueilView(AbstractView):
                 return InscriptionView("Création de compte joueur")
 
             case "Infos sur l'appli":
-                accueil = AccueilView()
+                accueil = AccueilView("Bienvenue")
                 accueil.messageInfo()
 
-                return AccueilView()
+                return accueil
 
     def messageInfo(self):
         print(
