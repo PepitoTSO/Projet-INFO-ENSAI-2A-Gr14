@@ -148,7 +148,7 @@ class PlaylistService:
 
     def afficher_playlist_tous(self):
 
-        liste_playlist = Playlist_DAO().get_all_playlist()
+        liste_playlist = Playlist_DAO().get_all_playlists()
         return liste_playlist
 
 
