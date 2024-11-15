@@ -3,25 +3,28 @@ import requests
 import dotenv
 import json
 from pathlib import Path
+from colorama import Fore, Style, init
+
+# Initialize colorama for Windows compatibility
+init(autoreset=True)
 
 
 class apifreesound:
-    """Gestion des requetes à l'API"""
+    """Gestion des requêtes à l'API"""
 
     def __init__(self):
-
         self.url = "https://freesound.org"
 
-        # Verifie et recupere la cle API dans le .env       mettre dans un config.py
+        # Vérifie et récupère la clé API dans le .env
         dotenv.load_dotenv()
         try:
             self.cleAPI = os.getenv("CLEAPI")
         except KeyError:
             print("Manque la variable d'environnement CLEAPI")
 
-    def recherche_son(self, recherche: str, params=False) -> json:
+    def recherche_son(self, recherche: str, params=False):
         """
-        Get http avec la clef API selon recherche
+        Get http avec la clé API selon recherche
 
         Params:
             recherche : str
@@ -30,10 +33,8 @@ class apifreesound:
             Si besoin de filtres
 
         Returns:
-            reponse : json
-            ce que renvoie l'api en json
+            Affiche les cinq premiers résultats de manière lisible
         """
-
         payload = {
             "query": recherche,
             "token": self.cleAPI,
@@ -41,24 +42,36 @@ class apifreesound:
         }
 
         if params:
-            payload["filter"] = [""]  # construire de quoi faire le payload
+            payload["filter"] = [""]
 
-        # faire de la gestion d'erreur si code erreur http avec try et except
-        reponse = requests.get(
-            self.url + "/apiv2/search/text/", params=payload, timeout=1
-        )
+        try:
+            reponse = requests.get(
+                self.url + "/apiv2/search/text/", params=payload, timeout=1
+            )
+            reponse.raise_for_status()
+            results = reponse.json()["results"][:5]  # Get only the first 5 results
 
-        reponse.raise_for_status()  # il faut en faire qqc de cette ligne d'exception
-        liste_son = json.dumps(reponse.json()["results"], indent=2)
-        return liste_son
+            if not results:
+                print("Aucun résultat trouvé.")
+                return
+
+            for idx, son in enumerate(results, start=1):
+                # Extract only the first sentence of the description
+                description = son["description"].split(".")[0] + "."
+
+                print(f"{Fore.MAGENTA}Resultat {idx}:{Style.RESET_ALL}")
+                print(f"  {Fore.RED}ID: {Style.RESET_ALL}{son['id']}")
+                print(f"  {Fore.RED}Nom: {Style.RESET_ALL}{son['name']}")
+                print(f"  {Fore.RED}Description: {Style.RESET_ALL}{description}\n")
+
+        except requests.exceptions.RequestException as e:
+            print(f"Erreur lors de la requête: {e}")
 
     def dl_son(self, id, HQ=False):
         if not isinstance(id, int):
             raise TypeError("id n'est pas int")
 
-        fichier = Path(
-            f"./data/son/{id}.mp3"
-        )  # le repertoire se trouve en dehors du git pour pas push des sons etc
+        fichier = Path(f"./data/son/{id}.mp3")
         repertoire = fichier.parent
 
         if not repertoire.exists():
@@ -84,12 +97,12 @@ class apifreesound:
                 reponse = requests.get(url_dl, stream=True)
 
                 # Écriture du fichier dans le répertoire de destination
-                with open(f"./data/son/{id}.mp3", "wb") as f:
+                with open(fichier, "wb") as f:
                     for chunk in reponse.iter_content(chunk_size=8192):
                         f.write(chunk)
 
-                print(f"Fichier téléchargé avec succès {fichier}")
+                print(f"Fichier téléchargé avec succès: {fichier}")
             except Exception as e:
                 print(f"Erreur lors du téléchargement du son avec ID {id}: {e}")
         else:
-            print("Le fichier existe dans data/son")
+            print("Le fichier existe déjà dans data/son")
