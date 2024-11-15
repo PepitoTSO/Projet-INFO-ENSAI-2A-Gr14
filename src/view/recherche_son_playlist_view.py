@@ -29,6 +29,7 @@ class RechSonPlaylistView(AbstractView):
                 "Rechercher un son",
                 # "Recherche avancée",
                 "Revenir au menu principal",
+                # "Telecharger son"
                 "Se déconnecter",
             ],
         ).execute()
@@ -53,36 +54,31 @@ class RechSonPlaylistView(AbstractView):
                 api = apifreesound()
                 resultat = api.recherche_son(recherche_son)
                 print(resultat)
+
+                souschoix = inquirer.select(
+                    message="Faites votre choix : ",
+                    choices=[
+                        "Telecharger son",
+                        "Revenir au menu",
+                    ],
+                ).execute()
+                match souschoix:
+                    case "Telecharger son":
+                        dl_id = inquirer.text(
+                            message="Quel id de son à télécharger ? : "
+                        ).execute()
+                        api = apifreesound()
+                        api.dl_son(int(dl_id))
+                        # ajouter son à bdd
+                        # jouer le son?
+                        #
+                        return RechSonPlaylistView()
+
+                    case "Revenir au menu":
+                        return RechSonPlaylistView()
+
+                # Faire une interface sur laquelle on peut selectionner le resultat de la liste et le telecharger
                 # lire_son = inquirer.select(
                 #    message="Choisissez un son : ",
                 #    choices=resultat,
                 # ).execute()
-
-                return JouerSonView()
-
-            # elif reponse["choix"] == "Recherche classique":
-            # inquirer_recherche = {
-            # "type": "input",
-            # "message": "Que recherchez-vous ?",
-            # "name": "Recherche",
-            # }
-
-            # recherche = prompt([inquirer_recherche])
-
-        # elif reponse["choix"] == "Recherche avancée":  # A implementer
-        # return RechSonView()
-
-        # elif reponse["choix"] == "Télécharger":
-        # inquirer_id = {
-        # "type": "input",
-        # "message": "Quel est l'id du son?",
-        # "name": "id",
-        # }
-
-        # inq_id = prompt([inquirer_id])
-        # api = apifreesound()
-        # api.dl_son(int(inq_id["id"]))
-
-        # et ajouter à la bdd
-
-        # return RechSonView()
