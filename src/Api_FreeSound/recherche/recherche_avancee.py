@@ -1,3 +1,4 @@
+from apifreesound import apifreesound
 from gensim.models import Word2Vec
 
 
@@ -30,7 +31,7 @@ def recherche_avance(mot, n=5):
     res = []
     for i in range(n):
         mot_recherche = m_simil[i]
-        recherche = recherche_son(mot_recherche)
+        recherche = apifreesound().recherche_son(mot_recherche)
         res.append(recherche)
     return res
 
