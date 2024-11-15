@@ -28,7 +28,6 @@ class RechSonPlaylistView(AbstractView):
             choices=[
                 "Rechercher un son",
                 # "Recherche avancée",
-                # "Télécharger",
                 "Revenir au menu principal",
                 "Se déconnecter",
             ],
