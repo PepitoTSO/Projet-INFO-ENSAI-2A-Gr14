@@ -45,7 +45,7 @@ class MenuView(AbstractView):
                 Session().utilisateur = None
                 from view.accueil.accueil_view import AccueilView
 
-                return AccueilView()
+                return AccueilView("Bienvenue")
 
             case "Rechercher un son/playlist":
                 from view.recherche_son_playlist_view import RechSonPlaylistView
