@@ -38,7 +38,7 @@ class apifreesound:
         payload = {
             "query": recherche,
             "token": self.cleAPI,
-            "fields": "id,name,description",
+            "fields": "id,name,tags,description",
         }
 
         if params:
@@ -53,7 +53,7 @@ class apifreesound:
 
             if not results:
                 print("Aucun résultat trouvé.")
-                return
+                return None
 
             for idx, son in enumerate(results, start=1):
                 # Extract only the first sentence of the description
@@ -63,7 +63,7 @@ class apifreesound:
                 print(f"  {Fore.RED}ID: {Style.RESET_ALL}{son['id']}")
                 print(f"  {Fore.RED}Nom: {Style.RESET_ALL}{son['name']}")
                 print(f"  {Fore.RED}Description: {Style.RESET_ALL}{description}\n")
-
+            return results
         except requests.exceptions.RequestException as e:
             print(f"Erreur lors de la requête: {e}")
 

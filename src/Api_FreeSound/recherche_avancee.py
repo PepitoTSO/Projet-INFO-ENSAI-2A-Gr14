@@ -1,7 +1,18 @@
-'''
-On veut recuperer la liste des tags possibles de freesound puis calculer une distance à l'objet de la recherche
-et prendre les 5 tags les plus proches.
-'''
-'''On veut prédire uniquement x tags en sortie donc on va entrainer un modèle pour retourner ces tags
-la data sera généré par un prompt sur chatgpt : donne moi des phrases pour entrainer... + on ne veut pas oublier le côté dnd donc a préciser dans le prompt
-Sinon il existe des moèdles plus généraux mais d'une taille de 1,5go'''
+from gensim.models import Word2Vec
+
+
+def n_mots_similaires(mot, n):
+    """
+    Trouve les n mots les plus proches (dist cosinus) au mot.
+    Params:
+        mot : str
+        n : int
+    Return:
+        list_mot : list
+    """
+    modele = Word2Vec.load("model_word2vec_restreint.model")
+    mots_proches = modele.wv.most_similar(mot, topn=n)
+    list_mot = []
+    for i in range(n):
+        list_mot.append(mots_proches[i][0])
+    return list_mot
