@@ -4,7 +4,18 @@ from Object.son import Son
 
 class Playlist:
     """
-    Voici la classe qui gère les playlist
+    Représente une playlist gérée par un utilisateur.
+
+    Attributes
+    ----------
+    utilisateur : Utilisateur
+        L'utilisateur propriétaire de la playlist.
+    id_playlist : int
+        L'identifiant unique de la playlist.
+    nom_playlist : str
+        Le nom de la playlist.
+    list_son : list
+        Une liste de tuples contenant les objets Son et leur ordre dans la playlist.
     """
 
     def __init__(
@@ -14,6 +25,26 @@ class Playlist:
         nom_playlist: str,
         list_son: list,
     ):
+        """
+        Initialise une nouvelle instance de la classe Playlist.
+
+        Parameters
+        ----------
+        utilisateur : Utilisateur
+            L'utilisateur propriétaire de la playlist.
+        id_playlist : int
+            L'identifiant unique de la playlist.
+        nom_playlist : str
+            Le nom de la playlist.
+        list_son : list
+            Une liste de tuples contenant les objets Son et leur ordre dans la playlist.
+
+        Raises
+        ------
+        TypeError
+            Si les types des paramètres ne sont pas conformes aux attentes.
+        """
+
         if not isinstance(utilisateur, Utilisateur):
             raise TypeError("L'utilisateur n'est pas de la classe Utilisateur.")
         if not isinstance(id_playlist, (int, type(None))):
@@ -36,6 +67,22 @@ class Playlist:
         self.list_son = list_son
 
     def ajouter_son_playlist(self, son: Son, ordre: int):
+        """
+        Ajoute un son à la playlist à une position spécifiée.
+
+        Parameters
+        ----------
+        son : Son
+            L'objet Son à ajouter à la playlist.
+        ordre : int
+            La position dans la playlist où le son doit être ajouté.
+
+        Raises
+        ------
+        ValueError
+            Si l'ordre spécifié n'est pas valide.
+        """
+
         # Vérifier si la position demandée est valide
         if ordre < 1 or ordre > len(self.list_son) + 1:
             raise ValueError(
@@ -58,6 +105,20 @@ class Playlist:
             item[1] = i + 1
 
     def supprimer_son(self, son: Son):
+        """
+        Supprime un son de la playlist.
+
+        Parameters
+        ----------
+        son : Son
+            L'objet Son à supprimer de la playlist.
+
+        Returns
+        -------
+        bool
+            True si le son a été supprimé avec succès, False sinon.
+        """
+
         ordre_a_supprimer = None
         for item in self.list_son:
             if item[0] == son:
@@ -76,14 +137,21 @@ class Playlist:
 
     ### La fonctionnalité de voir si son est bien dans playlist n'est pas testé dans le fichier test
     def changer_ordre(self, son: Son, ordre: int):
-        # Vérification que son est dans la playlist
-        # trouve = False
-        # for item in self.list_son:
-        #    if item[0].id_son == son.id_son:
-        #        trouvé = True
-        #        break
-        # if trouve == False:
-        #    raise ValueError("Son doit être dans la playlist")
+        """
+        Change l'ordre d'un son dans la playlist.
+
+        Parameters
+        ----------
+        son : Son
+            L'objet Son dont l'ordre doit être changé.
+        ordre : int
+            La nouvelle position dans la playlist.
+
+        Raises
+        ------
+        ValueError
+            Si l'ordre spécifié est invalide ou si le son n'est pas trouvé dans la playlist.
+        """
 
         if ordre > len(self.list_son) + 1 or ordre < 1:
             raise ValueError(
@@ -101,13 +169,35 @@ class Playlist:
                 item[0] = ancien_son
 
     def changer_nom_playlist(self, nouveau_nom):
+        """
+        Change le nom de la playlist.
+
+        Parameters
+        ----------
+        nouveau_nom : str
+            Le nouveau nom de la playlist.
+
+        Raises
+        ------
+        TypeError
+            Si le nouveau nom n'est pas une chaîne de caractères.
+        """
+
         if not isinstance(nouveau_nom, str):
             raise TypeError("Le nouveau nom doit être un str.")
 
         self.nom_playlist = nouveau_nom
 
     def __str__(self):
-        # Building a representation of the playlist
+        """
+        Renvoie une représentation en chaîne de caractères de la playlist.
+
+        Returns
+        -------
+        str
+            Représentation en chaîne de caractères de la playlist.
+        """
+
         playlist_str = f"Playlist '{self.nom_playlist}' (ID: {self.id_playlist}) by {self.utilisateur}:\n"
         playlist_str += "Liste des Sons:\n"
 
