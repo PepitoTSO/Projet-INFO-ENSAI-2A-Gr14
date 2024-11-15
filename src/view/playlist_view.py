@@ -79,7 +79,6 @@ class PlaylistView(AbstractView):
 
             case "Supprimer une playlist":
                 playlist_service = PlaylistService()
-                print(Session().utilisateur)
                 playlists = playlist_service.afficher_playlist()
                 playlists.append("Retour au menu précédent")
 

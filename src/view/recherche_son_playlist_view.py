@@ -54,10 +54,10 @@ class RechSonPlaylistView(AbstractView):
                 api = apifreesound()
                 resultat = api.recherche_son(recherche_son)
                 print(resultat)
-                lire_son = inquirer.select(
-                    message="Choisissez un son : ",
-                    choices=resultat,
-                ).execute()
+                # lire_son = inquirer.select(
+                #    message="Choisissez un son : ",
+                #    choices=resultat,
+                # ).execute()
 
                 return JouerSonView()
 

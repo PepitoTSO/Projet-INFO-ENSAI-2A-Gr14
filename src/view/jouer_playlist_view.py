@@ -74,6 +74,7 @@ class JouerPlaylistView(AbstractView):
 
                 son_service = SonService()
                 son_service.play(lire_son)
+                Session().son
                 from view.jouer_son_view import JouerSonView
 
                 return JouerSonView
