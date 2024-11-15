@@ -7,27 +7,45 @@ from Api_FreeSound import apifreesound
 
 
 class PlaylistService:
-
-    # Attention la session doit être modifiée dans la vue,
-    # dès qu'il shoisit une playlist ça doit modifier session.Playlist
-    # et dès qu'il quitte les menus où il a besoin d'une playlist ça
-    # doit la remettre à None
-
-    # ATTENTION CAS PARTICULIER quand on crée ou modifie une playlist, on met la playlist de session direct dedans
+    """
+    Service qui gère les opérations liées aux playlists, incluant la création, la modification,
+    la suppression et l'ajout de sons dans une playlist.
+    """
 
     def creer_playlist(self, nom_playlist: str, list_son: list(list()) = []):
+        """
+        Crée une nouvelle playlist avec un nom et une liste de sons spécifiés.
+
+        Parameters
+        ----------
+        nom_playlist : str
+            Le nom de la playlist à créer.
+        list_son : list, optional
+            Liste des sons à ajouter à la playlist (par défaut une liste vide).
+        """
 
         utilisateur = Session().utilisateur
         playlist = Playlist(utilisateur, None, nom_playlist, list_son)
         Session().playlist = Playlist_DAO().ajouter_playlist(playlist)
 
     def supprimer_playlist(self):
+        """
+        Supprime la playlist actuelle de la session.
+        """
 
         playlist = Session().playlist
         if Playlist_DAO().supprimer_playlist(playlist):
             Session().playlist = None
 
     def modifier_nom_playlist(self, nouveau_nom):
+        """
+        Modifie le nom de la playlist actuelle.
+
+        Parameters
+        ----------
+        nouveau_nom : str
+            Le nouveau nom de la playlist.
+        """
 
         playlist_a_modif = Session().playlist
         Session().playlist.nom_playlist = nouveau_nom
@@ -35,6 +53,16 @@ class PlaylistService:
         Playlist_DAO().modifier_nom_playlist(playlist_a_modif, nouveau_nom)
 
     def changer_ordre_son(self, son: Son, ordre: int):
+        """
+        Change l'ordre d'un son dans la playlist.
+
+        Parameters
+        ----------
+        son : Son
+            Le son dont l'ordre doit être modifié.
+        ordre : int
+            Le nouvel ordre du son dans la playlist.
+        """
 
         playlist = Session().playlist
 
@@ -45,6 +73,14 @@ class PlaylistService:
         Playlist_DAO().changer_ordre(playlist, son, ordre)
 
     def retirer_son_playlist(self, son: Son):
+        """
+        Retire un son de la playlist actuelle.
+
+        Parameters
+        ----------
+        son : Son
+            Le son à retirer de la playlist.
+        """
 
         playlist = Session().playlist
         Playlist_DAO().supprimer_son(playlist, son)
@@ -52,16 +88,42 @@ class PlaylistService:
         Session().playlist = playlist
 
     def copier_playlist(self):
+        """
+        Crée une copie de la playlist actuelle.
+
+        La nouvelle playlist est ajoutée directement à la session de l'utilisateur.
+        """
+
         playlist = Session().playlist
         self.creer_playlist(playlist.nom_playlist, playlist.list_son)
 
     def ajouter_son_a_playlist(self, son, ordre):
+        """
+        Ajoute un son à la playlist avec un ordre spécifié.
+
+        Parameters
+        ----------
+        son : Son
+            Le son à ajouter à la playlist.
+        ordre : int
+            L'ordre du son dans la playlist.
+        """
+
         playlist = Session().playlist
         Playlist_DAO().ajouter_son(playlist, son, ordre)
         playlist.ajouter_son_playlist(son, ordre)
         Session().playlist = playlist
 
     def play_playlist(self, canal=1):
+        """
+        Joue les sons de la playlist dans l'ordre spécifié.
+
+        Parameters
+        ----------
+        canal : int, optional
+            Le canal sur lequel la playlist sera jouée (par défaut le canal 1).
+        """
+
         playlist = Session().playlist
         playlist_ordonnee = sorted(playlist.list_son, key=lambda x: x[1])
         for son, _ in playlist_ordonnee:
@@ -71,14 +133,30 @@ class PlaylistService:
         pass
 
     def afficher_playlist(self):
+        """
+        Affiche toutes les playlists de l'utilisateur connecté.
+
+        Returns
+        -------
+        list
+            Liste des playlists de l'utilisateur connecté.
+        """
+
         utilisateur = Session().utilisateur
         liste_playlist = Playlist_DAO().get_all_playlists_by_user(utilisateur)
         return liste_playlist
 
     def afficher_playlist_tous(self):
+        """
+        Affiche toutes les playlists disponibles dans le système.
+
+        Returns
+        -------
+        list
+            Liste de toutes les playlists.
+        """
         liste_playlist = Playlist_DAO().get_all_playlist()
         return liste_playlist
-        # je sais pas quoi faire
 
 
 if __name__ == "__main__":
