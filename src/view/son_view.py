@@ -26,7 +26,7 @@ class SonView(AbstractView):
                 "Ajouter un son",
                 "Supprimer un son",
                 "Jouer en boucle un son",
-                "Jouer en simulatané un autre son",
+                "Jouer en simultané un autre son",
                 "Revenir au menu principal",
                 "Se déconnecter",
             ],
@@ -71,25 +71,3 @@ class SonView(AbstractView):
 
             case "Ajouter un son":
                 id_son = inquirer.text(message="Entrez l'id du son : ").execute()
-
-    def make_choice(self):
-        reponse = prompt(self.__questions)
-        if reponse["choix"] == "Revenir au menu":
-            from view.menu_principal import MenuView
-
-            return MenuView()
-
-        elif reponse["choix"] == "Supprimer son":
-
-            return SonView()
-
-        elif reponse["choix"] == "Jouer son":
-            inquirer_id = {
-                "type": "input",
-                "message": "Quel est l'id du son?",
-                "name": "id",
-            }
-
-        elif reponse["choix"] == "Ajouter son":
-
-            return SonView()
