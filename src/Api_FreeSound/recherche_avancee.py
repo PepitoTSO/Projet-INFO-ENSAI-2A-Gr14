@@ -1,7 +1,7 @@
 from gensim.models import Word2Vec
 
 
-def n_mots_similaires(mot, n):
+def n_mots_similaires(mot, n=5):
     """
     Trouve les n mots les plus proches (dist cosinus) au mot.
     Params:
@@ -10,7 +10,7 @@ def n_mots_similaires(mot, n):
     Return:
         list_mot : list
     """
-    modele = Word2Vec.load("model_word2vec_restreint.model")
+    modele = Word2Vec.load("recom/model_word2vec_restreint.model")
     mots_proches = modele.wv.most_similar(mot, topn=n)
     list_mot = []
     for i in range(n):
