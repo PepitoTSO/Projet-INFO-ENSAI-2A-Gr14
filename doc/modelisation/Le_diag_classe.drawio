@@ -276,10 +276,10 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="7O-AZKerB7MyMsO3pKYQ-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="7O-AZKerB7MyMsO3pKYQ-17" target="UJgr32r0x14f-edrb7Fj-86" edge="1">
+        <mxCell id="7O-AZKerB7MyMsO3pKYQ-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="7O-AZKerB7MyMsO3pKYQ-17" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="490" y="500" as="sourcePoint" />
-            <mxPoint x="665" y="450" as="targetPoint" />
+            <mxPoint x="-270" y="268" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="xGXVGMgRgatBavG7CIp4-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0.003;exitY=0.317;exitDx=0;exitDy=0;exitPerimeter=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="7O-AZKerB7MyMsO3pKYQ-13" target="UJgr32r0x14f-edrb7Fj-134" edge="1">
@@ -346,24 +346,15 @@
           <mxGeometry y="68" width="180" height="26" as="geometry" />
         </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-82" value="utilisateur_DAO" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="UJgr32r0x14f-edrb7Fj-70" vertex="1">
-          <mxGeometry x="50" y="110" width="300" height="180" as="geometry">
+          <mxGeometry x="50" y="110" width="300" height="130" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-83" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-82" vertex="1">
           <mxGeometry y="26" width="300" height="16" as="geometry" />
         </mxCell>
-        <mxCell id="UJgr32r0x14f-edrb7Fj-84" value="creer_utilisateur(utilisateur : Utilisateur) : bool" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;" parent="UJgr32r0x14f-edrb7Fj-82" vertex="1">
-          <mxGeometry y="42" width="300" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="UJgr32r0x14f-edrb7Fj-85" value="get_utilisateur(utilisateur: Utilisateur) : Utilisateur" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-82" vertex="1">
-          <mxGeometry y="68" width="300" height="32" as="geometry" />
-        </mxCell>
-        <mxCell id="UJgr32r0x14f-edrb7Fj-86" value="se_connecter(utilisateur) : bool" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-82" vertex="1">
-          <mxGeometry y="100" width="300" height="32" as="geometry" />
-        </mxCell>
-        <mxCell id="k4YyRH8g6qEMDZz-mZ2C-1" value="modifier_utilisateur(ancien_utilisateur : Utilisateur,&#xa;nouvel_utilisateur : Utilisateur) : bool" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-82" vertex="1">
-          <mxGeometry y="132" width="300" height="32" as="geometry" />
+        <mxCell id="k4YyRH8g6qEMDZz-mZ2C-1" value="+ creer_utilisateur(utilisateur: Utilisateur) : bool &#xa;+ get_utilisateur(utilisateur: Utilisateur) : Utilisateur &#xa;+ get_utilisateur_by_pseudo(pseudo: str) : Utilisateur &#xa;+ se_connecter(utilisateur: Utilisateur) : bool &#xa;+ modifier_utilisateur(ancien_utilisateur: Utilisateur, nouvel_utilisateur: Utilisateur) : bool" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-82" vertex="1">
+          <mxGeometry y="42" width="300" height="88" as="geometry" />
         </mxCell>
         <mxCell id="Eq6MTy8cBDpBbfUrAy4F-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="UJgr32r0x14f-edrb7Fj-70" source="UJgr32r0x14f-edrb7Fj-95" target="UJgr32r0x14f-edrb7Fj-71" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -376,38 +367,29 @@
         <mxCell id="UJgr32r0x14f-edrb7Fj-96" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-95" vertex="1">
           <mxGeometry y="26" width="286" height="16" as="geometry" />
         </mxCell>
-        <mxCell id="UJgr32r0x14f-edrb7Fj-97" value="ajouter_son(Playlist, son:Son, ordre) :bool" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;" parent="UJgr32r0x14f-edrb7Fj-95" vertex="1">
-          <mxGeometry y="42" width="286" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="UJgr32r0x14f-edrb7Fj-98" value="get_son_by_id_playlist(son, playlist) : Son" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-95" vertex="1">
-          <mxGeometry y="68" width="286" height="32" as="geometry" />
-        </mxCell>
-        <mxCell id="UJgr32r0x14f-edrb7Fj-99" value="get_all_son_by_playlist(playlist): list(Son)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-95" vertex="1">
-          <mxGeometry y="100" width="286" height="32" as="geometry" />
-        </mxCell>
-        <mxCell id="UJgr32r0x14f-edrb7Fj-100" value="supprimer_son_by_playlist(playlist, son): bool&#xa;get_all_son_ordre_by_playlist(playlist)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-95" vertex="1">
-          <mxGeometry y="132" width="286" height="78" as="geometry" />
+        <mxCell id="UJgr32r0x14f-edrb7Fj-100" value="+ ajouter_son(self, son: Son) -&gt; bool&#xa;&#xa;+ get_son_by_id(self, id_son: int) -&gt; Son&#xa;&#xa;+ get_son_by_name(self, name_son: str) -&gt; Son&#xa;&#xa;+ get_all_son(self) -&gt; list[Son]&#xa;&#xa;+ supprimer_son(self, id_son: int) -&gt; bool&#xa;&#xa;+ get_all_son_ordre_by_id_playlist(self, id_playlist: int) -&gt; List[List]" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-95" vertex="1">
+          <mxGeometry y="42" width="286" height="168" as="geometry" />
         </mxCell>
         <mxCell id="IGScCA83LNYlwrID_RRP-0" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.141;entryY=0.009;entryDx=0;entryDy=0;entryPerimeter=0;" parent="UJgr32r0x14f-edrb7Fj-70" source="UJgr32r0x14f-edrb7Fj-25" target="UJgr32r0x14f-edrb7Fj-95" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-25" value="Playlist_DAO" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="UJgr32r0x14f-edrb7Fj-70" vertex="1">
-          <mxGeometry x="150" y="370" width="360" height="180" as="geometry">
+          <mxGeometry x="150" y="250" width="360" height="320" as="geometry">
             <mxRectangle x="130" y="380" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
         <mxCell id="UJgr32r0x14f-edrb7Fj-27" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-25" vertex="1">
           <mxGeometry y="26" width="360" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="UJgr32r0x14f-edrb7Fj-134" value="ajouter_playlist(Playlist) : bool&#xa;get_playlist_by_id(Playlist) : Playlist&#xa;get_all_playlist_by_user(utilisateur : Utilisateur): list(Playlist)&#xa;supprimer_playlist(Playlist)&#xa;modifier_nom_playlist(ancienne_playlist : Playlist, nouvelle_playlist : Playlist)&#xa;changer_ordre_son_playlist(playlist: Playlist, son: Son, ordre :int)&#xa;supprimer_son(playlist : Playlist, son : Son)&#xa;ajouter_son(playlist : Playlist, son, ordre)&#xa;copier_playlist(playlist : Playlist)" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-25" vertex="1">
-          <mxGeometry y="34" width="360" height="146" as="geometry" />
+        <mxCell id="UJgr32r0x14f-edrb7Fj-134" value="+ ajouter_playlist(self, playlist: Playlist) -&gt; bool&#xa;&#xa;+ get_sons_by_playlist_id(self, id_playlist: str) -&gt; list[Son]&#xa;&#xa;+ get_playlist(self, playlist: Playlist)&#xa;&#xa;+ get_all_playlists_by_user(self, utilisateur: Utilisateur)&#xa;&#xa;+ get_all_playlists(self)&#xa;&#xa;+ supprimer_playlist(self, playlist: Playlist) -&gt; bool&#xa;&#xa;+ modifier_nom_playlist(self, playlist: Playlist, nouveau_nom: str) -&gt; bool&#xa;&#xa;+ changer_ordre(self, playlist: Playlist, son: Son, ordre: int) -&gt; bool&#xa;&#xa;+ supprimer_son(self, playlist: Playlist, son: Son) -&gt; bool&#xa;&#xa;+ ajouter_son(self, playlist: Playlist, son: Son, ordre: int) -&gt; bool" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="UJgr32r0x14f-edrb7Fj-25" vertex="1">
+          <mxGeometry y="34" width="360" height="286" as="geometry" />
         </mxCell>
         <mxCell id="Eq6MTy8cBDpBbfUrAy4F-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="UJgr32r0x14f-edrb7Fj-70" target="UJgr32r0x14f-edrb7Fj-71" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="150" y="469" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Eq6MTy8cBDpBbfUrAy4F-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.054;entryY=0.006;entryDx=0;entryDy=0;entryPerimeter=0;" parent="UJgr32r0x14f-edrb7Fj-70" target="UJgr32r0x14f-edrb7Fj-71" edge="1">
+        <mxCell id="Eq6MTy8cBDpBbfUrAy4F-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.054;entryY=0.006;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.01;exitY=0.966;exitDx=0;exitDy=0;exitPerimeter=0;" parent="UJgr32r0x14f-edrb7Fj-70" target="UJgr32r0x14f-edrb7Fj-71" edge="1" source="k4YyRH8g6qEMDZz-mZ2C-1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="50" y="290.0000000000001" as="sourcePoint" />
           </mxGeometry>
