@@ -1,6 +1,8 @@
 from utils.singleton import Singleton
 from DAO.db_connection import DBConnection
 from Object.utilisateur import Utilisateur
+import psycopg2
+import psycopg2.extras
 
 
 class Utilisateur_DAO(metaclass=Singleton):
@@ -68,6 +70,41 @@ class Utilisateur_DAO(metaclass=Singleton):
                     cursor.execute(
                         "SELECT * FROM bdd.utilisateurs WHERE pseudo = %(pseudo)s",
                         {"pseudo": pseudo_utilisateur},
+                    )
+                    row = cursor.fetchone()
+                    if row is not None:
+                        return Utilisateur(
+                            pseudo=row["pseudo"], mdp_hache=row["mdp_hache"]
+                        )
+                    return None
+        except Exception as e:
+            print(f"Erreur lors de la récupération de l'utilisateur : {str(e)}")
+            return None
+
+    from psycopg2.extras import RealDictCursor
+
+    def get_utilisateur_by_pseudo(self, pseudo: str) -> Utilisateur:
+        """
+        Récupère un utilisateur par son pseudo.
+
+        Parameters
+        ----------
+        pseudo : str
+            Le pseudo de l'utilisateur à récupérer.
+
+        Returns
+        -------
+        Utilisateur or None
+            L'objet Utilisateur correspondant si trouvé, None sinon.
+        """
+        try:
+            with DBConnection().connection as connection:
+                with connection.cursor(
+                    cursor_factory=psycopg2.extras.RealDictCursor
+                ) as cursor:
+                    cursor.execute(
+                        "SELECT * FROM bdd.utilisateurs WHERE pseudo = %(pseudo)s",
+                        {"pseudo": pseudo},
                     )
                     row = cursor.fetchone()
                     if row is not None:

@@ -186,6 +186,41 @@ class Playlist_DAO(metaclass=Singleton):
         return playlists
 
     @log
+    def get_all_playlists(self):
+        """
+        Récupère toutes les playlists dans la base de données
+        """
+        playlists = []
+        res = None  # Initialize to None to avoid NameError if the query fails
+
+        try:
+            with DBConnection().connection as connection:
+                with connection.cursor(
+                    cursor_factory=psycopg2.extras.RealDictCursor
+                ) as cursor:
+                    cursor.execute("SELECT * FROM bdd.playlist;")
+                    res = cursor.fetchall()
+
+        except Exception as e:
+            logging.error("Error fetching playlists from database: %s", e)
+
+        if res:
+            for playlist_data in res:
+                utilisateur = Utilisateur_DAO().get_utilisateur_by_pseudo(
+                    playlist_data["pseudo"]
+                )
+                liste_son = self.get_sons_by_playlist_id(playlist_data["id_playlist"])
+                playlist = Playlist(
+                    utilisateur=utilisateur,
+                    id_playlist=playlist_data["id_playlist"],
+                    nom_playlist=playlist_data["nom_playlist"],
+                    list_son=liste_son,
+                )
+                playlists.append(playlist)
+
+        return playlists
+
+    @log
     def supprimer_playlist(self, playlist: Playlist) -> bool:
         """
         Supprime la playlist spécifiée par id_playlist ainsi que ses associations de sons.
@@ -355,7 +390,9 @@ playlist = Playlist(
     list_son=[[son1, 1], [son2, 2]],
 )
 
-
+playlists = playlist_dao.get_all_playlists()
+for item in playlists:
+    print(item)
 # added_successfully = playlist_dao.ajouter_playlist(playlist)
 """
 # 2. Get all songs of a playlist
