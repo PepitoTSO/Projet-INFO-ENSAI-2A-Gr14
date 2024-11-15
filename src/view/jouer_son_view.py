@@ -4,7 +4,6 @@ from view.abstract_view import AbstractView
 from view.session import Session
 from view.jouer_playlist_view import JouerPlaylistView
 
-from Service.PlaylistService import PlaylistService
 from Service.SonService import SonService
 
 

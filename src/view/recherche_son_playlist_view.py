@@ -1,4 +1,3 @@
-from InquirerPy import prompt
 from InquirerPy import inquirer
 
 from view.abstract_view import AbstractView
