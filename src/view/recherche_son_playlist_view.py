@@ -27,7 +27,6 @@ class RechSonPlaylistView(AbstractView):
             message="Faites votre choix : ",
             choices=[
                 "Rechercher un son",
-                "Rechercher une playlist",
                 # "Recherche avancée",
                 # "Télécharger",
                 "Revenir au menu principal",
@@ -70,19 +69,6 @@ class RechSonPlaylistView(AbstractView):
             # }
 
             # recherche = prompt([inquirer_recherche])
-
-            case "Rechercher une playlist":
-                recherche_playlist = inquirer.text(
-                    message="Quel type de playlist recherchez-vous ? : "
-                ).execute()
-
-                api = apifreesound()
-                resultat = api.recherche_son(
-                    recherche_playlist
-                )  # Remplacer recherche_son par un vrai recherche_playlist
-                print(resultat)
-
-                return RechSonPlaylistView()
 
         # elif reponse["choix"] == "Recherche avancée":  # A implementer
         # return RechSonView()
