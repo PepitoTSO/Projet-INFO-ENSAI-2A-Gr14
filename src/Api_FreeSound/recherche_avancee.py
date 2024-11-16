@@ -1,11 +1,5 @@
 import gensim.downloader as api
 
-"""Pourquoi Fastext? Plus rapide que word2vec, prend en charge les mots inconnus, moins lourd, permet de se debarasser de nltk"""
-"""ameliorable avec un dataset proche du dnd, optimisation hardware (gpu, thread), optimisation software (cache des resultats frequents, elagage)"""
-"""choix d'un dataset anglais donc fonctionne avec des mots anglais, freesound est principalement anglais"""
-"""'glove-wiki-gigaword-200' : dim 200 et taille 252mb"""
-"""inférence en 35s sur R5 5700x, sans gpu. En 50s a l'ecole"""
-
 
 class recherche_avancee:
 
