@@ -12,7 +12,7 @@ from Api_FreeSound.recherche_avancee import recherche_avancee
 
 class RechSonPlaylistView(AbstractView):
     """
-    Vue du menu de la recherche des sons/playlists
+    Vue du menu de la recherche des sons. Permet de telecharger et d'exploiter la recommendation
     """
 
     def choisir_menu(self):
@@ -75,12 +75,12 @@ class RechSonPlaylistView(AbstractView):
                             choices=liste_choix_nom,
                         ).execute()
 
-                        obj_son = next(
-                            i for i in resultat if i["name"] == choix_dl_inq
-                        )  # match le nom avec l'objet pour le dl, next permet de stopper des que trouve
+                        # retourne le premier resultat associé au nom choisi l'objet pour le telecharger
+                        obj_son = next(i for i in resultat if i["name"] == choix_dl_inq)
 
                         apifreesound().dl_son(int(obj_son["id"]))
 
+                        # Initialise un son et l'ajoute a la bdd
                         son = Son(
                             id_son=obj_son["id"],
                             nom=obj_son["name"],
@@ -115,12 +115,12 @@ class RechSonPlaylistView(AbstractView):
                             choices=liste_choix_nom,
                         ).execute()
 
-                        obj_son = next(
-                            i for i in resultat if i["name"] == choix_dl_inq
-                        )  # match le nom avec l'objet pour le dl, next permet de stopper des que trouve
+                        # Retourne le premier resultat associé au nom choisi l'objet pour le telecharger
+                        obj_son = next(i for i in resultat if i["name"] == choix_dl_inq)
 
                         apifreesound().dl_son(int(obj_son["id"]))
 
+                        # Initialise un son et l'ajoute a la bdd
                         son = Son(
                             id_son=obj_son["id"],
                             nom=obj_son["name"],
