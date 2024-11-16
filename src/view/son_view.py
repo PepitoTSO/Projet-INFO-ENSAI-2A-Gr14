@@ -41,7 +41,7 @@ class SonView(AbstractView):
 
                 return MenuView()
 
-            case "Afficher tous mes sons":
+            # case "Afficher tous mes sons":
 
             case "Jouer un son":
                 id_son = inquirer.text(message="Entrez l'id du son : ").execute()

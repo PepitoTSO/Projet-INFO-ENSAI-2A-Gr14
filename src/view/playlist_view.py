@@ -83,4 +83,4 @@ class PlaylistView(AbstractView):
 
                 return MenuView()
 
-            # case "Copier une playlist":
+            case "Copier une playlist":

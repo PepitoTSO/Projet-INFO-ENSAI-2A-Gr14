@@ -57,7 +57,7 @@ class JouerPlaylistView(AbstractView):
 
                 return PlaylistView()
 
-            case "Lancer la playlist":
+            case "Lancer la playlist depuis le début":
                 playlist_service.jouer_playlist(lire_playlist)
                 premier_son = lire_playlist[0]
                 son_service = SonService()

@@ -1,10 +1,7 @@
 import logging
 import dotenv
 
-from utils.log_init import initialiser_logs
-
 from view.accueil.accueil_view import AccueilView
-from view.menu_principal_view import MenuView
 
 
 if __name__ == "__main__":
