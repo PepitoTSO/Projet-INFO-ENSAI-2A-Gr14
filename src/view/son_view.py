@@ -23,10 +23,7 @@ class SonView(AbstractView):
             choices=[
                 "Afficher tous mes sons",  # Manque une playlist avec tous les sons de l'utilisateur
                 "Jouer un son",
-                "Ajouter un son",
-                "Supprimer un son",
-                "Jouer en boucle un son",
-                "Jouer en simultané un autre son",
+                "Jouer un son en boucle",
                 "Revenir au menu principal",
                 "Se déconnecter",
             ],
@@ -44,24 +41,19 @@ class SonView(AbstractView):
 
                 return MenuView()
 
+            case "Afficher tous mes sons":
+
             case "Jouer un son":
-                from view.recherche_son_playlist_view import RechSonPlaylistView
-
-                # rech = RechSonPlaylistView()
-                # lire_son = inquirer.select(
-                #   message="Choisissez un son : ",
-                #    choices=rech.resultat,
-                # ).execute()
-
                 id_son = inquirer.text(message="Entrez l'id du son : ").execute()
                 # DAO recherche par id  avec l'id du son
                 # renvoie les infos pour créer un objet son
                 api = apifreesound()
-                dl_son_a_jouer = api.dl_son(int(id_son))
+                api.dl_son(int(id_son))
 
                 from Object.son import Son
 
                 son_a_jouer = Son(id_son=int(id_son))
+                Session().son = Son
                 SonService_a_jouer = SonService()
                 SonService_a_jouer.play(son_a_jouer)
 
@@ -69,5 +61,20 @@ class SonView(AbstractView):
 
                 return JouerSonView()
 
-            case "Ajouter un son":
+            case "Jouer un son en boucle":
                 id_son = inquirer.text(message="Entrez l'id du son : ").execute()
+                # DAO recherche par id  avec l'id du son
+                # renvoie les infos pour créer un objet son
+                api = apifreesound()
+                api.dl_son(int(id_son))
+
+                from Object.son import Son
+
+                son_a_jouer = Son(id_son=int(id_son))
+                Session().son = Son
+                SonService_a_jouer = SonService()
+                SonService_a_jouer.jouer_en_boucle(son_a_jouer, 2, 10)
+
+                from view.jouer_son_view import JouerSonView
+
+                return JouerSonView()
