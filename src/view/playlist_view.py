@@ -84,3 +84,9 @@ class PlaylistView(AbstractView):
                 return MenuView()
 
             case "Copier une playlist":
+                nom_playlist = inquirer.text(
+                    message="Donnez l'id de la playlist à copier: "
+                ).execute()
+                playlist_service = PlaylistService()
+                playlist_service.copier_playlist(nom_playlist)
+                return PlaylistView()
