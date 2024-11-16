@@ -70,7 +70,7 @@ class MenuView(AbstractView):
 
     def messageInfoMenu(self):
         print(
-            "Bonjour et bienvenu sur notre application ! \n"
+            "Bonjour et bienvenue sur notre application ! \n"
             "Vous pouvez vous connecter ou créer un compte pour accéder à nos services. \n"
             "Cette application a été créée dans le but de vous aider à créer une ambiance pour vos parties de jeux de rôles. \n"
             "Vous pouvez ajouter des sons à votre playlist et les jouer en boucle ou les arrêter à tout moment afin de permettre une immersion totale des joueurs. \n"

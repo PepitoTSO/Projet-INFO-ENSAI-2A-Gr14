@@ -88,6 +88,12 @@ class RechSonPlaylistView(AbstractView):
                         )
                         SonService().ajouter_son(son)
 
+                        ecouter = inquirer.confirm(
+                            message="Voulez-vous ecouter (10s)?", default=True
+                        ).execute()
+                        if ecouter is True:
+                            SonService().play(son, 10)
+
                         return RechSonPlaylistView()
 
                     case "Recommandations":
@@ -127,7 +133,11 @@ class RechSonPlaylistView(AbstractView):
                             tags=obj_son["tags"],
                         )
                         SonService().ajouter_son(son)
-
+                        ecouter = inquirer.confirm(
+                            message="Voulez-vous ecouter (10s)?", default=True
+                        ).execute()
+                        if ecouter is True:
+                            SonService().play(son, 10)
                         return RechSonPlaylistView()
 
                     case "Revenir au menu":
