@@ -23,15 +23,14 @@ class ModifPlaylistView(AbstractView):
         print("\n" + "-" * 50 + "\nMenu Modif\n" + "-" * 50 + "\n")
 
         playlist_service = PlaylistService()
-
         playlists = playlist_service.afficher_playlist()
 
         modifier_playlist = inquirer.select(
             message="Choisissez une playlist : ",
             choices=playlists,
         ).execute()
-        Session().playlist = modifier_playlist
 
+        Session().playlist = modifier_playlist
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
@@ -64,6 +63,10 @@ class ModifPlaylistView(AbstractView):
                 modifier_playlist = playlist_service.modifier_nom_playlist(
                     nouveau_nom_playlist
                 )
+                Session().playlist = None
+                from view.playlist_view import PlaylistView
+
+                return PlaylistView
 
             case "Ajouter un son à la playlist":
                 nouveau_son = inquirer.text(
@@ -73,10 +76,13 @@ class ModifPlaylistView(AbstractView):
                     message="A quel ordre souhaitez-vous placer le son dans la playlist ? : "
                 ).execute()
 
-                Session().playlist
                 modifier_playlist = playlist_service.ajouter_son_a_playlist(
                     nouveau_son, ordre
                 )
+                Session().playlist = None
+                from view.playlist_view import PlaylistView
+
+                return PlaylistView
 
             case "Supprimer un son à la playlist":
                 son_a_supprimer = inquirer.text(
@@ -87,6 +93,10 @@ class ModifPlaylistView(AbstractView):
                 modifier_playlist = playlist_service.retirer_son_playlist(
                     son_a_supprimer
                 )
+                Session().playlist = None
+                from view.playlist_view import PlaylistView
+
+                return PlaylistView
 
             case "Changer l'ordre d'un son dans la playlist":
                 son_a_deplacer = inquirer.text(
@@ -96,7 +106,10 @@ class ModifPlaylistView(AbstractView):
                     message="A Quelle place voulez-vous que le son soit situé ? : "
                 ).execute()
 
-                Session().playlist
                 modifier_playlist = playlist_service.changer_ordre_son(
                     son_a_deplacer, nouvel_ordre
                 )
+                Session().playlist = None
+                from view.playlist_view import PlaylistView
+
+                return PlaylistView

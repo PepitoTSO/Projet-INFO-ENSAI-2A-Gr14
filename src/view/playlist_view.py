@@ -53,19 +53,6 @@ class PlaylistView(AbstractView):
                 return JouerPlaylistView()
 
             case "Modifier une playlist":
-                playlist_service = PlaylistService()
-                playlists = playlist_service.afficher_playlist()
-                playlists.append("Retour au menu précédent")
-
-                modifier_playlist = inquirer.select(
-                    message="Choisissez une playlist : ",
-                    choices=playlists,
-                ).execute()
-
-                Session().playlist = modifier_playlist
-                if modifier_playlist == "Retour au menu précédent":
-                    return PlaylistView()
-
                 from view.modif_playlist_view import ModifPlaylistView
 
                 return ModifPlaylistView()
