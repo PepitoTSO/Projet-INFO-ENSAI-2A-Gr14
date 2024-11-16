@@ -7,7 +7,7 @@ from Api_FreeSound.apifreesound import apifreesound
 from Service.SonService import SonService
 from Object.son import Son
 
-from Api_FreeSound.recherche_avancee import n_mots_similaires
+from Api_FreeSound.recherche_avancee import recherche_avancee
 
 
 class RechSonPlaylistView(AbstractView):
@@ -65,9 +65,34 @@ class RechSonPlaylistView(AbstractView):
                     ],
                 ).execute()
                 match souschoix:
+
+                    case "Telecharger son":
+
+                        liste_choix_nom = [i["name"] for i in resultat]
+
+                        choix_dl_inq = inquirer.select(
+                            message="Quel son voulez-vous télécharger?",
+                            choices=liste_choix_nom,
+                        ).execute()
+
+                        obj_son = next(
+                            i for i in resultat if i["name"] == choix_dl_inq
+                        )  # match le nom avec l'objet pour le dl, next permet de stopper des que trouve
+
+                        apifreesound().dl_son(int(obj_son["id"]))
+
+                        son = Son(
+                            id_son=obj_son["id"],
+                            nom=obj_son["name"],
+                            tags=obj_son["tags"],
+                        )
+                        SonService().ajouter_son(son)
+
+                        return RechSonPlaylistView()
+
                     case "Recommandations":
                         # La partie recommendation
-                        recom = n_mots_similaires(recherche_son)
+                        recom = recherche_avancee().n_mots_similaires(recherche_son)
                         liste_recom = [i[0] for i in recom]
                         liste_choix_recom = [recherche_son] + liste_recom
                         choix_recom_inq = inquirer.select(
@@ -75,10 +100,14 @@ class RechSonPlaylistView(AbstractView):
                             choices=liste_choix_recom,
                         ).execute()
                         resultat = apifreesound().recherche_son(choix_recom_inq)
-                        return RechSonPlaylistView()
 
-                    case "Telecharger son":
+                        telecharger = inquirer.confirm(
+                            message="Voulez-vous telecharger?", default=True
+                        ).execute()
+                        if telecharger is False:
+                            return RechSonPlaylistView()
 
+                        # La partie telecharger
                         liste_choix_nom = [i["name"] for i in resultat]
 
                         choix_dl_inq = inquirer.select(
