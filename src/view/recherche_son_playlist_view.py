@@ -41,7 +41,7 @@ class RechSonPlaylistView(AbstractView):
 
                 from view.accueil.accueil_view import AccueilView
 
-                return AccueilView("Bienvenue")
+                return AccueilView("Déconnexion réussie")
 
             case "Revenir au menu principal":
 

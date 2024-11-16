@@ -43,7 +43,7 @@ class JouerSonView(AbstractView):
                 Session().deconnexion()
                 from view.accueil.accueil_view import AccueilView
 
-                return AccueilView("Bienvenue")
+                return AccueilView("Déconnexion réussie")
 
             case "Revenir au menu précédent":
                 from view.menu_principal_view import MenuView
