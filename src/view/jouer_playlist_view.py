@@ -32,6 +32,7 @@ class JouerPlaylistView(AbstractView):
             choices=playlists,
         ).execute()
 
+        Session().playlist = lire_playlist
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
@@ -49,7 +50,7 @@ class JouerPlaylistView(AbstractView):
                 Session().deconnexion()
                 from view.accueil.accueil_view import AccueilView
 
-                return AccueilView("Bienvenue")
+                return AccueilView("Déconnexion réussie")
 
             case "Revenir au menu précédent":
                 from view.playlist_view import PlaylistView
@@ -58,7 +59,6 @@ class JouerPlaylistView(AbstractView):
 
             case "Lancer la playlist":
                 playlist_service.jouer_playlist(lire_playlist)
-                Session().playlist
                 premier_son = lire_playlist[0]
                 son_service = SonService()
                 son_service.play(premier_son)
@@ -74,7 +74,7 @@ class JouerPlaylistView(AbstractView):
 
                 son_service = SonService()
                 son_service.play(lire_son)
-                Session().son
+                Session().son = lire_son
                 from view.jouer_son_view import JouerSonView
 
                 return JouerSonView
@@ -85,6 +85,7 @@ class JouerPlaylistView(AbstractView):
                     choices=lire_playlist,
                 ).execute()
 
+                Session().son = lire_son
                 son_service = SonService()
                 son_service.jouer_en_boucle(lire_son)
                 from view.jouer_son_view import JouerSonView
@@ -97,6 +98,7 @@ class JouerPlaylistView(AbstractView):
                     choices=lire_playlist,
                 ).execute()
 
+                Session().son = lire_son
                 son_service = SonService()
                 son_service.play_multiple_sounds(lire_son)
                 from view.jouer_son_view import JouerSonView

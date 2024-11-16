@@ -1,7 +1,6 @@
 import os
 import requests
 import dotenv
-import json
 from pathlib import Path
 from colorama import Fore, Style, init
 
@@ -38,7 +37,7 @@ class apifreesound:
         payload = {
             "query": recherche,
             "token": self.cleAPI,
-            "fields": "id,name,description",
+            "fields": "id,name,tags,description",
         }
 
         if params:
@@ -63,11 +62,14 @@ class apifreesound:
                 print(f"  {Fore.RED}ID: {Style.RESET_ALL}{son['id']}")
                 print(f"  {Fore.RED}Nom: {Style.RESET_ALL}{son['name']}")
                 print(f"  {Fore.RED}Description: {Style.RESET_ALL}{description}\n")
-
+            return results
         except requests.exceptions.RequestException as e:
             print(f"Erreur lors de la requête: {e}")
 
     def dl_son(self, id, HQ=False):
+        """
+        Permet de telecharger un son à partir de son identifiant sur l'API avec verification si le son existe deja"
+        """
         if not isinstance(id, int):
             raise TypeError("id n'est pas int")
 

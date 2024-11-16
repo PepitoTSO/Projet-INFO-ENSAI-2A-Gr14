@@ -23,11 +23,8 @@ class SonView(AbstractView):
             choices=[
                 "Afficher tous mes sons",  # Manque une playlist avec tous les sons de l'utilisateur
                 "Jouer un son",
-                "Ajouter un son",
-                "Supprimer un son",
-                "Jouer en boucle un son",
-                "Jouer en simulatané un autre son",
-                "Revenir au menu principal",
+                "Jouer un son en boucle",
+                "Revenir au menu précédent",
                 "Se déconnecter",
             ],
         ).execute()
@@ -37,31 +34,26 @@ class SonView(AbstractView):
                 Session().deconnexion()
                 from view.accueil.accueil_view import AccueilView
 
-                return AccueilView()
+                return AccueilView("Déconnexion réussie")
 
-            case "Revenir au menu principal":
+            case "Revenir au menu précédent":
                 from view.menu_principal_view import MenuView
 
                 return MenuView()
 
+            case "Afficher tous mes sons":
+
             case "Jouer un son":
-                from view.recherche_son_playlist_view import RechSonPlaylistView
-
-                # rech = RechSonPlaylistView()
-                # lire_son = inquirer.select(
-                #   message="Choisissez un son : ",
-                #    choices=rech.resultat,
-                # ).execute()
-
                 id_son = inquirer.text(message="Entrez l'id du son : ").execute()
                 # DAO recherche par id  avec l'id du son
                 # renvoie les infos pour créer un objet son
                 api = apifreesound()
-                dl_son_a_jouer = api.dl_son(int(id_son))
+                api.dl_son(int(id_son))
 
                 from Object.son import Son
 
                 son_a_jouer = Son(id_son=int(id_son))
+                Session().son = son_a_jouer
                 SonService_a_jouer = SonService()
                 SonService_a_jouer.play(son_a_jouer)
 
@@ -69,27 +61,20 @@ class SonView(AbstractView):
 
                 return JouerSonView()
 
-            case "Ajouter un son":
+            case "Jouer un son en boucle":
                 id_son = inquirer.text(message="Entrez l'id du son : ").execute()
+                # DAO recherche par id  avec l'id du son
+                # renvoie les infos pour créer un objet son
+                api = apifreesound()
+                api.dl_son(int(id_son))
 
-    def make_choice(self):
-        reponse = prompt(self.__questions)
-        if reponse["choix"] == "Revenir au menu":
-            from view.menu_principal import MenuView
+                from Object.son import Son
 
-            return MenuView()
+                son_a_jouer = Son(id_son=int(id_son))
+                Session().son = son_a_jouer
+                SonService_a_jouer = SonService()
+                SonService_a_jouer.jouer_en_boucle(son_a_jouer, 2, 10)
 
-        elif reponse["choix"] == "Supprimer son":
+                from view.jouer_son_view import JouerSonView
 
-            return SonView()
-
-        elif reponse["choix"] == "Jouer son":
-            inquirer_id = {
-                "type": "input",
-                "message": "Quel est l'id du son?",
-                "name": "id",
-            }
-
-        elif reponse["choix"] == "Ajouter son":
-
-            return SonView()
+                return JouerSonView()

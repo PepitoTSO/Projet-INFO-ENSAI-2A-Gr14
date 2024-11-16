@@ -12,11 +12,22 @@ class Session(metaclass=Singleton):
     Sans cela, il faudrait transmettre ce joueur entre les différentes vues.
     """
 
-    def __init__(self, utilisateur: Utilisateur = None, playlist: Playlist = None, son: Son = None):
+    def __init__(
+        self,
+        utilisateur: Utilisateur = None,
+        playlist: Playlist = None,
+        son: Son = None,
+    ):
         """Création de la session"""
         self.utilisateur = utilisateur
         self.playlist = playlist
         self.son = son
+
+    def deconnexion(self):
+        """Deconecte l'utilisateur"""
+        Session().utilisateur = None
+        Session().playlist = None
+        Session().son = None
 
     def afficher(self) -> str:
         """Afficher les informations de connexion"""

@@ -1,15 +1,18 @@
 from InquirerPy import inquirer
 
 from view.abstract_view import AbstractView
-from view.jouer_son_view import JouerSonView
 from view.session import Session
 
 from Api_FreeSound.apifreesound import apifreesound
+from Service.SonService import SonService
+from Object.son import Son
+
+from Api_FreeSound.recherche_avancee import recherche_avancee
 
 
 class RechSonPlaylistView(AbstractView):
     """
-    Vue du menu de la recherche des sons/playlists
+    Vue du menu de la recherche des sons. Permet de telecharger et d'exploiter la recommendation
     """
 
     def choisir_menu(self):
@@ -27,58 +30,105 @@ class RechSonPlaylistView(AbstractView):
             message="Faites votre choix : ",
             choices=[
                 "Rechercher un son",
-                # "Recherche avancée",
-                "Revenir au menu principal",
-                # "Telecharger son"
+                "Revenir au menu précédent",
                 "Se déconnecter",
             ],
         ).execute()
 
         match choix:
             case "Se déconnecter":
-                Session().deconnexion()
+                Session().utilisateur = None
+
                 from view.accueil.accueil_view import AccueilView
 
-                return AccueilView()
+                return AccueilView("Déconnexion réussie")
 
-            case "Revenir au menu principal":
+            case "Revenir au menu précédent":
+
                 from view.menu_principal_view import MenuView
 
                 return MenuView()
 
             case "Rechercher un son":
                 recherche_son = inquirer.text(
-                    message="Quel type de son recherchez-vous ? : "
+                    message="Quel son recherchez-vous ? : "
                 ).execute()
 
-                api = apifreesound()
-                resultat = api.recherche_son(recherche_son)
-                print(resultat)
+                resultat = apifreesound().recherche_son(recherche_son)
 
                 souschoix = inquirer.select(
                     message="Faites votre choix : ",
                     choices=[
                         "Telecharger son",
+                        "Recommandations",
                         "Revenir au menu",
                     ],
                 ).execute()
                 match souschoix:
+
                     case "Telecharger son":
-                        dl_id = inquirer.text(
-                            message="Quel id de son à télécharger ? : "
+
+                        liste_choix_nom = [i["name"] for i in resultat]
+
+                        choix_dl_inq = inquirer.select(
+                            message="Quel son voulez-vous télécharger?",
+                            choices=liste_choix_nom,
                         ).execute()
-                        api = apifreesound()
-                        api.dl_son(int(dl_id))
-                        # ajouter son à bdd
-                        # jouer le son?
-                        #
+
+                        # retourne le premier resultat associé au nom choisi l'objet pour le telecharger
+                        obj_son = next(i for i in resultat if i["name"] == choix_dl_inq)
+
+                        apifreesound().dl_son(int(obj_son["id"]))
+
+                        # Initialise un son et l'ajoute a la bdd
+                        son = Son(
+                            id_son=obj_son["id"],
+                            nom=obj_son["name"],
+                            tags=obj_son["tags"],
+                        )
+                        SonService().ajouter_son(son)
+
+                        return RechSonPlaylistView()
+
+                    case "Recommandations":
+                        # La partie recommendation
+                        recom = recherche_avancee().n_mots_similaires(recherche_son)
+                        liste_recom = [i[0] for i in recom]
+                        liste_choix_recom = [recherche_son] + liste_recom
+                        choix_recom_inq = inquirer.select(
+                            message="Nous vous conseillons d'essayer avec:",
+                            choices=liste_choix_recom,
+                        ).execute()
+                        resultat = apifreesound().recherche_son(choix_recom_inq)
+
+                        telecharger = inquirer.confirm(
+                            message="Voulez-vous telecharger?", default=True
+                        ).execute()
+                        if telecharger is False:
+                            return RechSonPlaylistView()
+
+                        # La partie telecharger
+                        liste_choix_nom = [i["name"] for i in resultat]
+
+                        choix_dl_inq = inquirer.select(
+                            message="Quel son voulez-vous télécharger?",
+                            choices=liste_choix_nom,
+                        ).execute()
+
+                        # Retourne le premier resultat associé au nom choisi l'objet pour le telecharger
+                        obj_son = next(i for i in resultat if i["name"] == choix_dl_inq)
+
+                        apifreesound().dl_son(int(obj_son["id"]))
+
+                        # Initialise un son et l'ajoute a la bdd
+                        son = Son(
+                            id_son=obj_son["id"],
+                            nom=obj_son["name"],
+                            tags=obj_son["tags"],
+                        )
+                        SonService().ajouter_son(son)
+
                         return RechSonPlaylistView()
 
                     case "Revenir au menu":
                         return RechSonPlaylistView()
-
-                # Faire une interface sur laquelle on peut selectionner le resultat de la liste et le telecharger
-                # lire_son = inquirer.select(
-                #    message="Choisissez un son : ",
-                #    choices=resultat,
-                # ).execute()
