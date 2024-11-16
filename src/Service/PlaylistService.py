@@ -124,13 +124,25 @@ class PlaylistService:
             Le canal sur lequel la playlist sera jouée (par défaut le canal 1).
         """
 
-        playlist = Session().playlist
+        playlist = Session().playlist.list_son
         playlist_ordonnee = sorted(playlist.list_son, key=lambda x: x[1])
         for son, _ in playlist_ordonnee:
+            Session().son = son
             SonService().play_channel(son, canal)
 
-    def play_next_son():  # il faut l'info sur le son en cours relativement à la playlist
-        pass
+    def play_next_son(self):
+        # Recuperer les infos session
+        son = Session().son
+        playlist = Session().playlist
+
+        # Trier et recuperer l'indice du son en cours pour itérer dessus
+        playlist_ordonnee = sorted(playlist.list_son, key=lambda x: x[1])
+        indice_son = next(
+            (i for i, s in enumerate(playlist_ordonnee) if s[0] == son), None
+        )
+        for son, _ in playlist_ordonnee[indice_son:]:
+            Session().son = son
+            SonService().play_channel(son)
 
     def afficher_playlist(self):
         """
@@ -150,19 +162,3 @@ class PlaylistService:
 
         liste_playlist = Playlist_DAO().get_all_playlists()
         return liste_playlist
-
-
-if __name__ == "__main__":
-    from Object.utilisateur import Utilisateur
-
-    son_test = Son(1, path_stockage="./data/test.mp3")
-    utilisateur = Utilisateur("user1", "hashed_password")
-    p_test = Playlist(
-        utilisateur,
-        1,
-        "My Playlist",
-        [[son_test, 1]],
-    )
-    Session().utilisateur = utilisateur
-    Session().playlist = p_test
-    PlaylistService().play_playlist()
