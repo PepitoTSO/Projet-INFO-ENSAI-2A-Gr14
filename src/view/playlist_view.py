@@ -42,7 +42,7 @@ class PlaylistView(AbstractView):
 
                 return AccueilView("Déconnexion réussie")
 
-            case "Revenir au menu précedent":
+            case "Revenir au menu précédent":
                 from view.menu_principal_view import MenuView
 
                 return MenuView()
@@ -79,6 +79,7 @@ class PlaylistView(AbstractView):
                     return PlaylistView()
                 Session().playlist = modifier_playlist
                 playlist_service.supprimer_playlist()
+                Session().playlist = None
                 from view.menu_principal_view import MenuView
 
                 return MenuView()
@@ -87,6 +88,10 @@ class PlaylistView(AbstractView):
                 nom_playlist = inquirer.text(
                     message="Donnez l'id de la playlist à copier: "
                 ).execute()
+                from Object.playlist import Playlist
+
+                objet_playlist = Playlist(nom_playlist=nom_playlist)
+                objet_playlist = Session().playlist
                 playlist_service = PlaylistService()
-                playlist_service.copier_playlist(nom_playlist)
+                playlist_service.copier_playlist()
                 return PlaylistView()

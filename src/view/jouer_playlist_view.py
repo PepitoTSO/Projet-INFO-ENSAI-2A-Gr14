@@ -58,10 +58,11 @@ class JouerPlaylistView(AbstractView):
                 return PlaylistView()
 
             case "Lancer la playlist depuis le début":
-                playlist_service.jouer_playlist(lire_playlist)
+                playlist_service.play_playlist(lire_playlist)
                 premier_son = lire_playlist[0]
                 son_service = SonService()
                 son_service.play(premier_son)
+                Session().playlist = None
                 from view.jouer_son_view import JouerSonView
 
                 return JouerSonView()
@@ -72,9 +73,9 @@ class JouerPlaylistView(AbstractView):
                     choices=lire_playlist,
                 ).execute()
 
+                Session().son = lire_son
                 son_service = SonService()
                 son_service.play(lire_son)
-                Session().son = lire_son
                 from view.jouer_son_view import JouerSonView
 
                 return JouerSonView
