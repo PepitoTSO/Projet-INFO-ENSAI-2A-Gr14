@@ -37,7 +37,7 @@ class SonView(AbstractView):
                 Session().deconnexion()
                 from view.accueil.accueil_view import AccueilView
 
-                return AccueilView()
+                return AccueilView("Déconnexion réussie")
 
             case "Revenir au menu principal":
                 from view.menu_principal_view import MenuView

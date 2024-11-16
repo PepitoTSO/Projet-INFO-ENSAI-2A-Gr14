@@ -49,7 +49,7 @@ class ModifPlaylistView(AbstractView):
                 Session().deconnexion()
                 from view.accueil.accueil_view import AccueilView
 
-                return AccueilView()
+                return AccueilView("Déconnexion réussie")
 
             case "Revenir au menu précédent":
                 from view.playlist_view import PlaylistView
