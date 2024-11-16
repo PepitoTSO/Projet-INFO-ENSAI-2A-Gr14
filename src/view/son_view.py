@@ -24,7 +24,7 @@ class SonView(AbstractView):
                 "Afficher tous mes sons",  # Manque une playlist avec tous les sons de l'utilisateur
                 "Jouer un son",
                 "Jouer un son en boucle",
-                "Revenir au menu principal",
+                "Revenir au menu précédent",
                 "Se déconnecter",
             ],
         ).execute()
@@ -36,7 +36,7 @@ class SonView(AbstractView):
 
                 return AccueilView("Déconnexion réussie")
 
-            case "Revenir au menu principal":
+            case "Revenir au menu précédent":
                 from view.menu_principal_view import MenuView
 
                 return MenuView()
@@ -53,7 +53,7 @@ class SonView(AbstractView):
                 from Object.son import Son
 
                 son_a_jouer = Son(id_son=int(id_son))
-                Session().son = Son
+                Session().son = son_a_jouer
                 SonService_a_jouer = SonService()
                 SonService_a_jouer.play(son_a_jouer)
 
@@ -71,7 +71,7 @@ class SonView(AbstractView):
                 from Object.son import Son
 
                 son_a_jouer = Son(id_son=int(id_son))
-                Session().son = Son
+                Session().son = son_a_jouer
                 SonService_a_jouer = SonService()
                 SonService_a_jouer.jouer_en_boucle(son_a_jouer, 2, 10)
 

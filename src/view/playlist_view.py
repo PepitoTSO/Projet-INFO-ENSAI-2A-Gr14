@@ -30,7 +30,7 @@ class PlaylistView(AbstractView):
                 "Créer une playlist",
                 "Supprimer une playlist",
                 "Copier une playlist",
-                "Revenir au menu principal",
+                "Revenir au menu précédent",
                 "Se déconnecter",
             ],
         ).execute()
@@ -42,7 +42,7 @@ class PlaylistView(AbstractView):
 
                 return AccueilView("Déconnexion réussie")
 
-            case "Revenir au menu principal":
+            case "Revenir au menu précedent":
                 from view.menu_principal_view import MenuView
 
                 return MenuView()
@@ -62,6 +62,7 @@ class PlaylistView(AbstractView):
                     choices=playlists,
                 ).execute()
 
+                Session().playlist = modifier_playlist
                 if modifier_playlist == "Retour au menu précédent":
                     return PlaylistView()
 

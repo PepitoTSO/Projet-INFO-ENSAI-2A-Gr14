@@ -30,7 +30,7 @@ class RechSonPlaylistView(AbstractView):
             message="Faites votre choix : ",
             choices=[
                 "Rechercher un son",
-                "Revenir au menu principal",
+                "Revenir au menu précédent",
                 "Se déconnecter",
             ],
         ).execute()
@@ -43,7 +43,7 @@ class RechSonPlaylistView(AbstractView):
 
                 return AccueilView("Déconnexion réussie")
 
-            case "Revenir au menu principal":
+            case "Revenir au menu précédent":
 
                 from view.menu_principal_view import MenuView
 
