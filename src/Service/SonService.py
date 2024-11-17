@@ -76,7 +76,7 @@ class SonService:
         else:
             while pygame.mixer.music.get_busy():
                 time.sleep(1)
-        self.stop()
+        pygame.mixer.music.stop()
 
     def pause(self):
         """Pause général de tous les channels"""
@@ -88,7 +88,7 @@ class SonService:
 
     def stop(self):
         """Stop général de tous les channels avec diminution du son (on peut faire un stop aussi)"""
-        pygame.mixer.fadeout(1000)
+        pygame.mixer.fadeout(3)
 
     # La partie lecteur par canal
 

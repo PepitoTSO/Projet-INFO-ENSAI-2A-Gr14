@@ -54,7 +54,7 @@ class apifreesound:
                 print("Aucun résultat trouvé.")
                 return None
 
-            for idx, son in enumerate(results[:-1], start=1):
+            for idx, son in enumerate(results, start=1):
                 # Extract only the first sentence of the description
                 description = son["description"].split(".")[0] + "."
 
