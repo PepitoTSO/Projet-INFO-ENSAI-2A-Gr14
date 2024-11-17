@@ -89,10 +89,10 @@ class RechSonPlaylistView(AbstractView):
                         SonService().ajouter_son(son)
 
                         ecouter = inquirer.confirm(
-                            message="Voulez-vous écouter (15s)?", default=True
+                            message="Voulez-vous écouter (10s)?", default=True
                         ).execute()
                         if ecouter is True:
-                            SonService().play(son, 15)
+                            SonService().play(son, 10)
 
                         return RechSonPlaylistView()
 
