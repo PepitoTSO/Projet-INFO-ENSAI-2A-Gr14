@@ -29,6 +29,12 @@ L'application repose sur l'API [Freesound](https://freesound.org/apiv2/), offran
 - **Lecture en boucle** : Les utilisateurs peuvent configurer certains sons pour qu'ils se répètent en boucle (ex : bruit de fond, pluie).
 - **Lecture simultanée** : Il est également possible de jouer plusieurs sons en même temps pour une expérience sonore plus riche et plus complexe.
 
+## **Guide d'utilisation**
+
+Après avoir téléchargé les packages nécessaire, vous pouvez lancer le fichier se trouvant sous src/__main__.py. Vous voilà dans l'application, pour votre première utilisation, créez un compte puis connectez-vous. Vous pouvez désormais créer des playlist, rechercher des sons et pleins d'autres fonctionnalités.
+
+Il vous manque une fonctionnalité? Pas de soucis, la licence de ce projet vous permet de copier le code et de l'adapter selon vos besoins. Et mieux que ça, nous avons voulu une application décentralisée accessible à tous et facilement modifiable.
+
 ## Paquets requis
 Installez les paquets requis avec les commandes bash suivantes :
 
