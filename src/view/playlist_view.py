@@ -79,19 +79,19 @@ class PlaylistView(AbstractView):
                     return PlaylistView()
                 Session().playlist = modifier_playlist
                 playlist_service.supprimer_playlist()
+                print("Playlist supprimée")
                 Session().playlist = None
-                from view.menu_principal_view import MenuView
-
-                return MenuView()
+                return PlaylistView()
 
             case "Copier une playlist":
-                nom_playlist = inquirer.text(
-                    message="Donnez l'id de la playlist à copier: "
-                ).execute()
-                from Object.playlist import Playlist
+                plist_tous = PlaylistService().afficher_playlist_tous()
 
-                objet_playlist = Playlist(nom_playlist=nom_playlist)
-                objet_playlist = Session().playlist
-                playlist_service = PlaylistService()
-                playlist_service.copier_playlist()
+                copier_plist = inquirer.select(
+                    message="Choisissez une playlist : ",
+                    choices=plist_tous,
+                ).execute()
+                # maj session avec plist selectionnee
+                Session().playlist = copier_plist
+                PlaylistService().copier_playlist()
+
                 return PlaylistView()

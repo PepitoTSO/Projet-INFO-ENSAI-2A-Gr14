@@ -49,6 +49,7 @@ class ModifPlaylistView(AbstractView):
                 return PlaylistView()
 
             case "Renommer la playlist":
+                # fonctionne
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
 
@@ -63,12 +64,13 @@ class ModifPlaylistView(AbstractView):
                 ).execute()
 
                 playlist_service.modifier_nom_playlist(nouveau_nom_playlist)
+                print("Le nom a été modifié")
                 Session().playlist = None
-                from view.playlist_view import PlaylistView
 
-                return PlaylistView
+                return ModifPlaylistView()
 
             case "Ajouter un son à la playlist":
+                # fonctionne
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
 
@@ -78,27 +80,24 @@ class ModifPlaylistView(AbstractView):
                 ).execute()
                 Session().playlist = modifier_playlist
 
-                id_nouveau_son = inquirer.text(
-                    message="Quel est l'id du nouveau son à ajouter ? : "
+                liste_sons = SonService().lister_son()
+                ajout_son = inquirer.select(
+                    message="Choisissez un son : ",
+                    choices=liste_sons,
                 ).execute()
+
                 ordre = inquirer.text(
                     message="A quel ordre souhaitez-vous placer le son dans la playlist ? : "
                 ).execute()
 
-                from Object.son import Son
-
-                son_a_ajouter = Son(id_son=int(id_nouveau_son))
-                api = apifreesound()
-                api.dl_son(int(id_nouveau_son))
-                Session().son = son_a_ajouter
-                playlist_service.ajouter_son_a_playlist(id_nouveau_son, ordre)
+                playlist_service.ajouter_son_a_playlist(ajout_son, int(ordre))
+                print(f"Le son {ajout_son.nom} a été ajouté en {ordre}")
                 Session().playlist = None
                 Session().son = None
-                from view.playlist_view import PlaylistView
+                return ModifPlaylistView()
 
-                return PlaylistView
-
-            case "Supprimer un son à la playlist":
+            case "Supprimer un son de la playlist":
+                # fonctionne
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
 
@@ -107,18 +106,20 @@ class ModifPlaylistView(AbstractView):
                     choices=playlists,
                 ).execute()
                 Session().playlist = modifier_playlist
-
-                son_a_supprimer = inquirer.text(
-                    message="Quel est le son à supprimer ? : "
+                liste_son_plist = modifier_playlist.list_son
+                sons_dans_plist = [liste_sons[0] for liste_sons in liste_son_plist]
+                son_a_supprimer = inquirer.select(
+                    message="Choisissez un son : ",
+                    choices=sons_dans_plist,
                 ).execute()
 
                 playlist_service.retirer_son_playlist(son_a_supprimer)
+                print(f"Le son {son_a_supprimer.nom} a été supprimé")
                 Session().playlist = None
-                from view.playlist_view import PlaylistView
-
-                return PlaylistView
+                return ModifPlaylistView()
 
             case "Changer l'ordre d'un son dans la playlist":
+                # fonctionne (sauf si plist ordre 1 3 sans 2 et switch 1 vers 2)
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
 
@@ -127,16 +128,17 @@ class ModifPlaylistView(AbstractView):
                     choices=playlists,
                 ).execute()
                 Session().playlist = modifier_playlist
-
-                son_a_deplacer = inquirer.text(
-                    message="Quel est le son à déplacer ? : "
+                liste_son_plist = modifier_playlist.list_son
+                sons_dans_plist = [liste_sons[0] for liste_sons in liste_son_plist]
+                son_a_ordonner = inquirer.select(
+                    message="Choisissez un son : ",
+                    choices=sons_dans_plist,
                 ).execute()
                 nouvel_ordre = inquirer.text(
                     message="A Quelle place voulez-vous que le son soit situé ? : "
                 ).execute()
 
-                playlist_service.changer_ordre_son(son_a_deplacer, nouvel_ordre)
+                playlist_service.changer_ordre_son(son_a_ordonner, int(nouvel_ordre))
+                print(f"Le son {son_a_ordonner.nom} a été déplacé en {nouvel_ordre}")
                 Session().playlist = None
-                from view.playlist_view import PlaylistView
-
-                return PlaylistView
+                return ModifPlaylistView()

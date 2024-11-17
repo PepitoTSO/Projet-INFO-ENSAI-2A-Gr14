@@ -4,6 +4,7 @@ import pygame
 import time
 import random
 import asyncio
+from view.session import Session
 
 # Initialiser Pygame
 pygame.init()
@@ -41,6 +42,15 @@ class SonService:
         r = Son_DAO().ajouter_son(son)
         if r is None:
             print("Erreur lors de l'ajout")
+        return r
+
+    def lister_son(self):
+        """
+        Retourne la liste des sons d'un utilisateur selon la DAO
+        """
+        r = Son_DAO().get_all_son()
+        if r is None:
+            print("Erreur lors de la consultation bdd")
         return r
 
     # la partie lecteur son général
