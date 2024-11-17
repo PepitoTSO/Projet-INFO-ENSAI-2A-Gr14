@@ -64,7 +64,9 @@ class ModifPlaylistView(AbstractView):
                 ).execute()
 
                 playlist_service.modifier_nom_playlist(nouveau_nom_playlist)
-                print("Le nom a été modifié")
+                print(
+                    f"La playlist {modifier_playlist} a été modifiée en {nouveau_nom_playlist}"
+                )
                 Session().playlist = None
 
                 return ModifPlaylistView()
@@ -91,7 +93,7 @@ class ModifPlaylistView(AbstractView):
                 ).execute()
 
                 playlist_service.ajouter_son_a_playlist(ajout_son, int(ordre))
-                print(f"Le son {ajout_son.nom} a été ajouté en {ordre}")
+                print(f"Le son {ajout_son.nom} a été ajouté en position {ordre}")
                 Session().playlist = None
                 Session().son = None
                 return ModifPlaylistView()
@@ -114,7 +116,9 @@ class ModifPlaylistView(AbstractView):
                 ).execute()
 
                 playlist_service.retirer_son_playlist(son_a_supprimer)
-                print(f"Le son {son_a_supprimer.nom} a été supprimé")
+                print(
+                    f"Le son {son_a_supprimer.nom} a été supprimé de la playlist {modifier_playlist}"
+                )
                 Session().playlist = None
                 return ModifPlaylistView()
 
