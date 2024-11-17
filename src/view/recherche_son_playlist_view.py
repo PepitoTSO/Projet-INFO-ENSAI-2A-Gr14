@@ -61,7 +61,7 @@ class RechSonPlaylistView(AbstractView):
                     choices=[
                         "Telecharger son",
                         "Recommandations",
-                        "Revenir au menu",
+                        "Revenir au menu précédent",
                     ],
                 ).execute()
                 match souschoix:
@@ -89,10 +89,10 @@ class RechSonPlaylistView(AbstractView):
                         SonService().ajouter_son(son)
 
                         ecouter = inquirer.confirm(
-                            message="Voulez-vous ecouter (10s)?", default=True
+                            message="Voulez-vous écouter (15s)?", default=True
                         ).execute()
                         if ecouter is True:
-                            SonService().play(son, 10)
+                            SonService().play(son, 15)
 
                         return RechSonPlaylistView()
 
@@ -140,5 +140,5 @@ class RechSonPlaylistView(AbstractView):
                             SonService().play(son, 10)
                         return RechSonPlaylistView()
 
-                    case "Revenir au menu":
+                    case "Revenir au menu précédent":
                         return RechSonPlaylistView()
