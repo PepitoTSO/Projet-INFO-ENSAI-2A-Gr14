@@ -51,10 +51,10 @@ class JouerSonView(AbstractView):
                 return MenuView()
 
             case "Pause":
-                son_service.pause(self)
+                son_service.pause()
 
             case "Play":
-                son_service.unpause(self)
+                son_service.unpause()
 
             case "Avancer de 15 secondes":
                 son_service.avancer_xtemps(15)
