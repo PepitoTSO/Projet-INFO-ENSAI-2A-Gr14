@@ -70,7 +70,7 @@ class PlaylistService:
 
         Session().playlist = playlist
 
-        Playlist_DAO().changer_ordre(playlist, son, ordre)
+        return Playlist_DAO().changer_ordre(playlist, son, ordre)
 
     def retirer_son_playlist(self, son: Son):
         """

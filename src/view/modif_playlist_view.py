@@ -142,7 +142,14 @@ class ModifPlaylistView(AbstractView):
                     message="A Quelle place voulez-vous que le son soit situé ? : "
                 ).execute()
 
-                playlist_service.changer_ordre_son(son_a_ordonner, int(nouvel_ordre))
-                print(f"Le son {son_a_ordonner.nom} a été déplacé en {nouvel_ordre}")
+                res = playlist_service.changer_ordre_son(
+                    son_a_ordonner, int(nouvel_ordre)
+                )
+                if res is True:
+                    print(
+                        f"Le son {son_a_ordonner.nom} a été déplacé en {nouvel_ordre}"
+                    )
+                else:
+                    print("Erreur lors de modification")
                 Session().playlist = None
                 return ModifPlaylistView()

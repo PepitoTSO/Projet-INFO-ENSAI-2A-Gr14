@@ -85,11 +85,14 @@ class PlaylistView(AbstractView):
 
             case "Copier une playlist":
                 plist_tous = PlaylistService().afficher_playlist_tous()
+                plist_tous.append("Retour au menu précédent")
 
                 copier_plist = inquirer.select(
                     message="Choisissez une playlist : ",
                     choices=plist_tous,
                 ).execute()
+                if copier_plist == "Retour au menu précédent":
+                    return PlaylistView()
                 # maj session avec plist selectionnee
                 Session().playlist = copier_plist
                 PlaylistService().copier_playlist()
