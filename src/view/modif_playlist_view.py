@@ -150,6 +150,6 @@ class ModifPlaylistView(AbstractView):
                         f"Le son {son_a_ordonner.nom} a été déplacé en {nouvel_ordre}"
                     )
                 else:
-                    print("Erreur lors de modification")
+                    print("Erreur lors de la modification")
                 Session().playlist = None
                 return ModifPlaylistView()
