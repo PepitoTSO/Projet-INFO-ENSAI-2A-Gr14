@@ -111,7 +111,7 @@ class PlaylistService:
 
         playlist = Session().playlist
         Playlist_DAO().ajouter_son(playlist, son, ordre)
-        playlist.ajouter_son_playlist(son, ordre)
+        # playlist.ajouter_son_playlist(son, ordre)
         Session().playlist = playlist
 
     def play_playlist(self, canal=1):

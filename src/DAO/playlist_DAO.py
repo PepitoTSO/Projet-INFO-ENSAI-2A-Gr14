@@ -337,8 +337,7 @@ class Playlist_DAO(metaclass=Singleton):
         """
         try:
             # Ajouter le son à la playlist au niveau de l'objet Python
-            #### MISE EN COM ICI playlist.ajouter_son_playlist(son, ordre)
-            ## mis en com aussi parce que y'a forcement deja le son dans la bdd Son_DAO().ajouter_son(son)
+            playlist.ajouter_son_playlist(son, ordre)
 
             with DBConnection().connection as connection:
                 with connection.cursor() as cursor:
