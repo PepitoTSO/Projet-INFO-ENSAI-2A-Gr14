@@ -44,7 +44,13 @@ class SonView(AbstractView):
             # case "Afficher tous mes sons":
 
             case "Jouer un son":
-                id_son = inquirer.text(message="Entrez l'id du son : ").execute()
+                # id_son = inquirer.text(message="Entrez l'id du son : ").execute()
+                liste_sons = SonService().lister_son()[:9]
+                son_choisi = inquirer.select(
+                    message="Choisissez un son : ",
+                    choices=liste_sons,
+                ).execute()
+                id_son = son_choisi.id_son
                 # DAO recherche par id  avec l'id du son
                 # renvoie les infos pour créer un objet son
                 api = apifreesound()

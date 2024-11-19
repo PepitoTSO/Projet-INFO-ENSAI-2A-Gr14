@@ -137,7 +137,6 @@ class Playlist:
                 item[1] = item[1] - 1
         return True
 
-    ### La fonctionnalité de voir si son est bien dans playlist n'est pas testé dans le fichier test
     def changer_ordre(self, son: Son, ordre: int):
         """
         Change l'ordre d'un son dans la playlist.
