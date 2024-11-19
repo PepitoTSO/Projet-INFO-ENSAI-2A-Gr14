@@ -93,7 +93,7 @@ class ModifPlaylistView(AbstractView):
                 ).execute()
 
                 playlist_service.ajouter_son_a_playlist(ajout_son, int(ordre))
-                print(f"Le son {ajout_son.nom} a été ajouté en position {ordre}")
+                print(f"Le son {ajout_son.nom} a été ajouté")
                 Session().playlist = None
                 Session().son = None
                 return ModifPlaylistView()
