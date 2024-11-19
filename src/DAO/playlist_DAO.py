@@ -375,7 +375,7 @@ class Playlist_DAO(metaclass=Singleton):
             return False
 
 
-utilisateur = Utilisateur(pseudo="user1", mdp_hache="hashed_password1")
+"""utilisateur = Utilisateur(pseudo="user1", mdp_hache="hashed_password1")
 playlist_dao = Playlist_DAO()
 
 
@@ -393,7 +393,7 @@ playlist = Playlist(
 playlists = playlist_dao.get_all_playlists()
 for item in playlists:
     print(item)
-# added_successfully = playlist_dao.ajouter_playlist(playlist)
+# added_successfully = playlist_dao.ajouter_playlist(playlist)"""
 """
 # 2. Get all songs of a playlist
 songs_in_playlist = playlist_dao.get_sons_by_playlist_id(playlist.id_playlist)
