@@ -85,10 +85,11 @@ class Playlist:
 
         # Vérifier si la position demandée est valide
         if ordre < 1:
-            raise ValueError("Ordre invalide, ordre doit être > 1")
+            raise ValueError("Ordre invalide, ordre doit être >= 1")
 
+        # Si l'ordre est supérieur à la taille de la liste + 1, ajustez-le pour l'ajouter à la fin
         if ordre > len(self.list_son) + 1:
-            self.list_son.append([son, ordre])
+            ordre = len(self.list_son) + 1
 
         # Réajuster les ordres si l'ordre est déjà pris
         for item in self.list_son:
@@ -209,7 +210,6 @@ class Playlist:
         return playlist_str
 
 
-"""
 son1 = Son(
     id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
 )
@@ -222,4 +222,3 @@ playlist = Playlist(
     nom_playlist="test",
     list_son=[[son1, 1], [son2, 2]],
 )
-"""
