@@ -84,10 +84,11 @@ class Playlist:
         """
 
         # Vérifier si la position demandée est valide
-        if ordre < 1 or ordre > len(self.list_son) + 1:
-            raise ValueError(
-                "Ordre invalide, doit être entre 1 et len(self.list_son) + 1"
-            )
+        if ordre < 1:
+            raise ValueError("Ordre invalide, ordre doit être > 1")
+
+        if ordre > len(self.list_son) + 1:
+            self.list_son.append([son, ordre])
 
         # Réajuster les ordres si l'ordre est déjà pris
         for item in self.list_son:
@@ -208,15 +209,12 @@ class Playlist:
         return playlist_str
 
 
-"""
 son1 = Son(
     id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
 )
 son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
 son3 = Son(id_son=3, nom="son3", tags=["pluie"], path_stockage="data/test.mp3")
 utilisateur = Utilisateur("a", "b")
-print(son1)
-print(utilisateur)
 playlist = Playlist(
     utilisateur=utilisateur,
     id_playlist=None,
@@ -224,21 +222,6 @@ playlist = Playlist(
     list_son=[[son1, 1], [son2, 2]],
 )
 
-playlist.ajouter_son_playlist(son3, 3)
-playlist.supprimer_son(son1)
-print(playlist.list_son[1][0])
-
 print(playlist)
-
-playlist.ajouter_son_playlist(son3, 1)
+playlist.ajouter_son_playlist(son3, 5)
 print(playlist)
-
-playlist.supprimer_son(son3)
-print(playlist)
-
-playlist.changer_ordre(son1, 2)
-print(playlist)
-
-playlist.changer_nom_playlist("playlist1")
-print(playlist)
-"""
