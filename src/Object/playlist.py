@@ -209,6 +209,7 @@ class Playlist:
         return playlist_str
 
 
+"""
 son1 = Son(
     id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
 )
@@ -221,7 +222,4 @@ playlist = Playlist(
     nom_playlist="test",
     list_son=[[son1, 1], [son2, 2]],
 )
-
-print(playlist)
-playlist.ajouter_son_playlist(son3, 5)
-print(playlist)
+"""
