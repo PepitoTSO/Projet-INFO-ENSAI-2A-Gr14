@@ -1,5 +1,5 @@
 from InquirerPy import inquirer
-
+import asyncio
 from view.abstract_view import AbstractView
 from view.session import Session
 
@@ -25,7 +25,7 @@ class RechSonPlaylistView(AbstractView):
         """
 
         print("\n" + "-" * 50 + "\nMenu Recherche Sons/Playlists\n" + "-" * 50 + "\n")
-
+        son_service = SonService()
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
@@ -86,13 +86,13 @@ class RechSonPlaylistView(AbstractView):
                             nom=obj_son["name"],
                             tags=obj_son["tags"],
                         )
-                        SonService().ajouter_son(son)
+                        son_service.ajouter_son(son)
 
                         ecouter = inquirer.confirm(
-                            message="Voulez-vous écouter (10s)?", default=True
+                            message="Voulez-vous écouter (5s)?", default=True
                         ).execute()
                         if ecouter is True:
-                            SonService().play(son, 10)
+                            asyncio.create_task(son_service.play_canal(son, 5))
 
                         return RechSonPlaylistView()
 

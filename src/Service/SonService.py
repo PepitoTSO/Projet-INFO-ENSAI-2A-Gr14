@@ -18,6 +18,10 @@ class SonService:
     Implemente les méthodes associées à la classe Son
     """
 
+    def __init__(self):
+        self.etat_pause = False
+        self.posit_pause = 0
+
     # La partie DAO
     def supprimer_son(self, son: Son):
         """
@@ -55,7 +59,7 @@ class SonService:
 
     # la partie lecteur son général
 
-    def play(self, son: Son, duree=None):
+    async def play(self, son: Son, duree=None):
         """
         Joue un son avec Pygame
         Params:
@@ -72,23 +76,33 @@ class SonService:
 
         # Attendre que la musique soit terminée
         if duree:
-            time.sleep(duree)
+            await asyncio.sleep(duree)
         else:
             while pygame.mixer.music.get_busy():
-                time.sleep(1)
+                await asyncio.sleep(0.1)
         pygame.mixer.music.stop()
 
     def pause(self):
-        """Pause général de tous les channels"""
-        pygame.mixer.music.pause()
+        """Met en pause le son en cours de lecture"""
+        if pygame.mixer.music.get_busy():
+            self.is_paused = True
+            self.pause_pos = (
+                pygame.mixer.music.get_pos() / 1000
+            )  # Récupérer la position en secondes
+            pygame.mixer.music.stop()
+            print(f"Musique mise en pause à {self.pause_pos} secondes.")
 
-    def unpause(self):
-        """Pause général de tous les channels"""
-        pygame.mixer.music.unpause()
+    def resume(self):
+        """Reprend la lecture à partir de la position où elle a été mise en pause"""
+        if self.is_paused:
+            self.is_paused = False
+            pygame.mixer.music.play(start=self.pause_pos)
+            print(f"Musique reprise à {self.pause_pos} secondes.")
 
     def stop(self):
         """Stop général de tous les channels avec diminution du son (on peut faire un stop aussi)"""
         pygame.mixer.fadeout(3)
+        print("Fin de la lecture")
 
     # La partie lecteur par canal
 
@@ -117,7 +131,7 @@ class SonService:
         return canal
 
     # Les fonctions asynchrones
-    async def play_channel(self, son: Son, temps=None, canal=None):
+    async def play_canal(self, son: Son, temps=None, canal=None):
         """
         Joue un son avec Pygame
         Params:
@@ -139,8 +153,16 @@ class SonService:
         else:
             canal.play(son_a_jouer)
             while canal.get_busy():
-                await asyncio.sleep(1)
+                await asyncio.sleep(0.1)
         canal.stop()
+
+    def pause_canal(self, canal):
+        """Met en pause le son en cours si un canal est en lecture."""
+        obj_canal = self.selectionner_canal(canal)
+        if obj_canal.get_busy():
+            self.temps_restant = obj_canal.get_pos()  # Récupérer la position du son
+            obj_canal.stop()
+            print(f"Son mis en pause à {self.temps_restant}ms")
 
     async def jouer_aleatoire(
         self, son: Son, attente_min: int, attente_max: int, duree: int, canal=None

@@ -1,5 +1,5 @@
 from InquirerPy import inquirer
-
+import asyncio
 from view.abstract_view import AbstractView
 from view.session import Session
 from Api_FreeSound.apifreesound import apifreesound
@@ -18,11 +18,14 @@ class SonView(AbstractView):
         """
 
         print("\n" + "-" * 50 + "\nMenu Sons\n" + "-" * 50 + "\n")
+        son_service = SonService()
+        api = apifreesound()
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
                 "Afficher tous mes sons",  # Manque une playlist avec tous les sons de l'utilisateur
                 "Jouer un son",
+                "Jouer un son aléatoirement",
                 "Jouer un son en boucle",
                 "Revenir au menu précédent",
                 "Se déconnecter",
@@ -41,46 +44,71 @@ class SonView(AbstractView):
 
                 return MenuView()
 
-            # case "Afficher tous mes sons":
+            case "Afficher tous mes sons":
+                liste_sons = son_service.lister_son()
+                print(liste_sons)
+                return SonView()
 
             case "Jouer un son":
-                # id_son = inquirer.text(message="Entrez l'id du son : ").execute()
-                liste_sons = SonService().lister_son()[:9]
-                son_choisi = inquirer.select(
-                    message="Choisissez un son : ",
-                    choices=liste_sons,
+                son_choisi = self.choisir_son()
+                t = self.choisir_temps
+
+                asyncio.create_task(son_service.play_canal(son_choisi, t))
+
+                from view.jouer_son_view import JouerSonView
+
+                return JouerSonView()
+
+            case "Jouer un son aléatoirement":
+                son_choisi = self.choisir_son()
+
+                t = self.choisir_temps()
+
+                t_min = inquirer.text(
+                    message="Entrez la valeur de t_min :",
+                    validate=lambda x: x.isdigit()
+                    or "Veuillez entrer un nombre valide.",
+                    transformer=lambda x: int(x),
                 ).execute()
-                id_son = son_choisi.id_son
-                # DAO recherche par id  avec l'id du son
-                # renvoie les infos pour créer un objet son
-                api = apifreesound()
-                api.dl_son(int(id_son))
 
-                from Object.son import Son
+                t_max = inquirer.text(
+                    message="Entrez la valeur de t_max (doit être supérieur à t_min) :",
+                    validate=lambda x: x.isdigit()
+                    and int(x) > int(t_min)
+                    or "Veuillez entrer un nombre supérieur à t_min.",
+                    transformer=lambda x: int(x),
+                ).execute()
 
-                son_a_jouer = Son(id_son=int(id_son))
-                Session().son = son_a_jouer
-                SonService_a_jouer = SonService()
-                SonService_a_jouer.play(son_a_jouer)
+                asyncio.create_task(
+                    son_service.jouer_aleatoire(son_choisi, t_min, t_max, t)
+                )
 
                 from view.jouer_son_view import JouerSonView
 
                 return JouerSonView()
 
             case "Jouer un son en boucle":
-                id_son = inquirer.text(message="Entrez l'id du son : ").execute()
-                # DAO recherche par id  avec l'id du son
-                # renvoie les infos pour créer un objet son
-                api = apifreesound()
-                api.dl_son(int(id_son))
-
-                from Object.son import Son
-
-                son_a_jouer = Son(id_son=int(id_son))
-                Session().son = son_a_jouer
-                SonService_a_jouer = SonService()
-                SonService_a_jouer.jouer_en_boucle(son_a_jouer, 2, 10)
+                son_choisi = self.choisir_son()
+                temps = self.choisir_temps()
+                son_service.jouer_en_boucle(son_choisi, temps)
 
                 from view.jouer_son_view import JouerSonView
 
                 return JouerSonView()
+
+    def choisir_son(self):
+        son_service = SonService()
+        liste_sons = son_service.lister_son()
+        son_choisi = inquirer.select(
+            message="Choisissez un son : ",
+            choices=liste_sons,
+        ).execute()
+        return son_choisi
+
+    def choisir_temps(self):
+        t = inquirer.text(
+            message="Entrez le temps de lecture:",
+            validate=lambda x: x.isdigit(),
+            transformer=lambda x: int(x),
+        ).execute()
+        return t

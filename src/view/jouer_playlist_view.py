@@ -60,35 +60,26 @@ class JouerPlaylistView(AbstractView):
 
             case "Lancer la playlist depuis le début":
                 # Le menu est ok, l'objet est ok,
-                async def async_main_plist():
-                    t1 = asyncio.create_task(playlist_service.play_playlist())
-                    await t1
-
-                asyncio.run(async_main_plist())
+                await playlist_service.play_playlist()
                 print("Fin Lecture playlist")
                 Session().playlist = None
 
                 return JouerPlaylistView()
 
             case "Jouer un son de la playlist":
-                lire_son = inquirer.select(
-                    message="Choisissez un son : ",
-                    choices=lire_playlist,
-                ).execute()
 
-                Session().playlist = lire_son
-                liste_son_plist = lire_son.list_son
-                sons_dans_plist = [liste_sons[0] for liste_sons in liste_son_plist]
+                lire_son = Session().playlist.list_son
+                sons_dans_plist = [liste_sons[0] for liste_sons in lire_son]
                 son_a_jouer = inquirer.select(
                     message="Choisissez un son : ",
                     choices=sons_dans_plist,
                 ).execute()
 
-                son_service.play(son_a_jouer)
+                asyncio.create_task(son_service.play_canal(son_a_jouer, 8))
 
                 from view.jouer_son_view import JouerSonView
 
-                return JouerSonView
+                return JouerSonView()
 
             case "Jouer un son en boucle":
                 lire_son = inquirer.select(

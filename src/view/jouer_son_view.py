@@ -28,12 +28,9 @@ class JouerSonView(AbstractView):
             message="Faites votre choix : ",
             choices=[
                 "Pause",
-                "Play",
-                "Avancer de 15 secondes",
-                "Reculer de 15 secondes",
-                # "Jouer le prochain son",
-                # "Jouer le précédent son",
-                "Revenir au menu précédent",
+                "Unpause",
+                "Stop",
+                "Revenir au menu principal",
                 "Se déconnecter",
             ],
         ).execute()
@@ -45,23 +42,21 @@ class JouerSonView(AbstractView):
 
                 return AccueilView("Déconnexion réussie")
 
-            case "Revenir au menu précédent":
+            case "Revenir au menu principal":
                 from view.menu_principal_view import MenuView
 
                 return MenuView()
 
             case "Pause":
-                son_service.pause()
+                # a faire
+                son_service.pause_canal(8)
+                return JouerSonView()
 
-            case "Play":
+            case "Unpause":
+                # a faire
                 son_service.unpause()
+                return JouerSonView()
 
-            case "Avancer de 15 secondes":
-                son_service.avancer_xtemps(15)
-
-            case "Reculer de 10 secondes":
-                son_service.avancer_xtemps(-15)
-
-            # case "Jouer le prochain son":
-            #    playlist_service = PlaylistService()
-            #    playlist_service.play_next_son() #La fonction n'est pas implémentée
+            case "Stop":
+                son_service.stop()
+                return JouerSonView()
