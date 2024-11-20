@@ -1,10 +1,10 @@
 import logging
 import dotenv
-
+import asyncio
 from view.accueil.accueil_view import AccueilView
 
 
-if __name__ == "__main__":
+async def main():
     # On charge les variables d'environnement
     dotenv.load_dotenv(override=True)
 
@@ -22,7 +22,7 @@ if __name__ == "__main__":
             current_view.afficher()
 
             # Affichage des choix possibles
-            current_view = current_view.choisir_menu()
+            current_view = await current_view.choisir_menu()
         except Exception as e:
             logging.info(e)
             nb_erreurs += 1
@@ -34,3 +34,7 @@ if __name__ == "__main__":
     print("Au revoir")
 
     logging.info("Fin de l'application")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

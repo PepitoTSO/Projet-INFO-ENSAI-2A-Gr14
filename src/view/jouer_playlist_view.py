@@ -1,5 +1,5 @@
 from InquirerPy import inquirer
-
+import asyncio
 from view.abstract_view import AbstractView
 from view.session import Session
 
@@ -24,6 +24,7 @@ class JouerPlaylistView(AbstractView):
         print("\n" + "-" * 50 + "\nMenu Lecture des Playlists\n" + "-" * 50 + "\n")
 
         playlist_service = PlaylistService()
+        son_service = SonService()
 
         playlists = playlist_service.afficher_playlist()
 
@@ -58,14 +59,16 @@ class JouerPlaylistView(AbstractView):
                 return PlaylistView()
 
             case "Lancer la playlist depuis le début":
-                playlist_service.play_playlist(lire_playlist)
-                premier_son = lire_playlist[0]
-                son_service = SonService()
-                son_service.play(premier_son)
-                Session().playlist = None
-                from view.jouer_son_view import JouerSonView
+                # Le menu est ok, l'objet est ok,
+                async def async_main_plist():
+                    t1 = asyncio.create_task(playlist_service.play_playlist())
+                    await t1
 
-                return JouerSonView()
+                asyncio.run(async_main_plist())
+                print("Fin Lecture playlist")
+                Session().playlist = None
+
+                return JouerPlaylistView()
 
             case "Jouer un son de la playlist":
                 lire_son = inquirer.select(
@@ -73,9 +76,16 @@ class JouerPlaylistView(AbstractView):
                     choices=lire_playlist,
                 ).execute()
 
-                Session().son = lire_son
-                son_service = SonService()
-                son_service.play(lire_son)
+                Session().playlist = lire_son
+                liste_son_plist = lire_son.list_son
+                sons_dans_plist = [liste_sons[0] for liste_sons in liste_son_plist]
+                son_a_jouer = inquirer.select(
+                    message="Choisissez un son : ",
+                    choices=sons_dans_plist,
+                ).execute()
+
+                son_service.play(son_a_jouer)
+
                 from view.jouer_son_view import JouerSonView
 
                 return JouerSonView

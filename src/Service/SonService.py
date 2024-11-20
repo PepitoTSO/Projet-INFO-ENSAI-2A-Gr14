@@ -125,7 +125,12 @@ class SonService:
             Une instance de son
         Returns:
         """
-        son_a_jouer = pygame.mixer.Sound(str(son.path_stockage))
+        try:
+            son_a_jouer = pygame.mixer.Sound(str(son.path_stockage))
+        except Exception as e:
+            print(f"Impossible de charger le son : {e}")
+            print("Essayer de le télécharger")
+            return
         canal = self.selectionner_canal(canal)
         print(f"lecture du son :{son.nom}")
         if temps:

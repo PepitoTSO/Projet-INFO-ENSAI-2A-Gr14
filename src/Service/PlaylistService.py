@@ -4,6 +4,7 @@ from Object.son import Son
 from view.session import Session
 from Service.SonService import SonService
 from Api_FreeSound import apifreesound
+import asyncio
 
 
 class PlaylistService:
@@ -114,7 +115,7 @@ class PlaylistService:
         # playlist.ajouter_son_playlist(son, ordre)
         Session().playlist = playlist
 
-    def play_playlist(self, canal=1):
+    async def play_playlist(self, canal=1):
         """
         Joue les sons de la playlist dans l'ordre spécifié.
 
@@ -123,17 +124,21 @@ class PlaylistService:
         canal : int, optional
             Le canal sur lequel la playlist sera jouée (par défaut le canal 1).
         """
-
-        playlist = Session().playlist.list_son
-        playlist_ordonnee = sorted(playlist.list_son, key=lambda x: x[1])
+        session = Session()
+        playlist = session.playlist.list_son
+        playlist_ordonnee = sorted(playlist, key=lambda x: x[1])
         for son, _ in playlist_ordonnee:
-            Session().son = son
-            SonService().play_channel(son, canal)
+            session.son = son
+            try:
+                await SonService().play_channel(son, canal)
+            except Exception as e:
+                print(f"Problème avec le son {son.nom} : {e}")
 
     def play_next_son(self):
         # Recuperer les infos session
-        son = Session().son
-        playlist = Session().playlist
+        session = Session()
+        son = session.son
+        playlist = session.playlist
 
         # Trier et recuperer l'indice du son en cours pour itérer dessus
         playlist_ordonnee = sorted(playlist.list_son, key=lambda x: x[1])
@@ -141,7 +146,7 @@ class PlaylistService:
             (i for i, s in enumerate(playlist_ordonnee) if s[0] == son), None
         )
         for son, _ in playlist_ordonnee[indice_son:]:
-            Session().son = son
+            session.son = son
             SonService().play_channel(son)
 
     def afficher_playlist(self):
