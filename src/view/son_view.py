@@ -21,7 +21,7 @@ class SonView(AbstractView):
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
-                "Afficher tous mes sons",  # Manque une playlist avec tous les sons de l'utilisateur
+                # "Afficher tous mes sons",  # Manque une playlist avec tous les sons de l'utilisateur
                 "Jouer un son",
                 "Jouer un son en boucle",
                 "Revenir au menu précédent",
