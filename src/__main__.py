@@ -21,18 +21,14 @@ async def main():
             print("Le programme recense trop d'erreurs et va s'arrêter")
             break
         try:
-            # Affichage du menu
             current_view.afficher()
 
-            # Affichage des choix possibles
             current_view = await current_view.choisir_menu()
         except Exception as e:
             logging.info(e)
             nb_erreurs += 1
             print(e)
-            # current_view = MenuView("Une erreur est survenue, retour au menu principal")
 
-    # Lorsque l on quitte l application
     print("----------------------------------")
     print("Au revoir")
 
@@ -42,4 +38,3 @@ async def main():
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())
-    # asyncio.run(main())

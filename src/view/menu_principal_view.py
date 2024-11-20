@@ -35,6 +35,7 @@ class MenuView(AbstractView):
                 "Rechercher un son",
                 "Mes Sons",
                 "Mes Playlists",
+                "Lecteur",
                 "Infos",
                 "Se déconnecter",
             ],
@@ -61,6 +62,11 @@ class MenuView(AbstractView):
                 from view.playlist_view import PlaylistView
 
                 return PlaylistView()
+
+            case "Lecteur":
+                from view.jouer_son_view import JouerSonView
+
+                return JouerSonView()
 
             case "Infos":
                 menu = MenuView()
