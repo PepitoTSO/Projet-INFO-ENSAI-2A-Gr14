@@ -11,7 +11,7 @@ class JouerSonView(AbstractView):
     Vue du menu de la lecture des sons
     """
 
-    def choisir_menu(self):
+    async def choisir_menu(self):
         """Choix du menu suivant de l'utilisateur
 
         Return

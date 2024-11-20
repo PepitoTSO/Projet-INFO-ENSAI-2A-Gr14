@@ -14,7 +14,7 @@ class InscriptionView(AbstractView):
     Vue du menu d'inscription d'un utilisateur
     """
 
-    def choisir_menu(self):
+    async def choisir_menu(self):
         """Choix du menu suivant de l'utilisateur
 
         Return

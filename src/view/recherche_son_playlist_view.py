@@ -15,7 +15,7 @@ class RechSonPlaylistView(AbstractView):
     Vue du menu de la recherche des sons. Permet de telecharger et d'exploiter la recommendation
     """
 
-    def choisir_menu(self):
+    async def choisir_menu(self):
         """Choix du menu suivant de l'utilisateur
 
         Return

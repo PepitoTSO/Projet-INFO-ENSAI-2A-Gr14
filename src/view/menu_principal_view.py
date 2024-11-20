@@ -18,7 +18,7 @@ class MenuView(AbstractView):
         retourne la prochaine vue, celle qui est choisie par l'utilisateur
     """
 
-    def choisir_menu(self):
+    async def choisir_menu(self):
         """Choix du menu suivant de l'utilisateur
 
         Return

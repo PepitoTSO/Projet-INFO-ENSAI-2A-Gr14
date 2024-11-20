@@ -1,5 +1,5 @@
 from InquirerPy import inquirer
-
+import asyncio
 from view.abstract_view import AbstractView
 from view.session import Session
 
@@ -12,7 +12,7 @@ class AccueilView(AbstractView):
     def __init__(self, message):
         super().__init__(message)
 
-    def choisir_menu(self):
+    async def choisir_menu(self):
         with open("src/dessin/banner.txt", "r", encoding="utf-8") as asset:
             print(asset.read())
 

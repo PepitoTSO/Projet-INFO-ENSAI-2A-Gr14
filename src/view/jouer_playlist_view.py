@@ -12,7 +12,7 @@ class JouerPlaylistView(AbstractView):
     Vue du menu de la lecture des playlists
     """
 
-    def choisir_menu(self):
+    async def choisir_menu(self):
         """Choix du menu suivant de l'utilisateur
 
         Return

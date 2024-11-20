@@ -1,7 +1,10 @@
 import logging
 import dotenv
 import asyncio
+import nest_asyncio
 from view.accueil.accueil_view import AccueilView
+
+nest_asyncio.apply()
 
 
 async def main():
@@ -37,4 +40,6 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
+    # asyncio.run(main())

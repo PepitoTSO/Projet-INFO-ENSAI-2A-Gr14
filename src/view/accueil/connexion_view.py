@@ -11,7 +11,7 @@ class ConnexionView(AbstractView):
     Vue du menu de connexion d'un utilisateur
     """
 
-    def choisir_menu(self):
+    async def choisir_menu(self):
         """Choix du menu suivant de l'utilisateur
 
         Return
