@@ -66,8 +66,9 @@ class JouerPlaylistView(AbstractView):
 
                 asyncio.create_task(playlist_service.play_playlist())
                 print("Fin Lecture playlist")
+                from view.jouer_son_view import JouerSonView
 
-                return JouerPlaylistView()
+                return JouerSonView()
 
             case "Jouer un son de la playlist":
                 son_choisi = self.choisir_son()

@@ -33,7 +33,7 @@ class MenuView(AbstractView):
             message="Faites votre choix : ",
             choices=[
                 "Rechercher un son",
-                "Mes Sons",
+                "Sons disponibles",
                 "Mes Playlists",
                 "Lecteur",
                 "Infos",
@@ -53,7 +53,7 @@ class MenuView(AbstractView):
 
                 return RechSonPlaylistView()
 
-            case "Mes Sons":
+            case "Sons disponibles":
                 from view.son_view import SonView
 
                 return SonView()
