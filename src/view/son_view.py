@@ -26,7 +26,7 @@ class SonView(AbstractView):
                 "Afficher tous mes sons",  # Manque une playlist avec tous les sons de l'utilisateur
                 "Jouer un son",
                 "Jouer un son aléatoirement",
-                "Jouer un son en boucle",
+                "Jouer un son pendant x secondes",
                 "Revenir au menu précédent",
                 "Se déconnecter",
             ],
@@ -46,14 +46,15 @@ class SonView(AbstractView):
 
             case "Afficher tous mes sons":
                 liste_sons = son_service.lister_son()
-                print(liste_sons)
+                for son in liste_sons:
+                    print(son)
+                    print("\n" + "-" * 50 + "\n")
                 return SonView()
 
             case "Jouer un son":
                 son_choisi = self.choisir_son()
-                t = self.choisir_temps
 
-                asyncio.create_task(son_service.play_canal(son_choisi, t))
+                asyncio.create_task(son_service.play_canal(son_choisi))
 
                 from view.jouer_son_view import JouerSonView
 
@@ -80,17 +81,19 @@ class SonView(AbstractView):
                 ).execute()
 
                 asyncio.create_task(
-                    son_service.jouer_aleatoire(son_choisi, t_min, t_max, t)
+                    son_service.jouer_aleatoire(
+                        son_choisi, int(t_min), int(t_max), int(t)
+                    )
                 )
 
                 from view.jouer_son_view import JouerSonView
 
                 return JouerSonView()
 
-            case "Jouer un son en boucle":
+            case "Jouer un son pendant x secondes":
                 son_choisi = self.choisir_son()
-                temps = self.choisir_temps()
-                son_service.jouer_en_boucle(son_choisi, temps)
+                t = self.choisir_temps()
+                asyncio.create_task(son_service.play_canal(son_choisi, int(t)))
 
                 from view.jouer_son_view import JouerSonView
 

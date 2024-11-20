@@ -190,20 +190,3 @@ class SonService:
             attente_random = random.uniform(attente_min, attente_max)
             await asyncio.sleep(attente_random)
             canal.fadeout(temps_fadeout)
-
-
-async def main():
-    son_test = Son(1, path_stockage="./data/test.mp3")
-    son2 = Son(2, path_stockage="./data/son/57740.mp3")
-
-    son_service = SonService()
-
-    t1 = asyncio.create_task(son_service.play_channel(son_test, 10))
-    t2 = asyncio.create_task(son_service.jouer_aleatoire(son2, 2, 5, 20))
-
-    await t1
-    await t2
-
-
-if __name__ == "__main__":
-    asyncio.run(main())

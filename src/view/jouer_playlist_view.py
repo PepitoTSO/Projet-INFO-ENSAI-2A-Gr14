@@ -100,9 +100,7 @@ class JouerPlaylistView(AbstractView):
                     choices=lire_playlist,
                 ).execute()
 
-                Session().son = lire_son
-                son_service = SonService()
-                son_service.play_multiple_sounds(lire_son)
+                asyncio.create_task(son_service.play_canal(lire_son))
                 from view.jouer_son_view import JouerSonView
 
                 return JouerSonView()
