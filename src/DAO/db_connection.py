@@ -5,8 +5,6 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from utils.singleton import Singleton
 
-# Exactement le fichier du tp
-
 
 class DBConnection(metaclass=Singleton):
     """

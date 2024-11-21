@@ -34,9 +34,6 @@ class TestSon(unittest.TestCase):
         with self.assertRaises(TypeError):
             Son(1, "test", {1, "tag2"})
 
-    def test_eq(self):
-        pass
-
 
 if __name__ == "__main__":
     unittest.main()

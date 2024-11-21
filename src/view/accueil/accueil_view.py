@@ -58,4 +58,3 @@ class AccueilView(AbstractView):
             "N'hésitez pas à nous contacter pour toute question ou suggestion. \n"
             "Merci de votre confiance et bonne partie !"
         )
-        # ou mettre une variable texte dans autre fichier et faire un formater pour unifier tous les textes

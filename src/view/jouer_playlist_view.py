@@ -58,7 +58,6 @@ class JouerPlaylistView(AbstractView):
                 return PlaylistView()
 
             case "Lancer la playlist depuis le début":
-                # Le menu est ok, l'objet est ok,
                 playlist = session.playlist.list_son
                 if playlist is None:
                     print("Aucune playlist n'est chargée dans la session.")

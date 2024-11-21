@@ -175,13 +175,13 @@ def test_play_playlist():
     playlist = Playlist(utilisateur, 12, "Playlist Test", [[son, 1]])
     Session().utilisateur = utilisateur
     Session().playlist = playlist
-    with patch("Service.PlaylistService.SonService.play_channel") as mock_play_channel:
+    with patch("Service.PlaylistService.SonService.play_canal") as mock_play_canal:
 
         # WHEN
         PlaylistService().play_playlist()
 
         # THEN
-        mock_play_channel.assert_called_once_with(son, 1)
+        mock_play_canal.assert_called_once_with(son, 1)
 
 
 def test_afficher_playlist():

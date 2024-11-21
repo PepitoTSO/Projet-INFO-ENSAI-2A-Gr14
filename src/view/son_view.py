@@ -2,8 +2,6 @@ from InquirerPy import inquirer
 import asyncio
 from view.abstract_view import AbstractView
 from view.session import Session
-from Api_FreeSound.apifreesound import apifreesound
-
 from Service.SonService import SonService
 
 
@@ -19,11 +17,10 @@ class SonView(AbstractView):
 
         print("\n" + "-" * 50 + "\nMenu Sons\n" + "-" * 50 + "\n")
         son_service = SonService()
-        api = apifreesound()
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
-                #"Afficher tous mes sons",  # Manque une playlist avec tous les sons de l'utilisateur
+                "Afficher tous mes sons",
                 "Jouer un son",
                 "Jouer un son aléatoirement",
                 "Jouer un son pendant x secondes",
@@ -44,12 +41,12 @@ class SonView(AbstractView):
 
                 return MenuView()
 
-'''            case "Afficher tous mes sons":
+            case "Afficher tous mes sons":
                 liste_sons = son_service.lister_son()
                 for son in liste_sons:
                     print(son)
                     print("\n" + "-" * 50 + "\n")
-                return SonView()'''
+                return SonView()
 
             case "Jouer un son":
                 son_choisi = self.choisir_son()

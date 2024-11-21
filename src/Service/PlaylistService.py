@@ -3,7 +3,6 @@ from DAO.playlist_DAO import Playlist_DAO
 from Object.son import Son
 from view.session import Session
 from Service.SonService import SonService
-from Api_FreeSound import apifreesound
 import asyncio
 
 
@@ -112,7 +111,6 @@ class PlaylistService:
 
         playlist = Session().playlist
         Playlist_DAO().ajouter_son(playlist, son, ordre)
-        # playlist.ajouter_son_playlist(son, ordre)
         Session().playlist = playlist
 
     async def play_playlist(self, canal=1):

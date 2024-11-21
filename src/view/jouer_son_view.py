@@ -31,9 +31,6 @@ class JouerSonView(AbstractView):
                 "Unpause",
                 "Stop",
                 "Stop tout sauf playlist",
-                "Mute",
-                "Volume +",
-                "Volume -",
                 "Revenir au menu principal",
                 "Se déconnecter",
             ],
@@ -67,19 +64,4 @@ class JouerSonView(AbstractView):
 
             case "Stop tout sauf playlist":
                 son_service.stop_sauf_plist()
-                return JouerSonView()
-
-            case "Mute":
-                if son_service.volume == 0:
-                    son_service.unmute()
-                else:
-                    son_service.mute()
-                return JouerSonView()
-
-            case "Volume +":
-                son_service.augmenter_volume()
-                return JouerSonView()
-
-            case "Volume -":
-                son_service.diminuer_volume()
                 return JouerSonView()

@@ -63,9 +63,7 @@ class Son:
             Représentation sous forme de chaîne de caractères du son avec son ID, son nom, ses tags et son chemin de stockage.
         """
 
-        tags_str = ", ".join(
-            self.tags
-        )  # Convert tags list to a string for easy display
+        tags_str = ", ".join(self.tags)
         return f"Son ID: {self.id_son}, Nom: '{self.nom}', Tags: [{tags_str}], Chemin: {self.path_stockage}"
 
     def __eq__(self, other):

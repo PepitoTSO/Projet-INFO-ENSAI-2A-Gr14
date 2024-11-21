@@ -137,7 +137,6 @@ class Son_DAO(metaclass=Singleton):
                 with connection.cursor(
                     cursor_factory=psycopg2.extras.RealDictCursor
                 ) as cursor:
-                    # Step 1: Find all playlists containing the `Son` to be deleted
                     cursor.execute(
                         """
                         SELECT id_playlist FROM bdd.playlist_son_join
@@ -147,11 +146,9 @@ class Son_DAO(metaclass=Singleton):
                     )
                     playlists = cursor.fetchall()
 
-                    # Step 2: For each playlist, remove the `Son` and update order of other songs
                     for playlist_data in playlists:
                         id_playlist = playlist_data["id_playlist"]
 
-                        # Delete the specific `Son` from the playlist
                         cursor.execute(
                             """
                             DELETE FROM bdd.playlist_son_join
@@ -160,7 +157,6 @@ class Son_DAO(metaclass=Singleton):
                             (id_playlist, id_son),
                         )
 
-                        # Fetch the remaining songs to update their order
                         cursor.execute(
                             """
                             SELECT id_son FROM bdd.playlist_son_join
@@ -171,7 +167,6 @@ class Son_DAO(metaclass=Singleton):
                         )
                         remaining_songs = cursor.fetchall()
 
-                        # Update the order of the remaining songs
                         for new_order, son_data in enumerate(remaining_songs, start=1):
                             cursor.execute(
                                 """
@@ -182,7 +177,6 @@ class Son_DAO(metaclass=Singleton):
                                 (new_order, id_playlist, son_data["id_son"]),
                             )
 
-                    # Step 3: Now, delete the `Son` from the `bdd.son` table
                     cursor.execute(
                         """
                         DELETE FROM bdd.son WHERE id_son = %s;
@@ -190,7 +184,6 @@ class Son_DAO(metaclass=Singleton):
                         (id_son,),
                     )
 
-                    # Check if the delete was successful
                     if cursor.rowcount == 0:
                         return False
 

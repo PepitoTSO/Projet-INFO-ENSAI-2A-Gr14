@@ -11,8 +11,6 @@ async def main():
     # On charge les variables d'environnement
     dotenv.load_dotenv(override=True)
 
-    # initialiser_logs("Application")
-
     current_view = AccueilView("Bienvenue")
     nb_erreurs = 0
 
@@ -29,8 +27,7 @@ async def main():
             nb_erreurs += 1
             print(e)
 
-    print("----------------------------------")
-    print("Au revoir")
+    print("\n" + "-" * 50 + "\nMerci\n" + "-" * 50 + "\n")
 
     logging.info("Fin de l'application")
 

@@ -21,7 +21,6 @@ class SonService:
     def __init__(self):
         self.etat_pause = False
         self.posit_pause = 0
-        self.volume = 0.7
 
     # La partie DAO
     def supprimer_son(self, son: Son):
@@ -59,31 +58,6 @@ class SonService:
         return r
 
     # la partie lecteur son général
-
-    def mute(self):
-        """Mute le son en réglant le volume à 0."""
-        pygame.mixer.music.set_volume(0)
-        self.volume = 0
-        print("Mute")
-
-    def unmute(self):
-        """Réactive le son en réglant le volume au niveau précédent."""
-        pygame.mixer.music.set_volume(0.5)
-        print(f"Volume à {self.volume*100}%")
-
-    def augmenter_volume(self):
-        """Augmente le volume de 10%."""
-        self.volume = min(1.0, self.volume + 0.1)
-        pygame.mixer.music.set_volume(self.volume)
-        print("Augmentation du volume de 10%")
-        print(f"Volume à {self.volume*100}%")
-
-    def diminuer_volume(self):
-        """Diminue le volume de 10%."""
-        self.volume = max(0.0, self.volume - 0.1)
-        pygame.mixer.music.set_volume(self.volume)
-        print("Diminution du volume de 10%")
-        print(f"Volume à {self.volume*100}%")
 
     async def play(self, son: Son, duree=None):
         """
@@ -186,7 +160,7 @@ class SonService:
         """Met en pause le son en cours si un canal est en lecture."""
         obj_canal = self.selectionner_canal(canal)
         if obj_canal.get_busy():
-            self.temps_restant = obj_canal.get_pos()  # Récupérer la position du son
+            self.temps_restant = obj_canal.get_pos()
             obj_canal.stop()
             print(f"Son mis en pause à {self.temps_restant}ms")
 

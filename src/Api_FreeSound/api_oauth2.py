@@ -4,12 +4,14 @@ from selenium import webdriver
 from dotenv import load_dotenv
 import os
 
+# Classe inutilisee mais permet d'ameliorer la recherche
+
 
 class API_OAUTH2:
     """
     gère l'authentification spécifique OAuth2 pour avoir plus de fonctionnalités
 
-    Step 1: L'apllication renvoie les utilisateurs vers une page Freesound où ils se connectent et sont invités à donner des autorisations à votre application.
+    Step 1: L'application renvoie les utilisateurs vers une page Freesound où ils se connectent et sont invités à donner des autorisations à votre application.
     Step 2: Si les utilisateurs accordent l'accès à votre application, Freesound les redirige vers une URL que vous fournissez et inclut un code d'autorisation en tant que paramètre GET*.
     Step 3: Votre application utilise ce code d'autorisation pour demander un jeton d'accès qui "lie" l'utilisateur final à votre application et que vous devrez ensuite ajouter à toutes vos requêtes API.
 
@@ -24,7 +26,6 @@ class API_OAUTH2:
     2WoqneIUA2PeCzrWcB4BPsbxvtPAKg
     """
 
-    # [orga] Au propre dans un config.py puis import ici?
     load_dotenv()
     CLEAPI = os.getenv("CLEAPI")
     client_id = os.getenv("CLIENTID")
@@ -62,7 +63,7 @@ class API_OAUTH2:
             r = session.get(url, params=getpayload)
 
             if r.status_code <= 400:
-                # fait pour chrome, possible autre navigateur, argument defaut dans fonction? // navigateur = Chrome
+                # fait pour chrome, possible autre navigateur
 
                 navigateur = webdriver.Chrome()
 
@@ -74,7 +75,6 @@ class API_OAUTH2:
                 if token:
                     pass
                 else:
-                    # pas sûr que utile
                     print("il vous reste 15 avant quit")
                     time.sleep(15)
 
@@ -146,6 +146,3 @@ class API_OAUTH2:
         )
 
         return rep.json()
-
-
-# a mettre en forme (blake)

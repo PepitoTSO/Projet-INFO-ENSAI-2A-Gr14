@@ -49,7 +49,6 @@ class ModifPlaylistView(AbstractView):
                 return PlaylistView()
 
             case "Renommer la playlist":
-                # fonctionne
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
 
@@ -72,7 +71,6 @@ class ModifPlaylistView(AbstractView):
                 return ModifPlaylistView()
 
             case "Ajouter un son à la playlist":
-                # fonctionne
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
 
@@ -99,7 +97,6 @@ class ModifPlaylistView(AbstractView):
                 return ModifPlaylistView()
 
             case "Supprimer un son de la playlist":
-                # fonctionne
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
 
@@ -123,7 +120,6 @@ class ModifPlaylistView(AbstractView):
                 return ModifPlaylistView()
 
             case "Changer l'ordre d'un son dans la playlist":
-                # fonctionne (sauf si plist ordre 1 3 sans 2 et switch 1 vers 2)
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
 
