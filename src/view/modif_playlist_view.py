@@ -27,10 +27,10 @@ class ModifPlaylistView(AbstractView):
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
-                "Renommer la playlist",
-                "Ajouter un son à la playlist",
-                "Supprimer un son de la playlist",
-                "Changer l'ordre d'un son dans la playlist",
+                "Renommer une playlist",
+                "Ajouter un son à une playlist",
+                "Supprimer un son d'une playlist",
+                "Changer l'ordre d'un son dans une playlist",
                 "Revenir au menu précédent",
                 "Se déconnecter",
             ],
