@@ -3,7 +3,6 @@ from DAO.playlist_DAO import Playlist_DAO
 from Object.son import Son
 from view.session import Session
 from Service.SonService import SonService
-from Api_FreeSound import apifreesound
 import asyncio
 
 
