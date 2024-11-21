@@ -5,7 +5,6 @@ from view.session import Session
 
 from Service.PlaylistService import PlaylistService
 from Service.SonService import SonService
-from Api_FreeSound import apifreesound
 
 
 class ModifPlaylistView(AbstractView):
