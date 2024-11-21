@@ -60,13 +60,16 @@ class Son:
         Returns
         -------
         str
-            Représentation sous forme de chaîne de caractères du son avec son ID, son nom, ses tags et son chemin de stockage.
+            Représentation sous forme de chaîne de caractères du son avec son ID,
+            son nom, ses tags et son chemin de stockage.
         """
 
         tags_str = ", ".join(self.tags)
         return f"Son ID: {self.id_son}, Nom: '{self.nom}', Tags: [{tags_str}], Chemin: {self.path_stockage}"
 
     def __eq__(self, other):
+        """Permet de définir une égalité entre deux sons, ici sur les arguments"""
+
         if not isinstance(other, Son):
             return False
         return (

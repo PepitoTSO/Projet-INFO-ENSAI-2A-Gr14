@@ -4,7 +4,6 @@ import pygame
 import time
 import random
 import asyncio
-from view.session import Session
 
 # Initialiser Pygame
 pygame.init()
