@@ -48,17 +48,20 @@ class ModifPlaylistView(AbstractView):
 
                 return PlaylistView()
 
-            case "Renommer la playlist":
+            case "Renommer une playlist":
                 # fonctionne
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
+                playlists.append("Retour au menu précédent")
 
                 modifier_playlist = inquirer.select(
                     message="Choisissez une playlist : ",
                     choices=playlists,
                 ).execute()
-                Session().playlist = modifier_playlist
+                if modifier_playlist == "Retour au menu précédent":
+                    return ModifPlaylistView()
 
+                Session().playlist = modifier_playlist
                 nouveau_nom_playlist = inquirer.text(
                     message="Quel est le nouveau nom de la playlist ? : "
                 ).execute()
@@ -71,17 +74,20 @@ class ModifPlaylistView(AbstractView):
 
                 return ModifPlaylistView()
 
-            case "Ajouter un son à la playlist":
+            case "Ajouter un son à une playlist":
                 # fonctionne
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
+                playlists.append("Retour au menu précédent")
 
                 modifier_playlist = inquirer.select(
                     message="Choisissez une playlist : ",
                     choices=playlists,
                 ).execute()
-                Session().playlist = modifier_playlist
+                if modifier_playlist == "Retour au menu précédent":
+                    return ModifPlaylistView()
 
+                Session().playlist = modifier_playlist
                 liste_sons = SonService().lister_son()
                 ajout_son = inquirer.select(
                     message="Choisissez un son : ",
@@ -98,15 +104,19 @@ class ModifPlaylistView(AbstractView):
                 Session().son = None
                 return ModifPlaylistView()
 
-            case "Supprimer un son de la playlist":
+            case "Supprimer un son d'une playlist":
                 # fonctionne
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
+                playlists.append("Retour au menu précédent")
 
                 modifier_playlist = inquirer.select(
                     message="Choisissez une playlist : ",
                     choices=playlists,
                 ).execute()
+                if modifier_playlist == "Retour au menu précédent":
+                    return ModifPlaylistView()
+
                 Session().playlist = modifier_playlist
                 liste_son_plist = modifier_playlist.list_son
                 sons_dans_plist = [liste_sons[0] for liste_sons in liste_son_plist]
@@ -122,15 +132,19 @@ class ModifPlaylistView(AbstractView):
                 Session().playlist = None
                 return ModifPlaylistView()
 
-            case "Changer l'ordre d'un son dans la playlist":
+            case "Changer l'ordre d'un son dans une playlist":
                 # fonctionne (sauf si plist ordre 1 3 sans 2 et switch 1 vers 2)
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
+                playlists.append("Retour au menu précédent")
 
                 modifier_playlist = inquirer.select(
                     message="Choisissez une playlist : ",
                     choices=playlists,
                 ).execute()
+                if modifier_playlist == "Retour au menu précédent":
+                    return ModifPlaylistView()
+
                 Session().playlist = modifier_playlist
                 liste_son_plist = modifier_playlist.list_son
                 sons_dans_plist = [liste_sons[0] for liste_sons in liste_son_plist]

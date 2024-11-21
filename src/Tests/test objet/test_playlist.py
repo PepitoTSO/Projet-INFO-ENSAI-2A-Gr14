@@ -4,6 +4,7 @@ from Object.son import Son
 from Object.playlist import Playlist
 from view.session import Session
 
+
 class TestPlaylist(unittest.TestCase):
 
     def setUp(self):
@@ -70,17 +71,15 @@ class TestPlaylist(unittest.TestCase):
         self.playlist.ajouter_son_playlist(self.son3, 2)
         self.assertEqual(len(self.playlist.list_son), 3)
         self.assertEqual(self.playlist.list_son[1], [self.son3, 2])
-        self.assertEqual(
-            self.playlist.list_son[2][1], 3
-        )
+        self.assertEqual(self.playlist.list_son[2][1], 3)
 
     def test_ajouter_son_playlist_ordre_invalide_trop_petit(self):
         with self.assertRaises(ValueError):
             self.playlist.ajouter_son_playlist(self.son3, 0)
 
-    def test_ajouter_son_playlist_ordre_invalide_trop_grand(self):
-        with self.assertRaises(ValueError):
-            self.playlist.ajouter_son_playlist(self.son3, 5)
+    def test_ajouter_son_playlist_ordre_trop_grand(self):
+        self.playlist.ajouter_son_playlist(self.son3, 6)
+        self.assertEqual(self.playlist.list_son[2][1], 3)
 
     def test_ajouter_son_playlist_reindexation(self):
         self.playlist.ajouter_son_playlist(self.son3, 2)

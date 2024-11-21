@@ -59,21 +59,24 @@ class RechSonPlaylistView(AbstractView):
                 souschoix = inquirer.select(
                     message="Faites votre choix : ",
                     choices=[
-                        "Telecharger son",
+                        "Télécharger un son",
                         "Recommandations",
                         "Revenir au menu précédent",
                     ],
                 ).execute()
                 match souschoix:
 
-                    case "Telecharger son":
+                    case "Télécharger un son":
 
                         liste_choix_nom = [i["name"] for i in resultat]
+                        liste_choix_nom.append("Retour au menu précédent")
 
                         choix_dl_inq = inquirer.select(
                             message="Quel son voulez-vous télécharger?",
                             choices=liste_choix_nom,
                         ).execute()
+                        if choix_dl_inq == "Retour au menu précédent":
+                            return RechSonPlaylistView()
 
                         # retourne le premier resultat associé au nom choisi l'objet pour le telecharger
                         obj_son = next(i for i in resultat if i["name"] == choix_dl_inq)
@@ -89,15 +92,46 @@ class RechSonPlaylistView(AbstractView):
                         SonService().ajouter_son(son)
 
                         ecouter = inquirer.confirm(
-                            message="Voulez-vous écouter (10s)?", default=True
+                            message="Voulez-vous écouter le son (10s)?", default=True
                         ).execute()
                         if ecouter is True:
                             SonService().play(son, 10)
 
+                        ajouter_playlist = inquirer.confirm(
+                            message="Voulez-vous ajouter le son à une playlist ?"
+                        ).execute()
+                        if ajouter_playlist is True:
+                            from Service.PlaylistService import PlaylistService
+
+                            playlist_service = PlaylistService()
+                            playlists = playlist_service.afficher_playlist()
+                            playlists.append("Retour au menu précédent")
+
+                            modifier_playlist = inquirer.select(
+                                message="Choisissez une playlist : ",
+                                choices=playlists,
+                            ).execute()
+                            if modifier_playlist == "Retour au menu précédent":
+                                return RechSonPlaylistView()
+
+                            Session().playlist = modifier_playlist
+
+                            ordre = inquirer.text(
+                                message="A quel ordre souhaitez-vous placer le son dans la playlist ? : "
+                            ).execute()
+
+                            playlist_service.ajouter_son_a_playlist(son, int(ordre))
+                            print(f"Le son {son.nom} a été ajouté avec succès.")
+                            Session().playlist = None
+                            Session().son = None
+                            from view.menu_principal_view import MenuView
+
+                            return MenuView()
+
                         return RechSonPlaylistView()
 
                     case "Recommandations":
-                        # La partie recommendation
+                        # La partie recommandation
                         recom = recherche_avancee().n_mots_similaires(recherche_son)
                         liste_recom = [i[0] for i in recom]
                         liste_choix_recom = [recherche_son] + liste_recom
@@ -108,7 +142,7 @@ class RechSonPlaylistView(AbstractView):
                         resultat = apifreesound().recherche_son(choix_recom_inq)
 
                         telecharger = inquirer.confirm(
-                            message="Voulez-vous telecharger?", default=True
+                            message="Voulez-vous télécharger?", default=True
                         ).execute()
                         if telecharger is False:
                             return RechSonPlaylistView()
@@ -134,7 +168,7 @@ class RechSonPlaylistView(AbstractView):
                         )
                         SonService().ajouter_son(son)
                         ecouter = inquirer.confirm(
-                            message="Voulez-vous ecouter (10s)?", default=True
+                            message="Voulez-vous écouter le son (10s)?", default=True
                         ).execute()
                         if ecouter is True:
                             SonService().play(son, 10)
