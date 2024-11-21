@@ -29,8 +29,10 @@ class JouerSonView(AbstractView):
             choices=[
                 "Pause",
                 "Unpause",
-                "Stop",
+                "Son suivant",
                 "Stop tout sauf playlist",
+                "Aller aux sons",
+                "Aller à playlist",
                 "Revenir au menu principal",
                 "Se déconnecter",
             ],
@@ -48,17 +50,25 @@ class JouerSonView(AbstractView):
 
                 return MenuView()
 
+            case "Aller aux sons":
+                from view.son_view import SonView
+
+                return SonView()
+
+            case "Aller à playlist":
+                from view.playlist_view import PlaylistView
+
+                return PlaylistView()
+
             case "Pause":
-                # a faire
-                son_service.pause_canal(8)
+                son_service.pause(0)
                 return JouerSonView()
 
             case "Unpause":
-                # a faire
-                son_service.unpause()
+                son_service.pause(1)
                 return JouerSonView()
 
-            case "Stop":
+            case "Son suivant":
                 son_service.stop()
                 return JouerSonView()
 

@@ -17,6 +17,8 @@ class SonService:
     Implemente les méthodes associées à la classe Son
     """
 
+    var_pause = 0
+
     def __init__(self):
         self.etat_pause = False
         self.posit_pause = 0
@@ -81,22 +83,14 @@ class SonService:
                 await asyncio.sleep(0.1)
         pygame.mixer.music.stop()
 
-    def pause(self):
-        """Met en pause le son en cours de lecture"""
-        if pygame.mixer.music.get_busy():
-            self.is_paused = True
-            self.pause_pos = (
-                pygame.mixer.music.get_pos() / 1000
-            )  # Récupérer la position en secondes
-            pygame.mixer.music.stop()
-            print(f"Musique mise en pause à {self.pause_pos} secondes.")
-
-    def resume(self):
-        """Reprend la lecture à partir de la position où elle a été mise en pause"""
-        if self.is_paused:
-            self.is_paused = False
-            pygame.mixer.music.play(start=self.pause_pos)
-            print(f"Musique reprise à {self.pause_pos} secondes.")
+    def pause(self, etat):
+        """Met en pause tous les sons en cours de lecture"""
+        if etat == 0:
+            pygame.mixer.pause()
+            print("Pause")
+        if etat == 1:
+            pygame.mixer.unpause()
+            print("Reprise")
 
     def stop(self):
         """Stop général de tous les channels avec diminution du son (on peut faire un stop aussi)"""
@@ -108,7 +102,7 @@ class SonService:
     def stop_channel(self, canal):
         if not isinstance(canal, int):
             raise TypeError("canal doit être int")
-        self.selectionner_canal(canal)
+        canal = self.selectionner_canal(canal)
         canal.stop()
 
     def stop_sauf_plist(self):
