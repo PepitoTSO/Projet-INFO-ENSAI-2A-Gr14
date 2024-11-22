@@ -237,3 +237,7 @@ class Son_DAO(metaclass=Singleton):
         except Exception as e:
             print(f"Error get_all_son_ordre_by_id_playlist :{e}")
             return []
+
+
+son = Son_DAO().get_son_by_id(2)
+print(son)

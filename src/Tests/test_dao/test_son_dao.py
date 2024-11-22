@@ -13,10 +13,12 @@ def test_trouver_par_id_existant():
     """Recherche par id d'un son existant"""
 
     # GIVEN
-    id_son = 1
+    son = Son(1, nom="Song 1", tags=["chill", "relax"], path_stockage="/path/to/song1")
+    Son_DAO().ajouter_son(son)
+    id_son1 = 1
 
     # WHEN
-    son = Son_DAO().get_son_by_id(id_son)
+    son = Son_DAO().get_son_by_id(id_son1)
 
     # THEN
     expected_son = Son(
@@ -56,11 +58,24 @@ def test_lister_tous():
         assert isinstance(s, Son)
 
 
+def test_supprimer_son_existant():
+    """Suppression d'un son existant réussie"""
+
+    # GIVEN
+    id_son = 1
+
+    # WHEN
+    suppression_ok = Son_DAO().supprimer_son(id_son)
+
+    # THEN
+    assert suppression_ok
+
+
 def test_ajouter_ok():
     """Création de Son réussie"""
 
     # GIVEN
-    son = Son(id_son=1, nom="pas_de_nom", tags=[], path_stockage=None)
+    son = Son(13, nom="Song 1", tags=["chill", "relax"], path_stockage="/path/to/song1")
 
     # WHEN
     creation_ok = Son_DAO().ajouter_son(son)
@@ -73,7 +88,7 @@ def test_supprimer_son_existant():
     """Suppression d'un son existant réussie"""
 
     # GIVEN
-    id_son = 1
+    id_son = 13
 
     # WHEN
     suppression_ok = Son_DAO().supprimer_son(id_son)
