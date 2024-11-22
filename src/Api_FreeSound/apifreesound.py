@@ -66,7 +66,13 @@ class apifreesound:
 
     def dl_son(self, id, HQ=False):
         """
-        Permet de telecharger un son à partir de son identifiant sur l'API avec verification si le son existe deja"
+        Permet de telecharger un son à partir de son identifiant sur l'API avec verification si le son existe deja
+
+        Params :
+            id : int
+            Identifiant du son sur l'API
+            HQ : bool
+            Pour télécharger la preview en hq
         """
         if not isinstance(id, int):
             raise TypeError("id n'est pas int")

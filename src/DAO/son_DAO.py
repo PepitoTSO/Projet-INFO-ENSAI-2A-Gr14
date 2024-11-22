@@ -10,16 +10,14 @@ from utils.log_decorator import log
 
 class Son_DAO(metaclass=Singleton):
     """
-    Data Access Object (DAO) for Son operations.
-    Uses the Singleton pattern to ensure a single instance.
+    DAO de Son.
     """
 
     @log
     def ajouter_son(self, son: Son) -> bool:
         """
-        Adds a new 'son' to the database.
+        Ajoute un son à la bdd
         """
-        # Convert tags to a comma-separated string if it is a list
         tags_string = ", ".join(son.tags) if isinstance(son.tags, list) else son.tags
 
         try:
@@ -47,12 +45,15 @@ class Son_DAO(metaclass=Singleton):
                         return res["id_son"]
 
         except Exception as e:
-            print(f"Error adding son: {e.__class__.__name__}: {e}")
+            print(f"Erreur ajout son: {e.__class__.__name__}: {e}")
             return False
 
         return False
 
     def get_son_by_id(self, id_son: int) -> Son:
+        """
+        Recupere un son par son id.
+        """
         with DBConnection().connection as connection:
             with connection.cursor(
                 cursor_factory=psycopg2.extras.RealDictCursor
@@ -77,6 +78,9 @@ class Son_DAO(metaclass=Singleton):
         return None
 
     def get_son_by_name(self, name_son: str) -> Son:
+        """
+        Recupere un son par son nom
+        """
         with DBConnection().connection as connection:
             with connection.cursor(
                 cursor_factory=psycopg2.extras.RealDictCursor
@@ -128,10 +132,13 @@ class Son_DAO(metaclass=Singleton):
             return list_son
 
         except Exception as e:
-            print(f"Error get_all_son :{e}")
+            print(f"Erreur get_all_son :{e}")
             return None
 
     def supprimer_son(self, id_son: int) -> bool:
+        """
+        Supprime un son de la bdd par son id
+        """
         try:
             with DBConnection().connection as connection:
                 with connection.cursor(
@@ -189,12 +196,12 @@ class Son_DAO(metaclass=Singleton):
 
             return True
         except Exception as e:
-            print(f"Error deleting son: {e}")
+            print(f"Erreur suppression son: {e}")
             return False
 
     def get_all_son_ordre_by_id_playlist(self, id_playlist: int) -> List[List]:
         """
-        Retrieves all 'sons' from the specified playlist along with their order in the playlist.
+        Recupère tous les sons d'une playlist par son id et les instancie comme tel
         """
         sons = []
         try:
@@ -228,5 +235,5 @@ class Son_DAO(metaclass=Singleton):
             return sons
 
         except Exception as e:
-            print(f"Error get_all_son_ordre_by_id_playlist :{e}")
+            print(f"Erreur get_all_son_ordre_by_id_playlist :{e}")
             return []

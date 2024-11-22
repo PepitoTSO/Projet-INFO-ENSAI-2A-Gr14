@@ -13,8 +13,7 @@ import psycopg2.extras
 
 class Playlist_DAO(metaclass=Singleton):
     """
-    Data Access Object (DAO) for Playlist operations.
-    Uses the Singleton pattern to ensure a single instance.
+    DAO playlist
     """
 
     @log
@@ -116,6 +115,9 @@ class Playlist_DAO(metaclass=Singleton):
 
     @log
     def get_playlist(self, playlist: Playlist):
+        """
+        Recupere un objet playlist et l'instancie
+        """
         id_playlist = playlist.id_playlist
         try:
             with DBConnection().connection as connection:
@@ -240,6 +242,9 @@ class Playlist_DAO(metaclass=Singleton):
 
     @log
     def modifier_nom_playlist(self, playlist: Playlist, nouveau_nom: str) -> bool:
+        """
+        Modifie le nom d'une playlist dans la bdd.
+        """
         id_playlist = playlist.id_playlist
         try:
             with DBConnection().connection as connection:

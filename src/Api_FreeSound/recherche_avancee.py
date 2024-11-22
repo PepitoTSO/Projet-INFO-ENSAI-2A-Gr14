@@ -42,6 +42,16 @@ class recherche_avancee:
     def n_mots_similaires(self, mot: str, n=5):
         """
         Retourne les n couples mot-distance les plus proches du mot recherche selon le modèle
+
+        Params:
+            mot : str
+        Un mot sur lequel fait une recherche par similarite
+            n : int
+        Le nombre de resultat
+
+        Returns:
+            res : list(str, int)
+        Liste qui les couples mot-distance dans l'ordre décroissant
         """
         if not isinstance(mot, str):
             raise TypeError("La recherche doit être un mot")

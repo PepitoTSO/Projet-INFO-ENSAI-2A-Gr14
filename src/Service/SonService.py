@@ -17,12 +17,6 @@ class SonService:
     Implemente les méthodes associées à la classe Son
     """
 
-    var_pause = 0
-
-    def __init__(self):
-        self.etat_pause = False
-        self.posit_pause = 0
-
     # La partie DAO
     def supprimer_son(self, son: Son):
         """
@@ -100,6 +94,7 @@ class SonService:
     # La partie lecteur par canal
 
     def stop_channel(self, canal):
+        """Stop sur un canal determine"""
         if not isinstance(canal, int):
             raise TypeError("canal doit être int")
         canal = self.selectionner_canal(canal)
@@ -130,7 +125,6 @@ class SonService:
         Params:
         son : Son
             Une instance de son
-        Returns:
         """
         try:
             son_a_jouer = pygame.mixer.Sound(str(son.path_stockage))
