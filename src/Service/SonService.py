@@ -4,7 +4,6 @@ import pygame
 import time
 import random
 import asyncio
-from view.session import Session
 
 # Initialiser Pygame
 pygame.init()
@@ -55,7 +54,7 @@ class SonService:
 
     # la partie lecteur son général
 
-    def play(self, son: Son, duree=None):
+    async def play(self, son: Son, duree=None):
         """
         Joue un son avec Pygame
         Params:
@@ -72,30 +71,33 @@ class SonService:
 
         # Attendre que la musique soit terminée
         if duree:
-            time.sleep(duree)
+            await asyncio.sleep(duree)
         else:
             while pygame.mixer.music.get_busy():
-                time.sleep(1)
+                await asyncio.sleep(0.1)
         pygame.mixer.music.stop()
 
-    def pause(self):
-        """Pause général de tous les channels"""
-        pygame.mixer.music.pause()
-
-    def unpause(self):
-        """Pause général de tous les channels"""
-        pygame.mixer.music.unpause()
+    def pause(self, etat):
+        """Met en pause tous les sons en cours de lecture"""
+        if etat == 0:
+            pygame.mixer.pause()
+            print("Pause")
+        if etat == 1:
+            pygame.mixer.unpause()
+            print("Reprise")
 
     def stop(self):
         """Stop général de tous les channels avec diminution du son (on peut faire un stop aussi)"""
         pygame.mixer.fadeout(3)
+        print("Fin de la lecture")
 
     # La partie lecteur par canal
 
     def stop_channel(self, canal):
+        """Stop sur un canal determine"""
         if not isinstance(canal, int):
             raise TypeError("canal doit être int")
-        self.selectionner_canal(canal)
+        canal = self.selectionner_canal(canal)
         canal.stop()
 
     def stop_sauf_plist(self):
@@ -117,15 +119,19 @@ class SonService:
         return canal
 
     # Les fonctions asynchrones
-    async def play_channel(self, son: Son, temps=None, canal=None):
+    async def play_canal(self, son: Son, temps=None, canal=None):
         """
         Joue un son avec Pygame
         Params:
         son : Son
             Une instance de son
-        Returns:
         """
-        son_a_jouer = pygame.mixer.Sound(str(son.path_stockage))
+        try:
+            son_a_jouer = pygame.mixer.Sound(str(son.path_stockage))
+        except Exception as e:
+            print(f"Impossible de charger le son : {e}")
+            print("Essayer de le télécharger")
+            return
         canal = self.selectionner_canal(canal)
         print(f"lecture du son :{son.nom}")
         if temps:
@@ -134,8 +140,16 @@ class SonService:
         else:
             canal.play(son_a_jouer)
             while canal.get_busy():
-                await asyncio.sleep(1)
+                await asyncio.sleep(0.1)
         canal.stop()
+
+    def pause_canal(self, canal):
+        """Met en pause le son en cours si un canal est en lecture."""
+        obj_canal = self.selectionner_canal(canal)
+        if obj_canal.get_busy():
+            self.temps_restant = obj_canal.get_pos()
+            obj_canal.stop()
+            print(f"Son mis en pause à {self.temps_restant}ms")
 
     async def jouer_aleatoire(
         self, son: Son, attente_min: int, attente_max: int, duree: int, canal=None
@@ -163,20 +177,3 @@ class SonService:
             attente_random = random.uniform(attente_min, attente_max)
             await asyncio.sleep(attente_random)
             canal.fadeout(temps_fadeout)
-
-
-async def main():
-    son_test = Son(1, path_stockage="./data/test.mp3")
-    son2 = Son(2, path_stockage="./data/son/57740.mp3")
-
-    son_service = SonService()
-
-    t1 = asyncio.create_task(son_service.play_channel(son_test, 10))
-    t2 = asyncio.create_task(son_service.jouer_aleatoire(son2, 2, 5, 20))
-
-    await t1
-    await t2
-
-
-if __name__ == "__main__":
-    asyncio.run(main())

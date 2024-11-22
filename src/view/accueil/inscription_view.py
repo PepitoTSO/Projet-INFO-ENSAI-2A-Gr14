@@ -14,7 +14,7 @@ class InscriptionView(AbstractView):
     Vue du menu d'inscription d'un utilisateur
     """
 
-    def choisir_menu(self):
+    async def choisir_menu(self):
         """Choix du menu suivant de l'utilisateur
 
         Return
@@ -27,11 +27,6 @@ class InscriptionView(AbstractView):
 
         # Demande à l'utilisateur de saisir pseudo, mot de passe...
         pseudo = inquirer.text(message="Entrez votre pseudo : ").execute()
-
-        # if JoueurService().pseudo_deja_utilise(pseudo):
-        #    from view.accueil.accueil_vue import AccueilVue
-
-        #    return AccueilVue(f"Le pseudo {pseudo} est déjà utilisé.")
 
         mdp = inquirer.secret(
             message="Entrez votre mot de passe : ",

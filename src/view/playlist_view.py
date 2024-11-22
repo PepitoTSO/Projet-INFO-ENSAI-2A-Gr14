@@ -11,7 +11,7 @@ class PlaylistView(AbstractView):
     Vue du menu de la gestion des playlists
     """
 
-    def choisir_menu(self):
+    async def choisir_menu(self):
         """Choix du menu suivant de l'utilisateur
 
         Return
@@ -63,6 +63,7 @@ class PlaylistView(AbstractView):
                 ).execute()
                 playlist_service = PlaylistService()
                 playlist_service.creer_playlist(nom_playlist)
+
                 return PlaylistView()
 
             case "Supprimer une playlist":
@@ -77,10 +78,12 @@ class PlaylistView(AbstractView):
 
                 if modifier_playlist == "Retour au menu précédent":
                     return PlaylistView()
+
                 Session().playlist = modifier_playlist
                 playlist_service.supprimer_playlist()
                 print("Playlist supprimée")
                 Session().playlist = None
+
                 return PlaylistView()
 
             case "Copier une playlist":
@@ -91,9 +94,10 @@ class PlaylistView(AbstractView):
                     message="Choisissez une playlist : ",
                     choices=plist_tous,
                 ).execute()
+
                 if copier_plist == "Retour au menu précédent":
                     return PlaylistView()
-                # maj session avec plist selectionnee
+
                 Session().playlist = copier_plist
                 PlaylistService().copier_playlist()
 

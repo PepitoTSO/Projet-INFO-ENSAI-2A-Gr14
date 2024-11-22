@@ -5,7 +5,6 @@ from view.session import Session
 
 from Service.PlaylistService import PlaylistService
 from Service.SonService import SonService
-from Api_FreeSound import apifreesound
 
 
 class ModifPlaylistView(AbstractView):
@@ -13,7 +12,7 @@ class ModifPlaylistView(AbstractView):
     Vue du menu de la modification des playlists
     """
 
-    def choisir_menu(self):
+    async def choisir_menu(self):
         """Choix du menu suivant de l'utilisateur
 
         Return
@@ -48,8 +47,7 @@ class ModifPlaylistView(AbstractView):
 
                 return PlaylistView()
 
-            case "Renommer une playlist":
-                # fonctionne
+            case "Renommer la playlist":
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
                 playlists.append("Retour au menu précédent")
@@ -74,8 +72,7 @@ class ModifPlaylistView(AbstractView):
 
                 return ModifPlaylistView()
 
-            case "Ajouter un son à une playlist":
-                # fonctionne
+            case "Ajouter un son à la playlist":
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
                 playlists.append("Retour au menu précédent")
@@ -104,8 +101,7 @@ class ModifPlaylistView(AbstractView):
                 Session().son = None
                 return ModifPlaylistView()
 
-            case "Supprimer un son d'une playlist":
-                # fonctionne
+            case "Supprimer un son de la playlist":
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
                 playlists.append("Retour au menu précédent")
@@ -132,8 +128,7 @@ class ModifPlaylistView(AbstractView):
                 Session().playlist = None
                 return ModifPlaylistView()
 
-            case "Changer l'ordre d'un son dans une playlist":
-                # fonctionne (sauf si plist ordre 1 3 sans 2 et switch 1 vers 2)
+            case "Changer l'ordre d'un son dans la playlist":
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
                 playlists.append("Retour au menu précédent")

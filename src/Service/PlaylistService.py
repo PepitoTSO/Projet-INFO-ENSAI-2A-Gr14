@@ -3,7 +3,7 @@ from DAO.playlist_DAO import Playlist_DAO
 from Object.son import Son
 from view.session import Session
 from Service.SonService import SonService
-from Api_FreeSound import apifreesound
+import asyncio
 
 
 class PlaylistService:
@@ -111,10 +111,9 @@ class PlaylistService:
 
         playlist = Session().playlist
         Playlist_DAO().ajouter_son(playlist, son, ordre)
-        # playlist.ajouter_son_playlist(son, ordre)
         Session().playlist = playlist
 
-    def play_playlist(self, canal=1):
+    async def play_playlist(self, canal=1):
         """
         Joue les sons de la playlist dans l'ordre spécifié.
 
@@ -123,14 +122,21 @@ class PlaylistService:
         canal : int, optional
             Le canal sur lequel la playlist sera jouée (par défaut le canal 1).
         """
-
-        playlist = Session().playlist.list_son
-        playlist_ordonnee = sorted(playlist.list_son, key=lambda x: x[1])
+        session = Session()
+        son_service = SonService()
+        playlist = session.playlist.list_son
+        if playlist is None:
+            print("Aucune playlist n'est chargée dans la session.")
+            return
+        playlist_ordonnee = sorted(playlist, key=lambda x: x[1])
         for son, _ in playlist_ordonnee:
-            Session().son = son
-            SonService().play_channel(son, canal)
+            session.son = son
+            try:
+                await asyncio.create_task(son_service.play_canal(son, canal=1))
+            except Exception as e:
+                print(f"Problème avec le son {son.nom} : {e}")
 
-    def play_next_son(self):
+    async def play_next_son(self):
         # Recuperer les infos session
         son = Session().son
         playlist = Session().playlist

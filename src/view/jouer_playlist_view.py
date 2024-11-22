@@ -1,5 +1,5 @@
 from InquirerPy import inquirer
-
+import asyncio
 from view.abstract_view import AbstractView
 from view.session import Session
 
@@ -12,7 +12,7 @@ class JouerPlaylistView(AbstractView):
     Vue du menu de la lecture des playlists
     """
 
-    def choisir_menu(self):
+    async def choisir_menu(self):
         """Choix du menu suivant de l'utilisateur
 
         Return
@@ -24,22 +24,22 @@ class JouerPlaylistView(AbstractView):
         print("\n" + "-" * 50 + "\nMenu Lecture des Playlists\n" + "-" * 50 + "\n")
 
         playlist_service = PlaylistService()
+        son_service = SonService()
+        session = Session()
 
-        playlists = playlist_service.afficher_playlist()
+        if not session.playlist:
+            self.choisir_playlist()
 
-        lire_playlist = inquirer.select(
-            message="Choisissez une playlist : ",
-            choices=playlists,
-        ).execute()
+        print(f"Playlist selectionnée : {session.playlist.nom_playlist}\n")
 
-        Session().playlist = lire_playlist
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
                 "Lancer la playlist depuis le début",
                 "Jouer un son de la playlist",
-                "Jouer un son en boucle",
-                "Jouer un autre son en simultané",
+                "Jouer un son de la playlist aléatoirement",
+                "Jouer un son de la playlist pendant x secondes",
+                "Changer de playlist",
                 "Revenir au menu précédent",
                 "Se déconnecter",
             ],
@@ -58,50 +58,90 @@ class JouerPlaylistView(AbstractView):
                 return PlaylistView()
 
             case "Lancer la playlist depuis le début":
-                playlist_service.play_playlist(lire_playlist)
-                premier_son = lire_playlist[0]
-                son_service = SonService()
-                son_service.play(premier_son)
-                Session().playlist = None
+                playlist = session.playlist.list_son
+                if playlist is None:
+                    print("Aucune playlist n'est chargée dans la session.")
+                    return JouerPlaylistView()
+
+                asyncio.create_task(playlist_service.play_playlist())
+                print("Fin Lecture playlist")
                 from view.jouer_son_view import JouerSonView
 
                 return JouerSonView()
 
             case "Jouer un son de la playlist":
-                lire_son = inquirer.select(
-                    message="Choisissez un son : ",
-                    choices=lire_playlist,
-                ).execute()
+                son_choisi = self.choisir_son()
 
-                Session().son = lire_son
-                son_service = SonService()
-                son_service.play(lire_son)
-                from view.jouer_son_view import JouerSonView
+                asyncio.create_task(son_service.play_canal(son_choisi))
 
-                return JouerSonView
-
-            case "Jouer un son en boucle":
-                lire_son = inquirer.select(
-                    message="Choisissez un son : ",
-                    choices=lire_playlist,
-                ).execute()
-
-                Session().son = lire_son
-                son_service = SonService()
-                son_service.jouer_en_boucle(lire_son)
-                from view.jouer_son_view import JouerSonView
-
-                return JouerSonView
-
-            case "Jouer un autre son en simultané":
-                lire_son = inquirer.select(
-                    message="Choisissez une son : ",
-                    choices=lire_playlist,
-                ).execute()
-
-                Session().son = lire_son
-                son_service = SonService()
-                son_service.play_multiple_sounds(lire_son)
                 from view.jouer_son_view import JouerSonView
 
                 return JouerSonView()
+
+            case "Jouer un son de la playlist aléatoirement":
+                son_choisi = self.choisir_son()
+
+                t = self.choisir_temps()
+
+                t_min = inquirer.text(
+                    message="Entrez la valeur de t_min :",
+                    validate=lambda x: x.isdigit()
+                    or "Veuillez entrer un nombre valide.",
+                    transformer=lambda x: int(x),
+                ).execute()
+
+                t_max = inquirer.text(
+                    message="Entrez la valeur de t_max (doit être supérieur à t_min) :",
+                    validate=lambda x: x.isdigit()
+                    and int(x) > int(t_min)
+                    or "Veuillez entrer un nombre supérieur à t_min.",
+                    transformer=lambda x: int(x),
+                ).execute()
+
+                asyncio.create_task(
+                    son_service.jouer_aleatoire(
+                        son_choisi, int(t_min), int(t_max), int(t)
+                    )
+                )
+
+                from view.jouer_son_view import JouerSonView
+
+                return JouerSonView()
+
+            case "Jouer un son de la playlist pendant x secondes":
+                son_choisi = self.choisir_son()
+                t = self.choisir_temps()
+                asyncio.create_task(son_service.play_canal(son_choisi, int(t)))
+
+                from view.jouer_son_view import JouerSonView
+
+                return JouerSonView()
+
+            case "Changer de playlist":
+                self.choisir_playlist()
+                return JouerPlaylistView()
+
+    def choisir_playlist(self):
+        playlists = PlaylistService().afficher_playlist()
+        lire_playlist = inquirer.select(
+            message="Choisissez une playlist : ",
+            choices=playlists,
+        ).execute()
+        Session().playlist = lire_playlist
+
+    def choisir_son(self):
+        lire_son = Session().playlist.list_son
+        sons_dans_plist = [liste_sons[0] for liste_sons in lire_son]
+        son = inquirer.select(
+            message="Choisissez un son : ",
+            choices=sons_dans_plist,
+        ).execute()
+        return son
+
+    def choisir_temps(self):
+        t = inquirer.text(
+            message="Entrez le temps de lecture:",
+            validate=lambda x: x.isdigit(),
+            transformer=lambda x: int(x),
+        ).execute()
+        return t

@@ -137,7 +137,6 @@ class UtilisateurService:
             )
             mdp_hache = self.hacher_mot_de_passe(nouveau_mdp_nh)
 
-            # Correction : utilisation de 'mdp_hache' au lieu de 'mot_de_passe_hache'
             Session.utilisateur.mdp_hache = mdp_hache
             Session.utilisateur.pseudo = pseudo_utilisateur
 
@@ -148,6 +147,6 @@ class UtilisateurService:
                 ancien_utilisateur, user_modif
             )
 
-            return reponse  # Retourner le résultat de la modification
+            return reponse
         else:
-            return False  # Si aucun utilisateur n'est connecté, retournez False
+            return False

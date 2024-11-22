@@ -18,7 +18,7 @@ class MenuView(AbstractView):
         retourne la prochaine vue, celle qui est choisie par l'utilisateur
     """
 
-    def choisir_menu(self):
+    async def choisir_menu(self):
         """Choix du menu suivant de l'utilisateur
 
         Return
@@ -33,8 +33,9 @@ class MenuView(AbstractView):
             message="Faites votre choix : ",
             choices=[
                 "Rechercher un son",
-                "Mes Sons",
+                "Sons disponibles",
                 "Mes Playlists",
+                "Lecteur",
                 "Infos",
                 "Se déconnecter",
             ],
@@ -52,7 +53,7 @@ class MenuView(AbstractView):
 
                 return RechSonPlaylistView()
 
-            case "Mes Sons":
+            case "Sons disponibles":
                 from view.son_view import SonView
 
                 return SonView()
@@ -61,6 +62,11 @@ class MenuView(AbstractView):
                 from view.playlist_view import PlaylistView
 
                 return PlaylistView()
+
+            case "Lecteur":
+                from view.jouer_son_view import JouerSonView
+
+                return JouerSonView()
 
             case "Infos":
                 menu = MenuView()
@@ -72,8 +78,10 @@ class MenuView(AbstractView):
         print(
             "Bonjour et bienvenue sur notre application ! \n"
             "Vous pouvez vous connecter ou créer un compte pour accéder à nos services. \n"
-            "Cette application a été créée dans le but de vous aider à créer une ambiance pour vos parties de jeux de rôles. \n"
-            "Vous pouvez ajouter des sons à votre playlist et les jouer en boucle ou les arrêter à tout moment afin de permettre une immersion totale des joueurs. \n"
+            "Cette application a été créée dans le but de vous aider à créer une ambiance pour vos parties de jeux de"
+            " rôles. \n"
+            "Vous pouvez ajouter des sons à votre playlist et les jouer en boucle ou les arrêter à tout moment afin "
+            "de permettre une immersion totale des joueurs. \n"
             "Vous pouvez aussi créer des playlists personnalisées pour chaque partie. \n"
             "N'hésitez pas à nous contacter pour toute question ou suggestion. \n"
             "Merci de votre confiance et bonne partie !"

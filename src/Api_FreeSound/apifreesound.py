@@ -4,7 +4,6 @@ import dotenv
 from pathlib import Path
 from colorama import Fore, Style, init
 
-# Initialize colorama for Windows compatibility
 init(autoreset=True)
 
 
@@ -48,14 +47,13 @@ class apifreesound:
                 self.url + "/apiv2/search/text/", params=payload, timeout=1
             )
             reponse.raise_for_status()
-            results = reponse.json()["results"][:5]  # Get only the first 5 results
+            results = reponse.json()["results"][:5]
 
             if not results:
                 print("Aucun résultat trouvé.")
                 return None
 
             for idx, son in enumerate(results, start=1):
-                # Extract only the first sentence of the description
                 description = son["description"].split(".")[0] + "."
 
                 print(f"{Fore.MAGENTA}Resultat {idx}:{Style.RESET_ALL}")
@@ -68,7 +66,13 @@ class apifreesound:
 
     def dl_son(self, id, HQ=False):
         """
-        Permet de telecharger un son à partir de son identifiant sur l'API avec verification si le son existe deja"
+        Permet de telecharger un son à partir de son identifiant sur l'API avec verification si le son existe deja
+
+        Params :
+            id : int
+            Identifiant du son sur l'API
+            HQ : bool
+            Pour télécharger la preview en hq
         """
         if not isinstance(id, int):
             raise TypeError("id n'est pas int")

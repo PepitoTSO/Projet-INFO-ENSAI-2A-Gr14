@@ -1,5 +1,5 @@
 from InquirerPy import inquirer
-
+import asyncio
 from view.abstract_view import AbstractView
 from view.session import Session
 
@@ -15,7 +15,7 @@ class RechSonPlaylistView(AbstractView):
     Vue du menu de la recherche des sons. Permet de telecharger et d'exploiter la recommendation
     """
 
-    def choisir_menu(self):
+    async def choisir_menu(self):
         """Choix du menu suivant de l'utilisateur
 
         Return
@@ -25,7 +25,7 @@ class RechSonPlaylistView(AbstractView):
         """
 
         print("\n" + "-" * 50 + "\nMenu Recherche Sons/Playlists\n" + "-" * 50 + "\n")
-
+        son_service = SonService()
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[
@@ -89,44 +89,13 @@ class RechSonPlaylistView(AbstractView):
                             nom=obj_son["name"],
                             tags=obj_son["tags"],
                         )
-                        SonService().ajouter_son(son)
+                        son_service.ajouter_son(son)
 
                         ecouter = inquirer.confirm(
-                            message="Voulez-vous écouter le son (10s)?", default=True
+                            message="Voulez-vous écouter (5s)?", default=True
                         ).execute()
                         if ecouter is True:
-                            SonService().play(son, 10)
-
-                        ajouter_playlist = inquirer.confirm(
-                            message="Voulez-vous ajouter le son à une playlist ?"
-                        ).execute()
-                        if ajouter_playlist is True:
-                            from Service.PlaylistService import PlaylistService
-
-                            playlist_service = PlaylistService()
-                            playlists = playlist_service.afficher_playlist()
-                            playlists.append("Retour au menu précédent")
-
-                            modifier_playlist = inquirer.select(
-                                message="Choisissez une playlist : ",
-                                choices=playlists,
-                            ).execute()
-                            if modifier_playlist == "Retour au menu précédent":
-                                return RechSonPlaylistView()
-
-                            Session().playlist = modifier_playlist
-
-                            ordre = inquirer.text(
-                                message="A quel ordre souhaitez-vous placer le son dans la playlist ? : "
-                            ).execute()
-
-                            playlist_service.ajouter_son_a_playlist(son, int(ordre))
-                            print(f"Le son {son.nom} a été ajouté avec succès.")
-                            Session().playlist = None
-                            Session().son = None
-                            from view.menu_principal_view import MenuView
-
-                            return MenuView()
+                            asyncio.create_task(son_service.play_canal(son, 5))
 
                         return RechSonPlaylistView()
 

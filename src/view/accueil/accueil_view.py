@@ -1,5 +1,5 @@
 from InquirerPy import inquirer
-
+import asyncio
 from view.abstract_view import AbstractView
 from view.session import Session
 
@@ -12,7 +12,7 @@ class AccueilView(AbstractView):
     def __init__(self, message):
         super().__init__(message)
 
-    def choisir_menu(self):
+    async def choisir_menu(self):
         with open("src/dessin/banner.txt", "r", encoding="utf-8") as asset:
             print(asset.read())
 
@@ -58,4 +58,3 @@ class AccueilView(AbstractView):
             "N'hésitez pas à nous contacter pour toute question ou suggestion. \n"
             "Merci de votre confiance et bonne partie !"
         )
-        # ou mettre une variable texte dans autre fichier et faire un formater pour unifier tous les textes

@@ -13,8 +13,7 @@ import psycopg2.extras
 
 class Playlist_DAO(metaclass=Singleton):
     """
-    Data Access Object (DAO) for Playlist operations.
-    Uses the Singleton pattern to ensure a single instance.
+    DAO playlist
     """
 
     @log
@@ -23,23 +22,19 @@ class Playlist_DAO(metaclass=Singleton):
         Ajoute une nouvelle playlist et ses sons à la base de données.
         """
         try:
-            # Add or update songs in the database
             for item in playlist.list_son:
                 son = item[0]
                 existing_son = Son_DAO().get_son_by_name(son.nom)
                 if not existing_son:
-                    # Add the song and get its id
                     new_son_id = Son_DAO().ajouter_son(son)
                     son.id_son = new_son_id
                 else:
-                    # Update the song object with the existing song ID
                     son.id_son = existing_son.id_son
 
             with DBConnection().connection as connection:
                 with connection.cursor(
                     cursor_factory=psycopg2.extras.RealDictCursor
                 ) as cursor:
-                    # Insert playlist without specifying id_playlist, since it's auto-generated
                     cursor.execute(
                         """
                         INSERT INTO bdd.playlist (pseudo, nom_playlist)
@@ -51,19 +46,16 @@ class Playlist_DAO(metaclass=Singleton):
                             playlist.nom_playlist,
                         ),
                     )
-                    # Fetch the generated id_playlist
                     res = cursor.fetchone()
 
                     if res:
                         generated_id_playlist = res["id_playlist"]
 
-                        # Log generated ID to confirm
-                        print(f"Generated Playlist ID: {generated_id_playlist}")
+                        print(f"ID Playlist : {generated_id_playlist}")
 
-                        # Insert associated sons into the playlist_son_join table
                         for son, ordre in playlist.list_son:
                             if son.id_son is None:
-                                raise ValueError(f"ID for son '{son.nom}' is None")
+                                raise ValueError(f"ID du son '{son.nom}' introuvable")
 
                             cursor.execute(
                                 """
@@ -79,7 +71,7 @@ class Playlist_DAO(metaclass=Singleton):
                         playlist.id_playlist = generated_id_playlist
                         return playlist
         except Exception as e:
-            print(f"Error adding playlist: {e.__class__.__name__}: {e}")
+            print(f"Erreur ajout playlist: {e.__class__.__name__}: {e}")
             return False
 
         return False  # Retourner False si l'insertion a échoué
@@ -123,6 +115,9 @@ class Playlist_DAO(metaclass=Singleton):
 
     @log
     def get_playlist(self, playlist: Playlist):
+        """
+        Recupere un objet playlist et l'instancie
+        """
         id_playlist = playlist.id_playlist
         try:
             with DBConnection().connection as connection:
@@ -191,7 +186,7 @@ class Playlist_DAO(metaclass=Singleton):
         Récupère toutes les playlists dans la base de données
         """
         playlists = []
-        res = None  # Initialize to None to avoid NameError if the query fails
+        res = None
 
         try:
             with DBConnection().connection as connection:
@@ -242,11 +237,14 @@ class Playlist_DAO(metaclass=Singleton):
             return True
 
         except Exception as e:
-            print(f"Error deleting playlist: {e.__class__.__name__}: {e}")
+            print(f"Erreur suppression playlist: {e.__class__.__name__}: {e}")
             return False
 
     @log
     def modifier_nom_playlist(self, playlist: Playlist, nouveau_nom: str) -> bool:
+        """
+        Modifie le nom d'une playlist dans la bdd.
+        """
         id_playlist = playlist.id_playlist
         try:
             with DBConnection().connection as connection:
@@ -258,7 +256,7 @@ class Playlist_DAO(metaclass=Singleton):
             return True
 
         except Exception as e:
-            print(f"Error updating playlist name: {e.__class__.__name__}: {e}")
+            print(f"Erreur maj nom: {e.__class__.__name__}: {e}")
             return False
 
     @log
@@ -294,7 +292,7 @@ class Playlist_DAO(metaclass=Singleton):
             return True
 
         except Exception as e:
-            print(f"Error changing order: {e.__class__.__name__}: {e}")
+            print(f"Erreur changer ordre: {e.__class__.__name__}: {e}")
             return False
 
     @log
@@ -328,7 +326,7 @@ class Playlist_DAO(metaclass=Singleton):
                         )
             return True
         except Exception as e:
-            print(f"Error deleting son: {e.__class__.__name__}: {e}")
+            print(f"Erreur suppression son: {e.__class__.__name__}: {e}")
             return False
 
     def ajouter_son(self, playlist: Playlist, son: Son, ordre: int) -> bool:
@@ -370,70 +368,5 @@ class Playlist_DAO(metaclass=Singleton):
             return True
 
         except Exception as e:
-            logging.error(f"Error adding son to playlist: {e.__class__.__name__}: {e}")
+            logging.error(f"Errer ajout son à playlist: {e.__class__.__name__}: {e}")
             return False
-
-
-"""utilisateur = Utilisateur(pseudo="user1", mdp_hache="hashed_password1")
-playlist_dao = Playlist_DAO()
-
-
-son1 = Son(
-    id_son=1, nom="Song 69", tags=["pop", "dance"], path_stockage="/music/song1.mp3"
-)
-son2 = Son(id_son=70, nom="Song 70", tags=["rock"], path_stockage="/music/song2.mp3")
-playlist = Playlist(
-    utilisateur=utilisateur,
-    id_playlist=1,
-    nom_playlist="My Playlist",
-    list_son=[[son1, 1], [son2, 2]],
-)
-
-playlists = playlist_dao.get_all_playlists()
-for item in playlists:
-    print(item)
-# added_successfully = playlist_dao.ajouter_playlist(playlist)"""
-"""
-# 2. Get all songs of a playlist
-songs_in_playlist = playlist_dao.get_sons_by_playlist_id(playlist.id_playlist)
-print("Songs in playlist:", [(s[0].nom, s[1]) for s in songs_in_playlist])
-
-# 3. Get playlist by id_playlist
-playlist_by_id = playlist_dao.get_playlist(playlist)
-if playlist_by_id:
-    print("Playlist found:", playlist_by_id.nom_playlist)
-else:
-    print("Playlist not found.")
-
-# 4. Get all playlists by user
-all_playlists = playlist_dao.get_all_playlists_by_user(utilisateur)
-print("All playlists by user:", [pl.nom_playlist for pl in all_playlists])
-
-# 5. Delete a playlist
-deleted_successfully = playlist_dao.supprimer_playlist(playlist)
-print("Playlist deleted successfully:", deleted_successfully)
-
-# 6. Modify the name of a playlist
-new_playlist_name = "Updated Playlist Name"
-updated_successfully = playlist_dao.modifier_nom_playlist(12, new_playlist_name)
-print("Playlist name updated successfully:", updated_successfully)
-
-# 7. Change the order of songs in a playlist
-changed_order_successfully = playlist_dao.changer_ordre(
-    playlist, son1, 2
-)  # Change the order of song1 to position 2
-print("Song order changed successfully:", changed_order_successfully)
-
-# 8. Delete a song from a playlist
-deleted_song_successfully = playlist_dao.supprimer_son(
-    playlist, son1
-)  # Delete son1 from the playlist
-print("Song deleted successfully from playlist:", deleted_song_successfully)
-
-# 9. Add a song to a playlist
-son3 = Son(id_son=19, nom="Song 3", tags=["jazz"], path_stockage="/music/song3.mp3")
-added_song_successfully = playlist_dao.ajouter_son(
-    playlist, son3, 3
-)  # Add son3 to the playlist at position 3
-print("Song added successfully to playlist:", added_song_successfully)
-"""

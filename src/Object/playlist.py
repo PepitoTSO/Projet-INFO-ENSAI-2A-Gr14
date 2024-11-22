@@ -131,7 +131,7 @@ class Playlist:
             return False
         # Supprimer son de la playlist
         del self.list_son[ordre_a_supprimer - 1]
-        # Shift
+
         for item in self.list_son:
             if item[1] > ordre_a_supprimer:
                 item[1] = item[1] - 1

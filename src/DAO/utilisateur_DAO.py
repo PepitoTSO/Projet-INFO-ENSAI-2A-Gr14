@@ -7,12 +7,7 @@ import psycopg2.extras
 
 class Utilisateur_DAO(metaclass=Singleton):
     """
-    Data Access Object (DAO) pour les opérations sur les Utilisateurs.
-    Utilise le modèle Singleton pour assurer une instance unique.
-
-    Attributes
-    ----------
-    None
+    DAO Utilisateur
     """
 
     def creer_utilisateur(self, utilisateur: Utilisateur) -> bool:

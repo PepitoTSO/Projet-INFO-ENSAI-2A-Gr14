@@ -11,7 +11,7 @@ class JouerSonView(AbstractView):
     Vue du menu de la lecture des sons
     """
 
-    def choisir_menu(self):
+    async def choisir_menu(self):
         """Choix du menu suivant de l'utilisateur
 
         Return
@@ -28,12 +28,12 @@ class JouerSonView(AbstractView):
             message="Faites votre choix : ",
             choices=[
                 "Pause",
-                "Play",
-                "Avancer de 15 secondes",
-                "Reculer de 15 secondes",
-                # "Jouer le prochain son",
-                # "Jouer le précédent son",
-                "Revenir au menu précédent",
+                "Unpause",
+                "Son suivant",
+                "Stop tout sauf playlist",
+                "Aller aux sons",
+                "Aller à playlist",
+                "Revenir au menu principal",
                 "Se déconnecter",
             ],
         ).execute()
@@ -45,23 +45,33 @@ class JouerSonView(AbstractView):
 
                 return AccueilView("Déconnexion réussie")
 
-            case "Revenir au menu précédent":
+            case "Revenir au menu principal":
                 from view.menu_principal_view import MenuView
 
                 return MenuView()
 
+            case "Aller aux sons":
+                from view.son_view import SonView
+
+                return SonView()
+
+            case "Aller à playlist":
+                from view.playlist_view import PlaylistView
+
+                return PlaylistView()
+
             case "Pause":
-                son_service.pause()
+                son_service.pause(0)
+                return JouerSonView()
 
-            case "Play":
-                son_service.unpause()
+            case "Unpause":
+                son_service.pause(1)
+                return JouerSonView()
 
-            case "Avancer de 15 secondes":
-                son_service.avancer_xtemps(15)
+            case "Son suivant":
+                son_service.stop()
+                return JouerSonView()
 
-            case "Reculer de 10 secondes":
-                son_service.avancer_xtemps(-15)
-
-            # case "Jouer le prochain son":
-            #    playlist_service = PlaylistService()
-            #    playlist_service.play_next_son() #La fonction n'est pas implémentée
+            case "Stop tout sauf playlist":
+                son_service.stop_sauf_plist()
+                return JouerSonView()
