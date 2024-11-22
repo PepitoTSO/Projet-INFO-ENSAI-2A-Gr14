@@ -4,7 +4,6 @@ from Object.son import Son
 from typing import List
 import psycopg2
 import psycopg2.extras
-import logging
 from utils.log_decorator import log
 
 

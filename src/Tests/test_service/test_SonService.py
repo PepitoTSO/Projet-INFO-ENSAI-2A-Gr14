@@ -1,6 +1,5 @@
 import unittest
 from unittest.mock import MagicMock, patch
-from DAO.son_DAO import Son_DAO
 from Object.son import Son
 from Service.SonService import SonService
 import pygame

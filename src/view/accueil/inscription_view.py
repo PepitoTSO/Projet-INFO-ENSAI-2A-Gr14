@@ -1,10 +1,5 @@
-# import regex
-
 from InquirerPy import inquirer
-from InquirerPy.validator import PasswordValidator, EmptyInputValidator
-
-from prompt_toolkit.validation import ValidationError, Validator
-
+from InquirerPy.validator import PasswordValidator
 from view.abstract_view import AbstractView
 from Service.UtilisateurService import UtilisateurService
 

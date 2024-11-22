@@ -11,9 +11,12 @@ class API_OAUTH2:
     """
     gère l'authentification spécifique OAuth2 pour avoir plus de fonctionnalités
 
-    Step 1: L'application renvoie les utilisateurs vers une page Freesound où ils se connectent et sont invités à donner des autorisations à votre application.
-    Step 2: Si les utilisateurs accordent l'accès à votre application, Freesound les redirige vers une URL que vous fournissez et inclut un code d'autorisation en tant que paramètre GET*.
-    Step 3: Votre application utilise ce code d'autorisation pour demander un jeton d'accès qui "lie" l'utilisateur final à votre application et que vous devrez ensuite ajouter à toutes vos requêtes API.
+    Step 1: L'application renvoie les utilisateurs vers une page Freesound où ils se connectent et sont invités à
+    donner des autorisations à votre application.
+    Step 2: Si les utilisateurs accordent l'accès à votre application, Freesound les redirige vers une URL que vous
+    fournissez et inclut un code d'autorisation en tant que paramètre GET*.
+    Step 3: Votre application utilise ce code d'autorisation pour demander un jeton d'accès qui "lie" l'utilisateur
+    final à votre application et que vous devrez ensuite ajouter à toutes vos requêtes API.
 
 
     Returns
@@ -40,8 +43,10 @@ class API_OAUTH2:
     def _step12OAuth2(self):
         """
 
-        Step 1: L'application renvoie les utilisateurs vers une page Freesound où ils se connectent et sont invités à donner des autorisations à votre application.
-        Step 2: Si les utilisateurs accordent l'accès à votre application, Freesound les redirige vers une URL que vous fournissez et inclut un code d'autorisation en tant que paramètre GET*.
+        Step 1: L'application renvoie les utilisateurs vers une page Freesound où ils se connectent et sont invités
+        à donner des autorisations à votre application.
+        Step 2: Si les utilisateurs accordent l'accès à votre application, Freesound les redirige vers une URL que vous
+        fournissez et inclut un code d'autorisation en tant que paramètre GET*.
 
         Ouvre un navigateur, attend le login, demande le token de connection et le retourne
 
@@ -87,8 +92,10 @@ class API_OAUTH2:
 
     def a2ioauth(self):
         """
-        Step 2: Si les utilisateurs accordent l'accès à votre application, Freesound les redirige vers une URL que vous fournissez et inclut un code d'autorisation en tant que paramètre GET*.
-        Step 3: Votre application utilise ce code d'autorisation pour demander un jeton d'accès qui "lie" l'utilisateur final à votre application et que vous devrez ensuite ajouter à toutes vos requêtes API.
+        Step 2: Si les utilisateurs accordent l'accès à votre application, Freesound les redirige vers une URL que vous
+        fournissez et inclut un code d'autorisation en tant que paramètre GET*.
+        Step 3: Votre application utilise ce code d'autorisation pour demander un jeton d'accès qui "lie" l'utilisateur
+        final à votre application et que vous devrez ensuite ajouter à toutes vos requêtes API.
 
 
         Params
@@ -96,7 +103,8 @@ class API_OAUTH2:
         Returns
         rep.text : dict
                 Un dict contenant access_token, expires_in, token_type, scope, refresh_token
-                ex : {"access_token": "MelWOOo1WLtdwsRGfPYAsGkyH4FOxd", "expires_in": 86400, "token_type": "Bearer", "scope": "read write", "refresh_token": "tKhALCVjvNK28omQ4TvWJYAWD9NPTS"}
+                ex : {"access_token": "MelWOOo1WLtdwsRGfPYAsGkyH4FOxd", "expires_in": 86400, "token_type": "Bearer",
+                "scope": "read write", "refresh_token": "tKhALCVjvNK28omQ4TvWJYAWD9NPTS"}
 
         """
 
@@ -120,15 +128,22 @@ class API_OAUTH2:
         [A Venir]
         Permet de reset le token avec le reset_token si nécessaire (en fonction de date d'expiration)
 
-        access tokens do have a limited lifetime of 24 hours. Notice that access token response from Step 3 includes an expires_in parameter that indicates that lifetime in seconds. After that time, the token will be invalidated and any request to the API using the token will return a 401 (Unauthorized) response showing an ‘Expired token’ error. If that happens, you can obtain a new access token either by starting the whole authentication process again or by requesting a new access token using the refresh token that was also issued to you when you got the access token (refresh_token parameter above).
+        access tokens do have a limited lifetime of 24 hours. Notice that access token response from Step 3 includes an
+        expires_in parameter that indicates that lifetime in seconds. After that time, the token will be invalidated and
+        any request to the API using the token will return a 401 (Unauthorized) response showing an ‘Expired token’
+        error. If that happens, you can obtain a new access token either by starting the whole authentication process
+        again or by requesting a new access token using the refresh token that was also issued to you when you got the
+        access token (refresh_token parameter above).
 
         idée
-        Si l'objet a déjà été instancié alors une clef existe déjà donc il suffit de la reset ssi expiré donc il faut compter l'instanciation à l'initialisation et reset en fonction de la date d'instanciation
+        Si l'objet a déjà été instancié alors une clef existe déjà donc il suffit de la reset ssi expiré donc il faut
+        compter l'instanciation à l'initialisation et reset en fonction de la date d'instanciation
 
         Returns
         rep.text : dict
                 Un dict contenant access_token, expires_in, token_type, scope, refresh_token
-                ex : {"access_token": "MelWOOo1WLtdwsRGfPYAsGkyH4FOxd", "expires_in": 86400, "token_type": "Bearer", "scope": "read write", "refresh_token": "tKhALCVjvNK28omQ4TvWJYAWD9NPTS"}
+                ex : {"access_token": "MelWOOo1WLtdwsRGfPYAsGkyH4FOxd", "expires_in": 86400, "token_type": "Bearer",
+                "scope": "read write", "refresh_token": "tKhALCVjvNK28omQ4TvWJYAWD9NPTS"}
 
         """
 

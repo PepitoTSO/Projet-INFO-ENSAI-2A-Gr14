@@ -31,5 +31,5 @@ class TestUtilisateur(unittest.TestCase):
         self.assertEqual(str(utilisateur), "Utilisateur: johndoe")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

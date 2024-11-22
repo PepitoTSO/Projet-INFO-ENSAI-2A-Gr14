@@ -1,12 +1,9 @@
-import unittest
 from unittest.mock import patch, MagicMock
 from Object.utilisateur import Utilisateur
 from Object.son import Son
 from Object.playlist import Playlist
 from Service.PlaylistService import PlaylistService
-from utils.singleton import Singleton
 from DAO.playlist_DAO import Playlist_DAO
-from DAO.son_DAO import Son_DAO
 from view.session import Session
 
 

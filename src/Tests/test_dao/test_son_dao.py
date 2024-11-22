@@ -1,12 +1,6 @@
-import os
 import pytest
-
-from unittest.mock import patch
-
 from DAO.son_DAO import Son_DAO
 from Object.son import Son
-
-from utils.reset_database import ResetDatabase
 
 
 def test_trouver_par_id_existant():
@@ -84,7 +78,7 @@ def test_ajouter_ok():
     assert creation_ok
 
 
-def test_supprimer_son_existant():
+def test_supprimer_son_existant2():
     """Suppression d'un son existant réussie"""
 
     # GIVEN

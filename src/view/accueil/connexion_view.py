@@ -1,8 +1,5 @@
 from InquirerPy import inquirer
-
 from view.abstract_view import AbstractView
-from view.session import Session
-
 from Service.UtilisateurService import UtilisateurService
 
 

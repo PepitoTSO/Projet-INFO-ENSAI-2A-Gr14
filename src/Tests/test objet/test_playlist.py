@@ -120,7 +120,12 @@ class TestPlaylist(unittest.TestCase):
             self.playlist.changer_nom_playlist(123)
 
     def test_str(self):
-        expected_output = f"Playlist 'Ma Playlist' (ID: 1) by {self.utilisateur}:\nListe des Sons:\n  Ordre 1: {self.son1}\n  Ordre 2: {self.son2}\n"
+        expected_output = (
+            f"Playlist 'Ma Playlist' (ID: 1) by {self.utilisateur}:\n"
+            f"Liste des Sons:\n"
+            f"  Ordre 1: {self.son1}\n"
+            f"  Ordre 2: {self.son2}\n"
+        )
         self.assertEqual(str(self.playlist), expected_output)
 
 
