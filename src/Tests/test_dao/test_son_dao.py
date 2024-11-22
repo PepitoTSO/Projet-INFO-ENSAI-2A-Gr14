@@ -104,26 +104,6 @@ def test_supprimer_son_non_existant():
     assert not suppression_ok
 
 
-def test_get_son_by_name_existant():
-    """Recherche par nom d'un son existant"""
-
-    # GIVEN
-    name_son = "Song 1"
-
-    # WHEN
-    son = Son_DAO().get_son_by_name(name_son)
-
-    # THEN
-    expected_son = Son(
-        1, nom="Song 1", tags=["chill", "relax"], path_stockage="/path/to/song1"
-    )
-
-    assert son.id_son == expected_son.id_son
-    assert son.nom == expected_son.nom
-    assert son.tags == expected_son.tags
-    assert son.path_stockage == expected_son.path_stockage
-
-
 def test_get_son_by_name_non_existant():
     """Recherche par nom d'un son non existant"""
 

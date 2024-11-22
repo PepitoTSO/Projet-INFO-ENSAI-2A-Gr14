@@ -25,8 +25,8 @@ class TestUtilisateurService(unittest.TestCase):
         mock_se_connecter.assert_called_once()
 
         # Vérifications des attributs
-        self.assertEqual(Session.utilisateur.pseudo, pseudo_utilisateur)
-        self.assertEqual(Session.utilisateur.mdp_hache, "hashed_password")
+        self.assertEqual(Session().utilisateur.pseudo, pseudo_utilisateur)
+        self.assertEqual(Session().utilisateur.mdp_hache, "hashed_password")
         self.assertTrue(result)
 
     @patch("Service.UtilisateurService.Utilisateur_DAO.se_connecter")

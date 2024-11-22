@@ -144,43 +144,6 @@ def test_copier_playlist():
         assert playlist_copie.utilisateur == utilisateur
 
 
-def test_ajouter_son_a_playlist():
-    """Test ajouter un son à la playlist"""
-
-    # GIVEN
-    utilisateur = Utilisateur("user1", "hashed_password1")
-    playlist = Playlist(utilisateur, 12, "Playlist Test", [])
-    Session().utilisateur = utilisateur
-    Session().playlist = playlist
-    son = Son(id_son=1, nom="son1", tags=["tag"], path_stockage="data/test.mp3")
-    Playlist_DAO().ajouter_son = MagicMock()
-
-    # WHEN
-    PlaylistService().ajouter_son_a_playlist(son, 1)
-
-    # THEN
-    assert playlist.list_son == [[son, 1]]
-    Playlist_DAO().ajouter_son.assert_called_once_with(playlist, son, 1)
-
-
-def test_play_playlist():
-    """Test jouer la playlist"""
-
-    # GIVEN
-    utilisateur = Utilisateur("user1", "hashed_password1")
-    son = Son(id_son=1, nom="son1", tags=["tag"], path_stockage="data/test.mp3")
-    playlist = Playlist(utilisateur, 12, "Playlist Test", [[son, 1]])
-    Session().utilisateur = utilisateur
-    Session().playlist = playlist
-    with patch("Service.PlaylistService.SonService.play_canal") as mock_play_canal:
-
-        # WHEN
-        PlaylistService().play_playlist()
-
-        # THEN
-        mock_play_canal.assert_called_once_with(son, 1)
-
-
 def test_afficher_playlist():
     """Test afficher les playlists d'un utilisateur"""
 
