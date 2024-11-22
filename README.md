@@ -2,38 +2,38 @@
 Le projet info du groupe 14
 # **DM's Sound Buddy**
 
-## **Présentation du projet**
+## **Project presentation**
 
-Le **DM's Sound Buddy** est une application conçue pour les maîtres de jeu de rôle et les conteurs souhaitant enrichir leurs parties avec des ambiances sonores personnalisées. L'objectif principal de l'application est de faciliter la gestion d'effets sonores, permettant aux utilisateurs de rechercher, télécharger et organiser des sons en playlists, puis de les jouer facilement pendant une session.
+The **DM's Sound Buddy** is an application designed for role-playing game masters and storytellers wishing to enrich their games with customised soundscapes. The main aim of the application is to facilitate the management of sound effects, allowing users to search, download and organise sounds into playlists, then play them easily during a session.
 
-L'application repose sur l'API [Freesound](https://freesound.org/apiv2/), offrant ainsi une grande variété d'effets sonores que les utilisateurs peuvent rechercher par mots-clés. L'outil permet non seulement de créer des playlists personnalisées, mais aussi de copier celles d'autres utilisateurs pour les adapter à ses propres besoins.
+The application is based on the [Freesound] API (https://freesound.org/apiv2/), offering a wide variety of sound effects that users can search for using keywords. As well as creating custom playlists, users can copy other users' playlists and adapt them to their own needs.
 
-## **Fonctionnalités principales**
+## **Main features**
 
-- **Gestion des utilisateurs et des playlists**
-  Les utilisateurs peuvent créer et gérer des comptes personnels. Ils ont la possibilité de constituer des playlists d'effets sonores qu'ils pourront sauvegarder et réutiliser.
+- **Management of users and playlists**
+  Users can create and manage personal accounts. Users can create and manage personal accounts. They can create playlists of sound effects that they can save and reuse.
 
-- **Recherche et téléchargement de sons**
-  L'application propose une interface de recherche connectée à l'API Freesound, permettant de trouver des effets sonores spécifiques. Les utilisateurs peuvent ensuite les télécharger sans duplicatas, et les intégrer dans leurs playlists.
+- **Sound search and download**
+  The application offers a search interface connected to the Freesound API, enabling users to find specific sound effects. Users can then download them without duplication, and integrate them into their playlists.
 
-- **Lecture des sons pendant une session**
-  En un clic, les sons de la playlist sélectionnée peuvent être joués lors d'une partie de jeu de rôle, facilitant ainsi la création d'une ambiance sonore immersive.
+- **Play sounds during a session**
+  With the click of a button, sounds from the selected playlist can be played during a role-playing game session, helping to create an immersive soundscape.
 
-- **Consultation et duplication de playlists**
-  Les utilisateurs ont accès aux playlists publiques d'autres membres, qu'ils peuvent consulter et dupliquer pour les adapter à leurs besoins personnels.
+- **Viewing and duplicating playlists**
+  Users have access to the public playlists of other members, which they can consult and duplicate to adapt them to their personal needs.
 
-## **Fonctionnalités optionnelles**
+## **Optional Features**
 
-- **Recherche avancée** : Basée sur des critères plus complexes comme la similarité avec d'autres sons, les mots-clés associés, les commentaires de la communauté Freesound, ou encore la popularité des sons.
-- **Lecture aléatoire d'effets sonores** : Une fonctionnalité permettant de jouer certains sons à intervalles aléatoires, utile pour des bruits d'ambiance comme ceux de la nature.
-- **Lecture en boucle** : Les utilisateurs peuvent configurer certains sons pour qu'ils se répètent en boucle (ex : bruit de fond, pluie).
-- **Lecture simultanée** : Il est également possible de jouer plusieurs sons en même temps pour une expérience sonore plus riche et plus complexe.
+- **Advanced search** : Based on more complex criteria such as similarity to other sounds, related keywords, comments from the Freesound community, or popularity of sounds.
+- **Shuffle sound effects** : A feature that allows certain sounds to be played at random intervals, useful for ambient sounds such as nature sounds.
+- **Loop playback** : Users can set certain sounds to repeat in a loop (e.g. background noise, rain).
+- **Simultaneous playback** : It is also possible to play several sounds at the same time for a richer, more complex sound experience.
 
-## **Guide d'utilisation**
+## **User guide**
 
-Après avoir téléchargé les packages nécessaire, vous pouvez lancer le fichier se trouvant sous src/__main__.py. Vous voilà dans l'application, pour votre première utilisation, créez un compte puis connectez-vous. Vous pouvez désormais créer des playlist, rechercher des sons et pleins d'autres fonctionnalités.
+Once you've downloaded the necessary packages, you can launch the file found under src/__main__.py. Now you're in the application for the first time, create an account and log in. You can now create playlists, search for sounds and a whole host of other features.
 
-Il vous manque une fonctionnalité? Pas de soucis, la licence de ce projet vous permet de copier le code et de l'adapter selon vos besoins. Et mieux que ça, nous avons voulu une application décentralisée accessible à tous et facilement modifiable.
+Missing a feature? Don't worry, the licence for this project allows you to copy the code and adapt it to your needs. And best of all, we wanted a decentralised application that's accessible to everyone and easy to modify.
 
 
 **Welcome to the user guide for our application, The DM’s Sound Buddy.**
@@ -65,5 +65,6 @@ There's also an option to copy a playlist. You will have access to all playlists
 Installez les paquets requis avec les commandes bash suivantes :
 
 ```bash
-pip install -r requirements.txt     # installe tous les paquets listés dans le fichier
-pip list                            # pour lister tous les paquets installés
+pip install -r requirements.txt     # installs all the packages present on the ENSAI VMs in the file, some of which are useless for our application.
+pip install -r requirements2.txt    # installs all the necessary packages missing from the ENSAI VMs in the file
+pip list                            # to list all installed packages
