@@ -17,6 +17,7 @@ class Son_DAO(metaclass=Singleton):
         """
         Ajoute un son à la bdd
         """
+        # la liste de str son.tags devient un seul str
         tags_string = ", ".join(son.tags) if isinstance(son.tags, list) else son.tags
 
         try:
