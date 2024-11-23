@@ -21,13 +21,13 @@ class AccueilView(AbstractView):
             choices=[
                 "Se connecter",
                 "Créer un compte",
-                "Infos sur l'appli",
-                "Quitter",
+                "Infos sur l'application",
+                "Quitter l'application",
             ],
         ).execute()
 
         match choix:
-            case "Quitter":
+            case "Quitter l'application":
                 pass
 
             case "Se connecter":
@@ -40,7 +40,7 @@ class AccueilView(AbstractView):
 
                 return InscriptionView("Création de compte joueur")
 
-            case "Infos sur l'appli":
+            case "Infos sur l'application":
                 accueil = AccueilView("Bienvenue")
                 accueil.messageInfo()
 
