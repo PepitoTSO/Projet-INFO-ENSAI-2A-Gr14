@@ -28,11 +28,11 @@ class JouerSonView(AbstractView):
             message="Faites votre choix : ",
             choices=[
                 "Pause",
-                "Unpause",
-                "Son suivant",
-                "Stop tout sauf playlist",
+                "Play",
+                "Prochain son",
+                "Stop tout sauf la playlist en cours",
                 "Aller aux sons",
-                "Aller à playlist",
+                "Aller aux playlists",
                 "Revenir au menu principal",
                 "Se déconnecter",
             ],
@@ -55,7 +55,7 @@ class JouerSonView(AbstractView):
 
                 return SonView()
 
-            case "Aller à playlist":
+            case "Aller aux playlists":
                 from view.playlist_view import PlaylistView
 
                 return PlaylistView()
@@ -64,14 +64,14 @@ class JouerSonView(AbstractView):
                 son_service.pause(0)
                 return JouerSonView()
 
-            case "Unpause":
+            case "Play":
                 son_service.pause(1)
                 return JouerSonView()
 
-            case "Son suivant":
+            case "Prochain son":
                 son_service.stop()
                 return JouerSonView()
 
-            case "Stop tout sauf playlist":
+            case "Stop tout sauf la playlist en cours":
                 son_service.stop_sauf_plist()
                 return JouerSonView()
