@@ -1,11 +1,7 @@
 from InquirerPy import inquirer
 import asyncio
 from view.abstract_view import AbstractView
-from view.session import Session
-
 from Api_FreeSound.apifreesound import apifreesound
-from Service.SonService import SonService
-from Service.PlaylistService import PlaylistService
 from Object.son import Son
 
 from Api_FreeSound.recherche_avancee import recherche_avancee
