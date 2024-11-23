@@ -47,7 +47,7 @@ class ModifPlaylistView(AbstractView):
 
                 return PlaylistView()
 
-            case "Renommer la playlist":
+            case "Renommer une playlist":
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
                 playlists.append("Retour au menu précédent")
@@ -72,7 +72,7 @@ class ModifPlaylistView(AbstractView):
 
                 return ModifPlaylistView()
 
-            case "Ajouter un son à la playlist":
+            case "Ajouter un son à une playlist":
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
                 playlists.append("Retour au menu précédent")
@@ -101,7 +101,7 @@ class ModifPlaylistView(AbstractView):
                 Session().son = None
                 return ModifPlaylistView()
 
-            case "Supprimer un son de la playlist":
+            case "Supprimer un son d'une playlist":
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
                 playlists.append("Retour au menu précédent")
@@ -128,7 +128,7 @@ class ModifPlaylistView(AbstractView):
                 Session().playlist = None
                 return ModifPlaylistView()
 
-            case "Changer l'ordre d'un son dans la playlist":
+            case "Changer l'ordre d'un son dans une playlist":
                 playlist_service = PlaylistService()
                 playlists = playlist_service.afficher_playlist()
                 playlists.append("Retour au menu précédent")

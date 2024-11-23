@@ -207,17 +207,3 @@ class Playlist:
             playlist_str += f"  Ordre {ordre}: {son}\n"
 
         return playlist_str
-
-
-son1 = Son(
-    id_son=1, nom="son1", tags=["pas", "de", "tags"], path_stockage="data/test.mp3"
-)
-son2 = Son(id_son=2, nom="son2", tags=["tags"], path_stockage="data/test.mp3")
-son3 = Son(id_son=3, nom="son3", tags=["pluie"], path_stockage="data/test.mp3")
-utilisateur = Utilisateur("a", "b")
-playlist = Playlist(
-    utilisateur=utilisateur,
-    id_playlist=None,
-    nom_playlist="test",
-    list_son=[[son1, 1], [son2, 2]],
-)
