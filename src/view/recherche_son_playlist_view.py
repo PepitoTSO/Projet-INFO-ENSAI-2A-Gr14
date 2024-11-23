@@ -68,12 +68,11 @@ class RechSonPlaylistView(AbstractView):
             case "Choisir un son":
 
                 liste_choix_nom = [i["name"] for i in resultat]
-
+                liste_choix_nom.append("Retour au menu principal")
                 choix_dl_inq = inquirer.select(
                     message="Quel son voulez-vous écouter?",
                     choices=liste_choix_nom,
                 ).execute()
-                choix_dl_inq.append("Retour au menu principal")
 
                 if choix_dl_inq == "Retour au menu principal":
                     from view.menu_principal_view import MenuView
