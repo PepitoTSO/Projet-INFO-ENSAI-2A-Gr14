@@ -94,33 +94,6 @@ class RechSonPlaylistView(AbstractView):
 
                 asyncio.create_task(son_service.play_canal(son, 10))
 
-                ajouter_playlist = inquirer.confirm(
-                    message="Voulez-vous ajouter le son à une playlist ?",
-                    default=True,
-                ).execute()
-                if ajouter_playlist is False:
-                    from view.menu_principal_view import MenuView
-
-                    return MenuView()
-
-                playlist_service = PlaylistService()
-                playlists = playlist_service.afficher_playlist()
-
-                modifier_playlist = inquirer.select(
-                    message="Choisissez une playlist : ",
-                    choices=playlists,
-                ).execute()
-                Session().playlist = modifier_playlist
-
-                ordre = inquirer.text(
-                    message="A quel ordre souhaitez-vous placer le son dans la playlist ? : "
-                ).execute()
-
-                playlist_service.ajouter_son_a_playlist(son, int(ordre))
-                print(f"Le son {son.nom} a été ajouté avec succès.")
-                Session().playlist = None
-                Session().son = None
-
                 from view.menu_principal_view import MenuView
 
                 return MenuView()
