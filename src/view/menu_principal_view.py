@@ -36,7 +36,7 @@ class MenuView(AbstractView):
                 "Sons disponibles",
                 "Mes Playlists",
                 "Lecteur",
-                "Infos",
+                "Infos sur l'application",
                 "Se déconnecter",
             ],
         ).execute()
@@ -68,7 +68,7 @@ class MenuView(AbstractView):
 
                 return JouerSonView()
 
-            case "Infos":
+            case "Infos sur l'application":
                 menu = MenuView()
                 menu.messageInfoMenu()
 
