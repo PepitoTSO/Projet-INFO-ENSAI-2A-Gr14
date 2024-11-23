@@ -3,6 +3,7 @@ from DAO.playlist_DAO import Playlist_DAO
 from Object.son import Son
 from view.session import Session
 from Service.SonService import SonService
+from Api_FreeSound.apifreesound import apifreesound
 import asyncio
 
 
@@ -95,6 +96,12 @@ class PlaylistService:
         """
 
         playlist = Session().playlist
+        lire_son = playlist.list_son
+        sons_dans_plist = [liste_sons[0] for liste_sons in lire_son]
+        for son in sons_dans_plist:
+            apifreesound().dl_son(
+                son.id_son
+            )  # Permet de vérifier s'il existe déjà ou les télécharge
         self.creer_playlist(playlist.nom_playlist, playlist.list_son)
 
     def ajouter_son_a_playlist(self, son, ordre):
