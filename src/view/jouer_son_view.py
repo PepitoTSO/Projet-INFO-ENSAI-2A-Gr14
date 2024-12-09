@@ -2,7 +2,6 @@ from InquirerPy import inquirer
 
 from view.abstract_view import AbstractView
 from view.session import Session
-
 from Service.SonService import SonService
 
 
@@ -21,9 +20,8 @@ class JouerSonView(AbstractView):
         """
 
         print("\n" + "-" * 50 + "\nMenu Lecture des Sons\n" + "-" * 50 + "\n")
-
+        print(f"Son en mémoire :{Session().son}")
         son_service = SonService()
-
         choix = inquirer.select(
             message="Faites votre choix : ",
             choices=[

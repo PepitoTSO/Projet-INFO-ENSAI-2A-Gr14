@@ -133,7 +133,7 @@ class SonService:
             print("Essayer de le télécharger")
             return
         canal = self.selectionner_canal(canal)
-        print(f"lecture du son :{son.nom}")
+        # print(f"lecture du son :{son.nom}")
         if temps:
             canal.play(son_a_jouer, loops=-1)
             await asyncio.sleep(temps)
