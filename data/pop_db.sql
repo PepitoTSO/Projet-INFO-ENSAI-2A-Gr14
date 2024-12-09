@@ -4,37 +4,36 @@
 
 -- Insertion des utilisateurs
 INSERT INTO bdd.utilisateurs (pseudo, mdp_hache) VALUES
-('user1', 'hashed_password1'),
-('user2', 'hashed_password2'),
-('user3', 'hashed_password3'),
-('user4', 'hashed_password4');
+('Barbar', 'Gpriforce20'),
+('MJ', 'Campagne2024'),
+('Bard', 'Bard4lif3');
 
 -- Insertion des playlists
 INSERT INTO bdd.playlist (pseudo, nom_playlist) VALUES
-('user1', 'Chill Vibes'),
-('user1', 'Workout Mix'),
-('user1', 'Morning Routine'),
-('user2', 'Top Hits'),
-('user2', 'Evening Relax'),
-('user3', 'Indie Gems'),
-('user3', 'Road Trip'),
-('user4', 'Classical Essentials'),
-('user4', 'Jazz Collection');
+('Barbar', 'Bagarre'),
+('Barbar', 'Cri'),
+('MJ', 'Forêt'),
+('MJ', 'Château'),
+('MJ', 'Auberge'),
+('MJ', 'Mer'),
+('Bard', 'Musique_sorts'),
+('MJ', 'Sorts'),
+('Bard', 'Ambiance_Bard');
 
--- Insertion des sons
-INSERT INTO bdd.son (id_son, nom_son, tags, path_stockage) VALUES
-('1','Song 1', 'chill, relax', '/path/to/song1'),
-('2','Song 2', 'workout, gym', '/path/to/song2'),
-('3','Song 3', 'top hits, popular', '/path/to/song3'),
-('4','Song 4', 'indie, alternative', '/path/to/song4'),
-('5','Song 5', 'classical, orchestra', '/path/to/song5'),
-('6','Song 6', 'relax, chill', '/path/to/song6'),
-('7','Song 7', 'gym, workout', '/path/to/song7'),
-('8','Song 8', 'popular, top hits', '/path/to/song8'),
-('9','Song 9', 'morning, upbeat', '/path/to/song9'),
-('10','Song 10', 'evening, calm', '/path/to/song10'),
-('11','Song 11', 'road trip, fun', '/path/to/song11'),
-('12','Song 12', 'jazz, smooth', '/path/to/song12');
+-- Insertion des sons  VOIR RESET
+--INSERT INTO bdd.son (id_son, nom_son, tags, path_stockage) VALUES
+--('1','Song 1', 'chill, relax', '/path/to/song1'),
+--('2','Song 2', 'workout, gym', '/path/to/song2'),
+--('3','Song 3', 'top hits, popular', '/path/to/song3'),
+--('4','Song 4', 'indie, alternative', '/path/to/song4'),
+--('5','Song 5', 'classical, orchestra', '/path/to/song5'),
+--('6','Song 6', 'relax, chill', '/path/to/song6'),
+--('7','Song 7', 'gym, workout', '/path/to/song7'),
+--('8','Song 8', 'popular, top hits', '/path/to/song8'),
+--('9','Song 9', 'morning, upbeat', '/path/to/song9'),
+--('10','Song 10', 'evening, calm', '/path/to/song10'),
+--('11','Song 11', 'road trip, fun', '/path/to/song11'),
+--('12','Song 12', 'jazz, smooth', '/path/to/song12');
 
 -- Insertion des associations playlist-son
 INSERT INTO bdd.playlist_son_join (id_son, id_playlist, ordre_son_playlist) VALUES
