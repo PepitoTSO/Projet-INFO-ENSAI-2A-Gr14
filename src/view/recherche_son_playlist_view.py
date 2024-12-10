@@ -3,7 +3,7 @@ import asyncio
 from view.abstract_view import AbstractView
 from Api_FreeSound.apifreesound import apifreesound
 from Object.son import Son
-
+from Service.SonService import SonService
 from Api_FreeSound.recherche_avancee import recherche_avancee
 
 
@@ -73,7 +73,7 @@ class RechSonPlaylistView(AbstractView):
                 if choix_dl_inq == "Retour au menu principal":
                     from view.menu_principal_view import MenuView
 
-                    return MenuView
+                    return MenuView()
                 # retourne le premier resultat associé au nom choisi l'objet pour le telecharger
                 obj_son = next(i for i in resultat if i["name"] == choix_dl_inq)
 
