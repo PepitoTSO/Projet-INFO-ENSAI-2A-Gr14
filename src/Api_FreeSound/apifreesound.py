@@ -44,7 +44,7 @@ class apifreesound:
 
         try:
             reponse = requests.get(
-                self.url + "/apiv2/search/text/", params=payload, timeout=1
+                self.url + "/apiv2/search/text/", params=payload, timeout=10
             )
             reponse.raise_for_status()
             results = reponse.json()["results"][:5]
@@ -92,7 +92,7 @@ class apifreesound:
             try:
                 payload = {"token": self.cleAPI}
                 reponse = requests.get(
-                    f"{self.url}/apiv2/sounds/{id}/", params=payload, timeout=1
+                    f"{self.url}/apiv2/sounds/{id}/", params=payload, timeout=10
                 )
 
                 if HQ:
